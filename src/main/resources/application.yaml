@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: fastfood-soat
+    name: fast-food-soat
 
   datasource:
     url: jdbc:postgresql://localhost:5432/fastfood_soat

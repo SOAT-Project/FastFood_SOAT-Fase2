@@ -1,13 +1,13 @@
-package soat_project.FastFood_SOAT;
+package soat.project.fastfoodsoat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FastFoodSoatApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FastFoodSoatApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 
 }

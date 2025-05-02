@@ -1,10 +1,10 @@
-package soat_project.FastFood_SOAT;
+package soat.project.fastfoodsoat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class FastFoodSoatApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {
