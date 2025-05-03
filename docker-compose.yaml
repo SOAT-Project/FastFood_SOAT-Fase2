@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  database:
+    image: postgres:17-alpine
+    container_name: database
+    restart: on-failure
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-postgres}
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASS:-P@ssw0rd}
+    command: ["postgres", "-p", "${DATABASE_PORT:-5432}"]
+    ports:
+      - "${DATABASE_PORT:-5432}:${DATABASE_PORT:-5432}"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  application:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        APPLICATION_PORT: ${APPLICATION_PORT:-8080}
+    container_name: application
+    depends_on:
+      - database
+    environment:
+      DATABASE_HOST: ${DATABASE_HOST:-localhost}
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_NAME: ${DATABASE_NAME:-postgres}
+      DATABASE_USER: ${DATABASE_USER:-postgres}
+      DATABASE_PASS: ${DATABASE_PASS:-P@ssw0rd}
+    ports:
+      - "${APPLICATION_PORT:-8080}:${APPLICATION_PORT:-8080}"
+    networks:
+      - app-network
+
+volumes:
+  pgdata:
+
+networks:
+  app-network:

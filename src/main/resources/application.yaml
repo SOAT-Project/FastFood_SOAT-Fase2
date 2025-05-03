@@ -1,14 +1,16 @@
 server:
-  port: 8080
+  port: ${APPLICATION_PORT:8080}
+  servlet:
+    context-path: /api
 
 spring:
   application:
     name: fast-food-soat
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/fastfood_soat
-    username: ${POSTGRES_FASTFOOD_USERNAME}
-    password: ${POSTGRES_FASTFOOD_PASSWORD}
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:${DATABASE_PORT:5432}/${DATABASE_NAME:postgres}
+    username: ${DATABASE_USER:postgres}
+    password: ${DATABASE_PASS:P@ssw0rd}
     driver-class-name: org.postgresql.Driver
 
   jpa:
