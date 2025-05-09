@@ -5,6 +5,14 @@ CREATE TYPE "order_status" AS ENUM (
   'COMPLETED'
 );
 
+CREATE TYPE "payment_status" AS ENUM (
+  'PENDING',
+  'APPROVED',
+  'INPROCESS',
+  'REJECTED',
+  'CANCELLED'
+);
+
 CREATE TYPE "role" AS ENUM ('ADMIN', 'EMPLOYER');
 
 CREATE TABLE "clients" (
@@ -35,6 +43,7 @@ CREATE TABLE "order_products" (
    "value" decimal,
    "order_id" int,
    "product_id" int,
+   "quantity" int,
    "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
    "update_at" timestamp DEFAULT CURRENT_TIMESTAMP,
    "deleted_at" timestamp
@@ -66,6 +75,7 @@ CREATE TABLE "payments" (
    "external_reference" varchar(100),
    "qr_code" text,
    "order_id" int,
+   "status" payment_status,
    "created_at" timestamp DEFAULT CURRENT_TIMESTAMP,
    "update_at" timestamp DEFAULT CURRENT_TIMESTAMP,
    "deleted_at" timestamp
