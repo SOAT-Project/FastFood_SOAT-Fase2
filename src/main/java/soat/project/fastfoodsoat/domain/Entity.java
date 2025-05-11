@@ -18,8 +18,8 @@ public abstract class Entity<ID extends Identifier> {
             final Instant updatedAt,
             final Instant deletedAt
     ) {
-        this.id = Objects.requireNonNull(id, "'id' should not be null");
-        this.createdAt = Objects.requireNonNull(createdAt, "'createdAt' should not be null");
+        this.id = id;
+        this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
     }
