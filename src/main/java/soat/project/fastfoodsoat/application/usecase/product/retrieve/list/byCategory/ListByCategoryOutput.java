@@ -11,7 +11,7 @@ public record ListByCategoryOutput(
         String description,
         BigDecimal value,
         String imageURL,
-        Integer productCategorieId,
+        Integer productCategoryId,
         Instant createdAt,
         Instant updatedAt
 ) {

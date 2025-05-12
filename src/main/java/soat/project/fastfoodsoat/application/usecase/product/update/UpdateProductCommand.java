@@ -3,6 +3,7 @@ package soat.project.fastfoodsoat.application.usecase.product.update;
 import java.math.BigDecimal;
 
 public record UpdateProductCommand(
+        Integer id,
         String name,
         String description,
         BigDecimal value,
@@ -11,6 +12,7 @@ public record UpdateProductCommand(
 ) {
 
     public static UpdateProductCommand with(
+            Integer id,
             final String name,
             final String description,
             final BigDecimal value,
@@ -18,6 +20,7 @@ public record UpdateProductCommand(
             final Integer productCategoryId
     ) {
         return new UpdateProductCommand(
+                id,
                 name,
                 description,
                 value,

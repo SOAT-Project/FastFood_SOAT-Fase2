@@ -1,5 +1,6 @@
 package soat.project.fastfoodsoat.application.usecase.product.retrieve.list.byCategory;
 
+import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
 import soat.project.fastfoodsoat.domain.product.ProductGateway;
@@ -9,6 +10,7 @@ import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryI
 
 import java.util.function.Supplier;
 
+@Component
 public class DefaultListByCategoryUseCase extends ListByCategoryUseCase {
 
     private final ProductGateway productGateway;

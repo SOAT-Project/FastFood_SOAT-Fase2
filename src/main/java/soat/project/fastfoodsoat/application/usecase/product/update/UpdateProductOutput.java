@@ -11,7 +11,7 @@ public record UpdateProductOutput(
         String description,
         BigDecimal value,
         String imageURL,
-        Integer productCategorieId,
+        Integer productCategoryId,
         Instant updatedAt
 ) {
 

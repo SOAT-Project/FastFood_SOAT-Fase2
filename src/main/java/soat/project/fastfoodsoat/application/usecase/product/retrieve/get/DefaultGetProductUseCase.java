@@ -1,7 +1,6 @@
 package soat.project.fastfoodsoat.application.usecase.product.retrieve.get;
 
 import org.springframework.stereotype.Component;
-import soat.project.fastfoodsoat.application.UseCase;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.product.ProductGateway;
@@ -10,7 +9,7 @@ import soat.project.fastfoodsoat.domain.product.ProductId;
 import java.util.function.Supplier;
 
 @Component
-public class DefaultGetProductUseCase extends UseCase<Integer, GetProductOutput> {
+public class DefaultGetProductUseCase extends GetProductUseCase{
 
     private final ProductGateway productGateway;
 
