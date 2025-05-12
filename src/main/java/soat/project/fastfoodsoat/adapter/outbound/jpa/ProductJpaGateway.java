@@ -33,7 +33,7 @@ public class ProductJpaGateway implements ProductGateway {
 
     @Override
     public void deleteById(final ProductId productId) {
-
+        this.productRepository.deleteById(productId.getValue());
     }
 
     @Override
