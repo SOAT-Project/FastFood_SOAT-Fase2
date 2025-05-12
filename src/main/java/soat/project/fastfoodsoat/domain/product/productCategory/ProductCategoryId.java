@@ -12,12 +12,13 @@ public class ProductCategoryId extends Identifier {
         this.id = id;
     }
 
+
     @Override
     public Integer getValue() {
         return 0;
     }
 
-    public static ProductCategoryId of (Integer id){
+    public static ProductCategoryId of (final Integer id){
         return new ProductCategoryId(id);
     }
 

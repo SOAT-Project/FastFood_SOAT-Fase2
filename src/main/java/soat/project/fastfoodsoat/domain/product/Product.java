@@ -42,6 +42,52 @@ public class Product extends AggregateRoot<ProductId> {
         this.selfValidation();
     }
 
+    public static Product newProduct(
+            final String name,
+            final String description,
+            final BigDecimal value,
+            final String imageURL,
+            final ProductCategoryId productCategoryId
+    ) {
+        final ProductId productId = null;
+        final var now = Instant.now();
+        return new Product(
+                productId,
+                name,
+                description,
+                value,
+                imageURL,
+                productCategoryId,
+                now,
+                now,
+                null
+        );
+    }
+
+    public static Product with(
+            final ProductId productId,
+            final String name,
+            final String description,
+            final BigDecimal value,
+            final String imageURL,
+            final ProductCategoryId productCategoryId,
+            final Instant createdAt,
+            final Instant updatedAt,
+            final Instant deletedAt
+    ) {
+        return new Product(
+                productId,
+                name,
+                description,
+                value,
+                imageURL,
+                productCategoryId,
+                createdAt,
+                updatedAt,
+                deletedAt
+        );
+    }
+
     @Override
     public void validate(ValidationHandler handler) {
         new ProductValidator(this, handler).validate();
@@ -72,7 +118,7 @@ public class Product extends AggregateRoot<ProductId> {
         return imageURL;
     }
 
-    public ProductCategoryId getProductCategorieId() {
+    public ProductCategoryId getProductCategoryId() {
         return productCategoryId;
     }
 }

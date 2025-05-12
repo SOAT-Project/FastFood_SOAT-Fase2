@@ -97,7 +97,7 @@ public class ProductValidator extends Validator {
     }
 
     private void checkProductCategorieId() {
-        if (Objects.isNull(product.getProductCategorieId())) {
+        if (Objects.isNull(product.getProductCategoryId())) {
             this.validationHandler().append(new DomainError("'productCategorieId' should not be null"));
         }
     }
