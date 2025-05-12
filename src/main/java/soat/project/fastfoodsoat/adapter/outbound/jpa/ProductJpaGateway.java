@@ -1,5 +1,8 @@
 package soat.project.fastfoodsoat.adapter.outbound.jpa;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductRepository;
@@ -28,7 +31,7 @@ public class ProductJpaGateway implements ProductGateway {
 
     @Override
     public Product update(final Product product) {
-        return null;
+        return save(product);
     }
 
     @Override
@@ -38,12 +41,39 @@ public class ProductJpaGateway implements ProductGateway {
 
     @Override
     public Optional<Product> findById(final ProductId productId) {
-        return Optional.empty();
+        return this.productRepository
+                .findById(productId.getValue())
+                .map(ProductJpaEntity::toDomain);
     }
 
     @Override
-    public Pagination<Product> findProductByCategory(final ProductCategoryId productCategoryId, final SearchQuery searchQuery) {
-        return null;
+    public Pagination<Product> findProductByCategory(final ProductCategoryId productCategoryId, final SearchQuery query) {
+        final var pageRequest = PageRequest.of(
+                query.page(),
+                query.perPage(),
+                Sort.by(Sort.Direction.fromString(query.direction()), query.sort())
+        );
+
+        final var specification = Optional.ofNullable(query.terms())
+                .filter(str -> !str.isBlank())
+                .map(this::assembleSpecification)
+                .orElse(Specification.where(null))
+                .and((root, criteriaQuery, criteriaBuilder) -> {
+                    criteriaQuery.distinct(true);
+                    return criteriaBuilder.equal(
+                            root.get("productCategory").get("id").get("value"),
+                            productCategoryId.getValue()
+                    );
+                });
+
+        final var pageResult = this.productRepository.findAll(Specification.where(specification), pageRequest);
+
+        return new Pagination<>(
+                pageResult.getNumber(),
+                pageResult.getSize(),
+                pageResult.getTotalElements(),
+                pageResult.map(ProductJpaEntity::toDomain).toList()
+        );
     }
 
     @Override
@@ -54,4 +84,16 @@ public class ProductJpaGateway implements ProductGateway {
     private Product save(final Product product){
         return this.productRepository.save(ProductJpaEntity.fromDomain(product)).toDomain();
     }
+
+    private Specification<ProductJpaEntity> assembleSpecification(final String str) {
+        final Specification<ProductJpaEntity> nameLike = dynamicLike("name", str);
+        final Specification<ProductJpaEntity> descriptionLike = dynamicLike("description", str);
+        return nameLike.or(descriptionLike);
+    }
+
+    private Specification<ProductJpaEntity> dynamicLike(final String field, final String value) {
+        return (root, query, cb) -> cb.like(cb.lower(root.get(field)), "%" + value.toLowerCase() + "%");
+    }
+
+
 }
