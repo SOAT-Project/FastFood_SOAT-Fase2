@@ -88,6 +88,23 @@ public class Product extends AggregateRoot<ProductId> {
         );
     }
 
+    public Product update(
+            final String name,
+            final String description,
+            final BigDecimal value,
+            final String imageURL,
+            final ProductCategoryId productCategoryId
+    ) {
+        this.name = name;
+        this.description = description;
+        this.value = value;
+        this.imageURL = imageURL;
+        this.productCategoryId = productCategoryId;
+        this.updatedAt = Instant.now();
+
+        return this;
+    }
+
     @Override
     public void validate(ValidationHandler handler) {
         new ProductValidator(this, handler).validate();
