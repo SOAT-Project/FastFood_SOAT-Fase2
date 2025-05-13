@@ -3,6 +3,7 @@
 Este documento descreve como executar testes de integração usando a tech stack:
 
 - Testcontainers
+- Docker
 - PostgreSQL 
 
 Os testes de integração são isolados dos testes unitários e ficam no diretório `src/testIntegration/java`.
