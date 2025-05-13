@@ -112,4 +112,8 @@ Você pode configurar as seguintes variáveis de ambiente:
 - `DATABASE_NAME`: Nome do banco de dados (padrão: postgres)
 - `APPLICATION_PORT`: Porta da aplicação (padrão: 8080, também usada como build-arg)
 
-`
+### Testes
+
+#### Testes de Integração
+
+- Para detalhes sobre testes de integração veja: [Documentação - Teste Integração](./docs/integration-tests.md).
