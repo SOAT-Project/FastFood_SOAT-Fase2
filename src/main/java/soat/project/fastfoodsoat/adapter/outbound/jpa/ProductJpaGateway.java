@@ -61,12 +61,17 @@ public class ProductJpaGateway implements ProductGateway {
                 .and((root, criteriaQuery, criteriaBuilder) -> {
                     criteriaQuery.distinct(true);
                     return criteriaBuilder.equal(
-                            root.get("productCategory").get("id").get("value"),
+                            root.get("productCategoryId"),
                             productCategoryId.getValue()
                     );
                 });
 
         final var pageResult = this.productRepository.findAll(Specification.where(specification), pageRequest);
+
+        System.out.println("Page: " + query.page());
+        System.out.println("PerPage: " + query.perPage());
+        System.out.println("Sort: " + query.sort());
+        System.out.println("Direction: " + query.direction());
 
         return new Pagination<>(
                 pageResult.getNumber(),
@@ -74,6 +79,7 @@ public class ProductJpaGateway implements ProductGateway {
                 pageResult.getTotalElements(),
                 pageResult.map(ProductJpaEntity::toDomain).toList()
         );
+
     }
 
     @Override

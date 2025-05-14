@@ -47,24 +47,37 @@ public class ProductJpaEntity {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
-    public ProductJpaEntity(Integer value,
-                            String name,
-                            String description,
-                            BigDecimal value1,
-                            String imageURL,
-                            ProductCategoryId productCategoryId,
-                            Instant createdAt,
-                            Instant updatedAt,
-                            Instant deletedAt) {
+    public ProductJpaEntity(
+            Integer id,
+            String name,
+            String description,
+            BigDecimal value,
+            String imageURL,
+            ProductCategoryId productCategoryId,
+            Instant createdAt,
+            Instant updatedAt,
+            Instant deletedAt
+    ) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.value = value;
+        this.imageURL = imageURL;
+        this.productCategoryId = productCategoryId.getValue();
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.deletedAt = deletedAt;
     }
+
 
     public ProductJpaEntity() {
 
     }
 
     public static ProductJpaEntity fromDomain(final Product product){
+        final Integer id = product.getId() != null ? product.getId().getValue() : null;
         return new ProductJpaEntity(
-                product.getId().getValue(),
+                id,
                 product.getName(),
                 product.getDescription(),
                 product.getValue(),
