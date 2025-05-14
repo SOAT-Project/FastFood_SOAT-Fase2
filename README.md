@@ -115,3 +115,9 @@ Você pode configurar as seguintes variáveis de ambiente:
 - `DATABASE_NAME`: Nome do banco de dados (padrão: postgres)
 - `APPLICATION_PORT`: Porta da aplicação (padrão: 8080, também usada como build-arg)
 - `AUTH_TOKEN_EXPIRATION`: Tempo de expiração do token de autenticação em segundos (padrão: 43200)
+
+### Testes
+
+#### Testes de Integração
+
+- Para detalhes sobre testes de integração veja: [Documentação - Teste Integração](./docs/integration-tests.md).

@@ -1,0 +1,27 @@
+sourceSets {
+    testIntegration {
+        java {
+            srcDir file('src/testIntegration/java')
+        }
+        resources {
+            srcDir file('src/testIntegration/resources')
+        }
+        compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
+configurations {
+    testIntegrationImplementation.extendsFrom testImplementation
+    testIntegrationRuntimeOnly.extendsFrom testRuntimeOnly
+}
+
+tasks.register('testIntegration', Test) {
+    description = 'Executa os testes de integração.'
+    group = 'verification'
+    testClassesDirs = sourceSets.testIntegration.output.classesDirs
+    classpath = sourceSets.testIntegration.runtimeClasspath
+    useJUnitPlatform()
+}
+
+check.dependsOn testIntegration
