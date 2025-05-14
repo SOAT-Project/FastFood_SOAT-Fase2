@@ -29,6 +29,22 @@ public class ProductCategory extends Entity<ProductCategoryId> {
 
     }
 
+    public static ProductCategory with(
+            final ProductCategoryId productCategoryId,
+            final String name,
+            final Instant createdAt,
+            final Instant updatedAt,
+            final Instant deletedAt
+    ) {
+        return new ProductCategory(
+                productCategoryId,
+                createdAt,
+                updatedAt,
+                deletedAt,
+                name
+        );
+    }
+
     @Override
     public void validate(ValidationHandler handler) {
         new ProductCategoryValidator(this, handler).validate();

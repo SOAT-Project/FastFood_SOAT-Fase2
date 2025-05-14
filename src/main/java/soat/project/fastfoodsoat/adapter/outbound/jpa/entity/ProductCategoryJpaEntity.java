@@ -3,11 +3,13 @@ package soat.project.fastfoodsoat.adapter.outbound.jpa.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
+import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategory;
+import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
 
 import java.time.Instant;
 
 @Entity
-@Table(name="products")
+@Table(name="product_categories")
 public class ProductCategoryJpaEntity {
 
     @Id
@@ -36,6 +38,16 @@ public class ProductCategoryJpaEntity {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+    }
+
+    public ProductCategory toDomain() {
+        return ProductCategory.with(
+                ProductCategoryId.of(this.id),
+                this.name,
+                this.createdAt,
+                this.updatedAt,
+                this.deletedAt
+        );
     }
 
     public ProductCategoryJpaEntity() {

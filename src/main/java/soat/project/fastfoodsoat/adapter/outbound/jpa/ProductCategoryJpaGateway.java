@@ -1,6 +1,7 @@
 package soat.project.fastfoodsoat.adapter.outbound.jpa;
 
 import org.springframework.stereotype.Component;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductCategoryJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductCategoryRepository;
 import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategory;
 import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryGateway;
@@ -29,6 +30,8 @@ public class ProductCategoryJpaGateway implements ProductCategoryGateway {
 
     @Override
     public Optional<ProductCategory> findById(ProductCategoryId productCategoryId) {
-        return Optional.empty();
+        return productCategoryRepository
+                .findById(productCategoryId.getValue())
+                .map(ProductCategoryJpaEntity::toDomain);
     }
 }
