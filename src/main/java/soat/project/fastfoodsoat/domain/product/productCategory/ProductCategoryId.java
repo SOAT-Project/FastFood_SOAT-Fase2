@@ -15,7 +15,7 @@ public class ProductCategoryId extends Identifier {
 
     @Override
     public Integer getValue() {
-        return 0;
+        return id;
     }
 
     public static ProductCategoryId of (final Integer id){
