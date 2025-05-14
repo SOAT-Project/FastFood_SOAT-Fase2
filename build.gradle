@@ -25,6 +25,21 @@ repositories {
 	mavenCentral()
 }
 
+sourceSets {
+	testIntegration {
+		java {
+			srcDir file('src/testIntegration/java')
+		}
+		resources {
+			srcDir file('src/testIntegration/resources')
+		}
+		compileClasspath += sourceSets.main.output + configurations.testRuntimeClasspath
+		runtimeClasspath += output + compileClasspath
+	}
+}
+
+apply from: 'gradle/test-integration.gradle'
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -32,7 +47,13 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-database-postgresql'
 	runtimeOnly 'org.postgresql:postgresql'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Testcontainers para PostgreSQL
+	testImplementation("org.testcontainers:junit-jupiter:1.19.7")
+	testImplementation("org.testcontainers:postgresql:1.19.7")
+
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
