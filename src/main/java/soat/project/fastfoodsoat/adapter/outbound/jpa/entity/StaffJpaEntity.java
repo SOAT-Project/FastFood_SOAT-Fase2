@@ -42,6 +42,28 @@ public class StaffJpaEntity {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
+    public StaffJpaEntity() {}
+
+    public StaffJpaEntity(
+            final Integer id,
+            final String name,
+            final String email,
+            final String cpf,
+            final Boolean isActive,
+            final Instant createdAt,
+            final Instant updateAt,
+            final Instant deletedAt
+    ) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.cpf = cpf;
+        this.isActive = isActive;
+        this.createdAt = createdAt;
+        this.updateAt = updateAt;
+        this.deletedAt = deletedAt;
+    }
+
     public Integer getId() {
         return id;
     }

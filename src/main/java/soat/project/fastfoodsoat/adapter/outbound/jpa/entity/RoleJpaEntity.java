@@ -26,6 +26,22 @@ public class RoleJpaEntity {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
+    public RoleJpaEntity() {}
+
+    public RoleJpaEntity(
+            final Integer id,
+            final String roleName,
+            final Instant createdAt,
+            final Instant updateAt,
+            final Instant deletedAt
+    ) {
+        this.id = id;
+        this.roleName = roleName;
+        this.createdAt = createdAt;
+        this.updateAt = updateAt;
+        this.deletedAt = deletedAt;
+    }
+
     public Integer getId() {
         return id;
     }
