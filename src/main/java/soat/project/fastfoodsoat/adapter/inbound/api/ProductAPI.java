@@ -61,9 +61,9 @@ public interface ProductAPI {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     Pagination<ListProductByCategoryResponse> listByCategory(
-            @PathVariable(name = "category_id") Integer categoryId,
+            @PathVariable(name = "categoryId") Integer categoryId,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "per_page", defaultValue = "10") int perPage,
+            @RequestParam(name = "perPage", defaultValue = "10") int perPage,
             @RequestParam(name = "sort", defaultValue = "name") String sort,
             @RequestParam(name = "dir", defaultValue = "asc") String dir,
             @RequestParam(name = "search", defaultValue = "") String search
