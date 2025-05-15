@@ -15,4 +15,14 @@ public record Pagination<T>(
                 .toList();
         return new Pagination<>(currentPage, perPage, total, aNewList);
     }
+
+    public static <T> Pagination<T> with(
+            int currentPage,
+            int perPage,
+            long total,
+            List<T> items
+    ) {
+        return new Pagination<>(currentPage, perPage, total, items);
+    }
+
 }
