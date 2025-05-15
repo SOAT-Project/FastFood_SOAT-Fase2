@@ -34,4 +34,8 @@ springdoc:
     operations-sorter: method
     tags-sorter: alpha
 
+security:
+  auth:
+    token:
+      expiration: ${AUTH_TOKEN_EXPIRATION:43200}
 

@@ -26,6 +26,7 @@ DATABASE_PORT=5432
 DATABASE_NAME=postgres
 DATABASE_USER=postgres
 DATABASE_PASS=P@ssw0rd
+AUTH_TOKEN_EXPIRATION=43200
 ```
 
 #### Opção 2: Usando variáveis de ambiente do sistema
@@ -39,6 +40,7 @@ export DATABASE_PORT=5432
 export DATABASE_NAME=postgres
 export DATABASE_USER=postgres
 export DATABASE_PASS=P@ssw0rd
+export AUTH_TOKEN_EXPIRATION=43200
 ```
 - Windows (PowerShell):
 ```PowerShell
@@ -48,6 +50,7 @@ $env:DATABASE_PORT="5432"
 $env:DATABASE_NAME="postgres"
 $env:DATABASE_USER="postgres"
 $env:DATABASE_PASS="P@ssw0rd"
+$env:AUTH_TOKEN_EXPIRATION="43200"
 ```
 
 Se nenhuma das opções acima for configurada, o Docker Compose utilizará os valores padrão definidos no arquivo `docker-compose.yaml`.
@@ -111,6 +114,7 @@ Você pode configurar as seguintes variáveis de ambiente:
 - `DATABASE_PASS`: Senha do banco de dados (padrão: P@ssw0rd)
 - `DATABASE_NAME`: Nome do banco de dados (padrão: postgres)
 - `APPLICATION_PORT`: Porta da aplicação (padrão: 8080, também usada como build-arg)
+- `AUTH_TOKEN_EXPIRATION`: Tempo de expiração do token de autenticação em segundos (padrão: 43200)
 
 ### Testes
 
