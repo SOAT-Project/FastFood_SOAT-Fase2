@@ -1,9 +1,12 @@
 package soat.project.fastfoodsoat.application.usecase.product.create;
 
 import org.springframework.stereotype.Component;
+import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.product.ProductGateway;
+import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategory;
+import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryGateway;
 import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
 
@@ -11,9 +14,12 @@ import soat.project.fastfoodsoat.domain.validation.handler.Notification;
 public class DefaultCreateProductUseCase extends CreateProductUseCase {
 
     private final ProductGateway productGateway;
+    private final ProductCategoryGateway categoryGateway;
 
-    public DefaultCreateProductUseCase(ProductGateway productGateway) {
+    public DefaultCreateProductUseCase(final ProductGateway productGateway,
+                                       final ProductCategoryGateway categoryGateway) {
         this.productGateway = productGateway;
+        this.categoryGateway = categoryGateway;
     }
 
 
@@ -26,10 +32,13 @@ public class DefaultCreateProductUseCase extends CreateProductUseCase {
         final var imageURL = command.imageURL();
         final var productCategoryId = ProductCategoryId.of(command.productCategoryId());
 
+        final var category = categoryGateway.findById(productCategoryId)
+                .orElseThrow(() -> NotFoundException.with(ProductCategory.class, productCategoryId));
+
         final var notification = Notification.create();
 
         final var product = notification.validate(() ->
-                Product.newProduct(name, description, value, imageURL, productCategoryId)
+                Product.newProduct(name, description, value, imageURL, category.getId())
         );
 
         if (notification.hasError()) {
@@ -38,4 +47,6 @@ public class DefaultCreateProductUseCase extends CreateProductUseCase {
 
         return CreateProductOutput.from(this.productGateway.create(product));
     }
+
+
 }
