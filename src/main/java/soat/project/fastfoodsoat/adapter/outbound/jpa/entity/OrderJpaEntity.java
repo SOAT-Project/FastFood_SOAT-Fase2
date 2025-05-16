@@ -133,4 +133,13 @@ public class OrderJpaEntity {
     public List<OrderProductJpaEntity> getOrderProducts() {
         return orderProducts;
     }
+
+    public void setOrderProducts(List<OrderProductJpaEntity> orderProducts) {
+        if (orderProducts == null) return;
+
+        this.orderProducts = orderProducts;
+        for (OrderProductJpaEntity orderProduct : orderProducts) {
+            orderProduct.setOrder(this);
+        }
+    }
 }

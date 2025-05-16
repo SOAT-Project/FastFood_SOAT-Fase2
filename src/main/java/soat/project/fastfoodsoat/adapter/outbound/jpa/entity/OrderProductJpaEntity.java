@@ -22,11 +22,11 @@ public class OrderProductJpaEntity {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", nullable = false)
     private OrderJpaEntity order;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id", nullable = false)
     private ProductJpaEntity product;
 
@@ -104,5 +104,9 @@ public class OrderProductJpaEntity {
 
     public Product getProduct() {
         return product.toDomain();
+    }
+
+    public void setOrder(OrderJpaEntity orderJpaEntity) {
+        this.order = orderJpaEntity;
     }
 }
