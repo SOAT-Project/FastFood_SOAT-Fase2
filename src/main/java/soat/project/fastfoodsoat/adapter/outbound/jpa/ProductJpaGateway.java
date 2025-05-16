@@ -13,6 +13,7 @@ import soat.project.fastfoodsoat.domain.product.ProductGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
 import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -44,6 +45,16 @@ public class ProductJpaGateway implements ProductGateway {
         return this.productRepository
                 .findById(productId.getValue())
                 .map(ProductJpaEntity::toDomain);
+    }
+
+    @Override
+    public List<Product> findByIds(List<Integer> productIds) {
+        return this.productRepository.findAll(Specification.where((root, criteriaQuery, criteriaBuilder) -> {
+            criteriaQuery.distinct(true);
+            return root.get("id").in(productIds);
+        })).stream()
+                .map(ProductJpaEntity::toDomain)
+                .toList();
     }
 
     @Override
