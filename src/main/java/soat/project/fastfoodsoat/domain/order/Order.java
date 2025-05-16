@@ -46,7 +46,6 @@ public class Order extends AggregateRoot<OrderId> {
     }
 
     public static Order newOrder(
-            final BigDecimal value,
             final Integer orderNumber,
             final OrderStatus status,
             final List<OrderProduct> orderProducts
@@ -54,6 +53,7 @@ public class Order extends AggregateRoot<OrderId> {
         final OrderId orderId = null;
         final OrderPublicId publicId = null;
         final Instant now = Instant.now();
+        final BigDecimal value = calculateValue(orderProducts);
         return new Order(
                 orderId,
                 publicId,
@@ -149,5 +149,11 @@ public class Order extends AggregateRoot<OrderId> {
 
     public PublicIdentifier getPublicId() {
         return publicId;
+    }
+
+    private static BigDecimal calculateValue(final List<OrderProduct> orderProducts) {
+        return orderProducts.stream()
+                .map(orderProduct -> orderProduct.getValue().multiply(BigDecimal.valueOf(orderProduct.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
