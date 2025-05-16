@@ -3,6 +3,7 @@ package soat.project.fastfoodsoat.adapter.outbound.jpa;
 import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.OrderJpaMapper;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderProductRepository;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderRepository;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductRepository;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
@@ -20,19 +21,25 @@ import java.util.stream.Collectors;
 public class OrderJpaGateway implements OrderGateway {
 
     private final OrderRepository orderRepository;
+    private final OrderProductRepository orderProductRepository;
     private final ProductRepository productRepository;
 
-    public OrderJpaGateway(OrderRepository orderRepository, ProductRepository productRepository) {
+    public OrderJpaGateway(OrderRepository orderRepository,
+                           OrderProductRepository orderProductRepository,
+                           ProductRepository productRepository) {
         this.orderRepository = orderRepository;
+        this.orderProductRepository = orderProductRepository;
         this.productRepository = productRepository;
     }
 
     @Override
     public Order create(final Order order) {
+        final var orderJpa = OrderJpaMapper.toJpa(order);
         final var products = createMapOfProductsById(order);
-        final var orderProducts = OrderJpaMapper.toJpa(order.getOrderProducts(), order, products);
+        final var orderProducts = OrderJpaMapper.toJpa(order.getOrderProducts(), orderJpa, products);
+        orderJpa.setOrderProducts(orderProducts);
 
-        return OrderJpaMapper.fromJpa(this.orderRepository.save(OrderJpaMapper.toJpa(order, orderProducts)));
+        return OrderJpaMapper.fromJpa(orderRepository.save(orderJpa));
     }
 
     @Override
