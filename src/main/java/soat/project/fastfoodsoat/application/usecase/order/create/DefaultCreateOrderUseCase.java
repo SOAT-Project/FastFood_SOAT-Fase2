@@ -30,25 +30,30 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
 
     @Override
     public CreateOrderOutput execute(final CreateOrderCommand command) {
-        System.out.println("CreateOrderCommand: " + command);
         final var notification = Notification.create();
+        System.out.println("CreateOrderCommand: " + command);
 
         final var clientId = command.clientId();
         final var orderProducts = command.orderProducts();
         final var orderNumber = orderGateway.findLastOrderNumber() + 1;
+
+        if (orderProducts.isEmpty()) {
+            throw new NotificationException("Order must have at least one product", notification);
+        }
+
         final var products = productGateway.findByIds(
                 orderProducts.stream()
                         .map(CreateOrderProductCommand::productId)
                         .toList()
         );
 
-        final var orderProductDomains = notification.validate(() ->
+        final var orderProductDomains =
                 orderProducts.stream()
                         .map(orderProduct -> {
                             final var product = products.stream()
                                     .filter(p -> p.getId().getValue().equals(orderProduct.productId()))
                                     .findFirst()
-                                    .orElseThrow(() -> NotFoundException.with(Product.class, new ProductId(orderProduct.productId())));
+                                    .orElseThrow(() ->  NotFoundException.with(Product.class, new ProductId(orderProduct.productId())));
 
                             return OrderProduct.newOrderProduct(
                                     product.getValue(),
@@ -56,19 +61,19 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
                                     product
                             );
                         })
-                        .toList()
-        );
+                        .toList();
 
         final var order = notification.validate(() ->
                 Order.newOrder(
                         orderNumber,
                         OrderStatus.RECEIVED,
+                        null,
                         orderProductDomains
                 )
         );
 
         if (notification.hasError()) {
-            throw new NotificationException("could not create product", notification);
+            throw new NotificationException("could not create order", notification);
         }
 
         return CreateOrderOutput.from(this.orderGateway.create(order));

@@ -7,7 +7,7 @@ public record CreateOrderResponse(
         @JsonProperty("value") String value,
         @JsonProperty("order_number") Integer orderNumber,
         @JsonProperty("status") String status,
-        @JsonProperty("order_products") CreateOrderProductResponse[] orderProducts,
+        @JsonProperty("products") CreateOrderProductResponse[] orderProducts,
         @JsonProperty("created_at") String createdAt,
         @JsonProperty("updated_at") String updatedAt
 ) {
