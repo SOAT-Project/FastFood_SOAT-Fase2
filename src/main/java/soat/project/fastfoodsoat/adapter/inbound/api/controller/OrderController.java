@@ -1,5 +1,6 @@
 package soat.project.fastfoodsoat.adapter.inbound.api.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import soat.project.fastfoodsoat.adapter.inbound.api.OrderAPI;
@@ -30,7 +31,6 @@ public class OrderController implements OrderAPI {
         );
 
         final var output = this.createOrderUseCase.execute(command);
-
-        return ResponseEntity.ok(OrderPresenter.present(output));
+        return ResponseEntity.status(HttpStatus.CREATED).body(OrderPresenter.present(output));
     }
 }

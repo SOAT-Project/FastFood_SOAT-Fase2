@@ -39,6 +39,11 @@ public interface OrderAPI {
                             content = @Content(schema = @Schema(implementation = DefaultApiError.class))
                     ),
                     @ApiResponse(
+                            responseCode = "404",
+                            description = "An entity was not found",
+                            content = @Content(schema = @Schema(implementation = DefaultApiError.class))
+                    ),
+                    @ApiResponse(
                             responseCode = "500",
                             description = "An internal server error was thrown",
                             content = @Content(schema = @Schema(implementation = DefaultApiError.class))
