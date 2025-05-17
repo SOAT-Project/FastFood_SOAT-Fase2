@@ -14,6 +14,8 @@ import soat.project.fastfoodsoat.domain.product.ProductId;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -32,32 +34,32 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
 
     @Override
     public CreateOrderOutput execute(final CreateOrderCommand command) {
-        final var notification = Notification.create();
+        final Notification notification = Notification.create();
         System.out.println("CreateOrderCommand: " + command);
 
-        final var clientId = command.clientId();
-        final var orderProducts = command.orderProducts();
-        final var orderNumber = orderGateway.findLastOrderNumber() + 1;
+        final Optional<Integer> clientId = command.clientId();
+        final List<CreateOrderProductCommand> orderProducts = command.orderProducts();
+        final Integer orderNumber = orderGateway.findLastOrderNumber() + 1;
 
         if (orderProducts.isEmpty()) {
             throw new NotificationException("Order must have at least one product", notification);
         }
 
-        final var products = productGateway.findByIds(
+        final List<Product> products = productGateway.findByIds(
                 orderProducts.stream()
                         .map(CreateOrderProductCommand::productId)
                         .toList()
         );
 
-        final var orderProductDomains =
+        final List<OrderProduct> orderProductDomains =
                 orderProducts.stream()
                         .map(orderProduct -> {
-                            final var product = products.stream()
+                            final Product product = products.stream()
                                     .filter(p -> p.getId().getValue().equals(orderProduct.productId()))
                                     .findFirst()
                                     .orElseThrow(() ->  NotFoundException.with(Product.class, new ProductId(orderProduct.productId())));
 
-                            final var orderProductValue = product.getValue()
+                            final BigDecimal orderProductValue = product.getValue()
                                     .multiply(BigDecimal.valueOf(orderProduct.quantity()));
 
                             return OrderProduct.newOrderProduct(
@@ -68,7 +70,7 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
                         })
                         .toList();
 
-        final var order = notification.validate(() ->
+        final Order order = notification.validate(() ->
                 Order.newOrder(
                         orderNumber,
                         OrderStatus.RECEIVED,

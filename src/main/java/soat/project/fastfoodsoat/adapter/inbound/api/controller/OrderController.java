@@ -8,6 +8,7 @@ import soat.project.fastfoodsoat.adapter.inbound.api.model.request.CreateOrderRe
 import soat.project.fastfoodsoat.adapter.inbound.api.model.response.CreateOrderResponse;
 import soat.project.fastfoodsoat.adapter.inbound.api.presenter.OrderPresenter;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderCommand;
+import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderOutput;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderProductCommand;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderUseCase;
 
@@ -22,7 +23,7 @@ public class OrderController implements OrderAPI {
 
     @Override
     public ResponseEntity<CreateOrderResponse> create(final CreateOrderRequest createOrderRequest) {
-        final var command = new CreateOrderCommand(
+        final CreateOrderCommand command = new CreateOrderCommand(
                 createOrderRequest.clientId(),
                 createOrderRequest.orderProducts()
                         .stream()
@@ -30,7 +31,7 @@ public class OrderController implements OrderAPI {
                         .toList()
         );
 
-        final var output = this.createOrderUseCase.execute(command);
+        final CreateOrderOutput output = this.createOrderUseCase.execute(command);
         return ResponseEntity.status(HttpStatus.CREATED).body(OrderPresenter.present(output));
     }
 }

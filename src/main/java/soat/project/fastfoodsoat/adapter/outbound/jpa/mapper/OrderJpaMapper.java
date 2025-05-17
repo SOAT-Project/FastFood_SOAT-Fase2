@@ -64,7 +64,7 @@ public final class OrderJpaMapper {
     public static OrderJpaEntity toJpa(final Order order, final Map<Integer, ProductJpaEntity> productsJpaMap) {
         if (Objects.isNull(order)) return new OrderJpaEntity();
 
-        final var orderJpa = new OrderJpaEntity(
+        final OrderJpaEntity orderJpa = new OrderJpaEntity(
                 Objects.isNull(order.getId()) ? null : order.getId().getValue(),
                 Objects.isNull(order.getPublicId()) ? null : order.getPublicId().getValue(),
                 order.getValue(),
@@ -76,7 +76,7 @@ public final class OrderJpaMapper {
                 order.getDeletedAt()
         );
 
-        final var orderProducts = toJpa(order.getOrderProducts(), orderJpa, productsJpaMap);
+        final List<OrderProductJpaEntity> orderProducts = toJpa(order.getOrderProducts(), orderJpa, productsJpaMap);
         orderJpa.setOrderProducts(orderProducts);
 
         return orderJpa;

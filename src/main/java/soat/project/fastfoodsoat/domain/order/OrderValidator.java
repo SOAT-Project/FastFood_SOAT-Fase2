@@ -24,7 +24,7 @@ public class OrderValidator extends Validator {
     }
 
     private void checkValueConstraints() {
-        final var value = this.order.getValue();
+        final BigDecimal value = this.order.getValue();
         if (Objects.isNull(value)) {
             this.validationHandler().append(new DomainError("'value' should not be null"));
             return;
@@ -36,7 +36,7 @@ public class OrderValidator extends Validator {
     }
 
     private void checkOrderNumberConstraints() {
-        final var orderNumber = this.order.getOrderNumber();
+        final Integer orderNumber = this.order.getOrderNumber();
         if (Objects.isNull(orderNumber)) {
             this.validationHandler().append(new DomainError("'orderNumber' should not be null"));
             return;
@@ -48,7 +48,7 @@ public class OrderValidator extends Validator {
     }
 
     private void checkOrderStatusConstraints() {
-        final var status = this.order.getStatus();
+        final OrderStatus status = this.order.getStatus();
         if (Objects.isNull(status)) {
             this.validationHandler().append(new DomainError("'status' should not be null"));
         }

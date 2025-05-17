@@ -1,5 +1,6 @@
 package soat.project.fastfoodsoat.domain.order.orderproduct;
 
+import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.validation.DomainError;
 import soat.project.fastfoodsoat.domain.validation.ValidationHandler;
 import soat.project.fastfoodsoat.domain.validation.Validator;
@@ -24,14 +25,14 @@ public class OrderProductValidator extends Validator {
     }
 
     private void checkProductConstraints() {
-        final var product = this.orderProduct.getProduct();
+        final Product product = this.orderProduct.getProduct();
         if (Objects.isNull(product)) {
             this.validationHandler().append(new DomainError("'product' should not be null"));
         }
     }
 
     private void checkValueConstraints() {
-        final var value = this.orderProduct.getValue();
+        final BigDecimal value = this.orderProduct.getValue();
         if ((Objects.isNull(value))) {
             this.validationHandler().append(new DomainError("'value' should not be null"));
             return;
@@ -43,7 +44,7 @@ public class OrderProductValidator extends Validator {
     }
 
     private void checkQuantityConstraints() {
-        final var quantity = this.orderProduct.getQuantity();
+        final Integer quantity = this.orderProduct.getQuantity();
         if ((Objects.isNull(quantity))) {
             this.validationHandler().append(new DomainError("'quantity' should not be null"));
             return;

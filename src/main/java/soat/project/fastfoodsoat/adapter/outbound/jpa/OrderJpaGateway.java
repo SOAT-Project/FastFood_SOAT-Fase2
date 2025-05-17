@@ -1,6 +1,7 @@
 package soat.project.fastfoodsoat.adapter.outbound.jpa;
 
 import org.springframework.stereotype.Component;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.OrderJpaMapper;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderRepository;
@@ -30,9 +31,10 @@ public class OrderJpaGateway implements OrderGateway {
 
     @Override
     public Order create(final Order order) {
-        final var products = createMapOfProductsById(order);
+        final Map<Integer, ProductJpaEntity> products = createMapOfProductsById(order);
+        final OrderJpaEntity orderJpa = OrderJpaMapper.toJpa(order, products);
 
-        return OrderJpaMapper.fromJpa(orderRepository.save(OrderJpaMapper.toJpa(order, products)));
+        return OrderJpaMapper.fromJpa(orderRepository.save(orderJpa));
     }
 
     @Override
