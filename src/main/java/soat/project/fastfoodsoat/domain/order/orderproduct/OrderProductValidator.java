@@ -20,6 +20,14 @@ public class OrderProductValidator extends Validator {
     public void validate() {
         checkValueConstraints();
         checkQuantityConstraints();
+        checkProductConstraints();
+    }
+
+    private void checkProductConstraints() {
+        final var product = this.orderProduct.getProduct();
+        if (Objects.isNull(product)) {
+            this.validationHandler().append(new DomainError("'product' should not be null"));
+        }
     }
 
     private void checkValueConstraints() {
