@@ -61,8 +61,29 @@ public final class OrderJpaMapper {
         );
     }
 
+    public static OrderJpaEntity toJpa(final Order order, final Map<Integer, ProductJpaEntity> productsJpaMap) {
+        if (Objects.isNull(order)) return new OrderJpaEntity();
+
+        final var orderJpa = new OrderJpaEntity(
+                Objects.isNull(order.getId()) ? null : order.getId().getValue(),
+                Objects.isNull(order.getPublicId()) ? null : order.getPublicId().getValue(),
+                order.getValue(),
+                order.getOrderNumber(),
+                order.getStatus().toString(),
+                null,
+                order.getCreatedAt(),
+                order.getUpdatedAt(),
+                order.getDeletedAt()
+        );
+
+        final var orderProducts = toJpa(order.getOrderProducts(), orderJpa, productsJpaMap);
+        orderJpa.setOrderProducts(orderProducts);
+
+        return orderJpa;
+    }
+
     public static List<OrderProductJpaEntity> toJpa(final List<OrderProduct> orderProducts, final OrderJpaEntity orderJpa, final Map<Integer, ProductJpaEntity> productsJpaMap) {
-        final var test = orderProducts.stream()
+        return orderProducts.stream()
                 .filter(Objects::nonNull)
                 .map(orderProduct ->
                     {
@@ -81,7 +102,5 @@ public final class OrderJpaMapper {
                     }
                 )
                 .toList();
-
-        return test;
     }
 }

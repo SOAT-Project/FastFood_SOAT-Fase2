@@ -38,22 +38,28 @@ public class Order extends AggregateRoot<OrderId> {
                 deletedAt
         );
         this.publicId = publicId;
-        this.value = value;
         this.orderNumber = orderNumber;
         this.status = status;
-        this.orderProducts.addAll(orderProducts);
+        if (orderProducts != null) this.orderProducts.addAll(orderProducts);
+
+        if (value != null) {
+            this.value = value;
+        } else {
+            this.value = calculateValue(orderProducts);
+        }
+
         this.selfValidation();
     }
 
     public static Order newOrder(
             final Integer orderNumber,
             final OrderStatus status,
+            final BigDecimal value,
             final List<OrderProduct> orderProducts
     ) {
         final OrderId orderId = null;
         final OrderPublicId publicId = null;
         final Instant now = Instant.now();
-        final BigDecimal value = calculateValue(orderProducts);
         return new Order(
                 orderId,
                 publicId,
@@ -152,6 +158,8 @@ public class Order extends AggregateRoot<OrderId> {
     }
 
     private static BigDecimal calculateValue(final List<OrderProduct> orderProducts) {
+        if (orderProducts == null || orderProducts.isEmpty()) return null;
+
         return orderProducts.stream()
                 .map(orderProduct -> orderProduct.getValue().multiply(BigDecimal.valueOf(orderProduct.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
