@@ -13,6 +13,8 @@ import soat.project.fastfoodsoat.domain.product.ProductGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
 
+import java.math.BigDecimal;
+
 import static java.util.Objects.requireNonNull;
 
 @Transactional
@@ -55,8 +57,11 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
                                     .findFirst()
                                     .orElseThrow(() ->  NotFoundException.with(Product.class, new ProductId(orderProduct.productId())));
 
+                            final var orderProductValue = product.getValue()
+                                    .multiply(BigDecimal.valueOf(orderProduct.quantity()));
+
                             return OrderProduct.newOrderProduct(
-                                    product.getValue(),
+                                    orderProductValue,
                                     orderProduct.quantity(),
                                     product
                             );

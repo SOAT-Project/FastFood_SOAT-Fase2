@@ -161,7 +161,7 @@ public class Order extends AggregateRoot<OrderId> {
         if (orderProducts == null || orderProducts.isEmpty()) return null;
 
         return orderProducts.stream()
-                .map(orderProduct -> orderProduct.getValue().multiply(BigDecimal.valueOf(orderProduct.getQuantity())))
+                .map(OrderProduct::getValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }
