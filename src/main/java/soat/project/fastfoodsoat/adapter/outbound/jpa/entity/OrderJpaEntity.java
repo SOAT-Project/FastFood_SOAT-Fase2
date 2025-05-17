@@ -138,8 +138,5 @@ public class OrderJpaEntity {
         if (orderProducts == null) return;
 
         this.orderProducts = orderProducts;
-        for (OrderProductJpaEntity orderProduct : orderProducts) {
-            orderProduct.setOrder(this);
-        }
     }
 }
