@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.ProductMapper;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductRepository;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
@@ -43,7 +44,7 @@ public class ProductJpaGateway implements ProductGateway {
     public Optional<Product> findById(final ProductId productId) {
         return this.productRepository
                 .findById(productId.getValue())
-                .map(ProductJpaEntity::toDomain);
+                .map(ProductMapper::toDomain);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class ProductJpaGateway implements ProductGateway {
                 pageResult.getNumber(),
                 pageResult.getSize(),
                 pageResult.getTotalElements(),
-                pageResult.map(ProductJpaEntity::toDomain).toList()
+                pageResult.map(ProductMapper::toDomain).toList()
         );
 
     }
@@ -88,7 +89,8 @@ public class ProductJpaGateway implements ProductGateway {
     }
 
     private Product save(final Product product){
-        return this.productRepository.save(ProductJpaEntity.fromDomain(product)).toDomain();
+        final var saveProduct = productRepository.save(ProductMapper.fromDomain(product));
+        return ProductMapper.toDomain(saveProduct);
     }
 
     private Specification<ProductJpaEntity> assembleSpecification(final String str) {

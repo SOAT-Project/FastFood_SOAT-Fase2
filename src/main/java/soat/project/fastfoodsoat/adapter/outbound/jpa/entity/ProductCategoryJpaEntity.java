@@ -40,16 +40,6 @@ public class ProductCategoryJpaEntity {
         this.deletedAt = deletedAt;
     }
 
-    public ProductCategory toDomain() {
-        return ProductCategory.with(
-                ProductCategoryId.of(this.id),
-                this.name,
-                this.createdAt,
-                this.updatedAt,
-                this.deletedAt
-        );
-    }
-
     public ProductCategoryJpaEntity() {
     }
 

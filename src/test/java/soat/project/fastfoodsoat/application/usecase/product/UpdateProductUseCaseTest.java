@@ -37,18 +37,24 @@ class UpdateProductUseCaseTest extends UseCaseTest {
     void givenValidCommand_whenUpdateProduct_thenShouldReturnUpdatedProduct() {
         final var id = 1;
         final var productCategoryId = 10;
+        final var productId = ProductId.of(id);
+        final var productCategory = ProductCategoryId.of(productCategoryId);
         final var product = mock(Product.class);
         final var command = new UpdateProductCommand(id, "Updated", "Description", BigDecimal.TEN, "img.png", productCategoryId);
 
-        when(productGateway.findById(ProductId.of(id))).thenReturn(Optional.of(product));
+        when(product.getId()).thenReturn(productId);
+        when(product.getProductCategoryId()).thenReturn(productCategory);
+        when(productGateway.findById(productId)).thenReturn(Optional.of(product));
         when(productGateway.update(product)).thenReturn(product);
 
         final var output = useCase.execute(command);
 
         assertNotNull(output);
-        verify(product).update("Updated", "Description", BigDecimal.TEN, "img.png", ProductCategoryId.of(productCategoryId));
+        verify(product).update("Updated", "Description", BigDecimal.TEN, "img.png", productCategory);
         verify(productGateway).update(product);
     }
+
+
 
     @Test
     void givenInvalidId_whenUpdateProduct_thenShouldThrowNotFound() {

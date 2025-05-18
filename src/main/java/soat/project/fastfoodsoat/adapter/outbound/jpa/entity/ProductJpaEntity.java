@@ -74,35 +74,6 @@ public class ProductJpaEntity {
 
     }
 
-    public static ProductJpaEntity fromDomain(final Product product){
-        final Integer id = product.getId() != null ? product.getId().getValue() : null;
-        return new ProductJpaEntity(
-                id,
-                product.getName(),
-                product.getDescription(),
-                product.getValue(),
-                product.getImageURL(),
-                product.getProductCategoryId(),
-                product.getCreatedAt(),
-                product.getUpdatedAt(),
-                product.getDeletedAt()
-        );
-    }
-
-    public Product toDomain() {
-        return Product.with(
-                ProductId.of(this.id),
-                this.name,
-                this.description,
-                this.value,
-                this.imageURL,
-                ProductCategoryId.of(this.productCategoryId),
-                this.createdAt,
-                this.updatedAt,
-                this.deletedAt
-        );
-    }
-
     public Integer getId() {
         return id;
     }
