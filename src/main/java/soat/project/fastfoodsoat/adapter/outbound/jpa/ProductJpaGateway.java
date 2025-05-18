@@ -54,7 +54,7 @@ public class ProductJpaGateway implements ProductGateway {
             criteriaQuery.distinct(true);
             return root.get("id").in(productIds);
         })).stream()
-                .map(ProductJpaEntity::toDomain)
+                .map(ProductMapper::toDomain)
                 .toList();
     }
 

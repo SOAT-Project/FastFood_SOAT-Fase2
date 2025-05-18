@@ -102,8 +102,8 @@ public class OrderProductJpaEntity {
         this.deletedAt = deletedAt;
     }
 
-    public Product getProduct() {
-        return product.toDomain();
+    public ProductJpaEntity getProduct() {
+        return product;
     }
 
     public void setOrder(OrderJpaEntity orderJpaEntity) {

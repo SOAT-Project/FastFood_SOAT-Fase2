@@ -33,7 +33,7 @@ public final class OrderJpaMapper {
                                 OrderProductId.of(orderProduct.getId()),
                                 orderProduct.getValue(),
                                 orderProduct.getQuantity(),
-                                orderProduct.getProduct(),
+                                ProductMapper.toDomain(orderProduct.getProduct()),
                                 orderProduct.getCreatedAt(),
                                 orderProduct.getUpdatedAt(),
                                 orderProduct.getDeletedAt()
