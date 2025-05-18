@@ -18,6 +18,7 @@ import soat.project.fastfoodsoat.adapter.inbound.api.model.*;
 public interface ClientAPI {
 
     @PostMapping(
+            value = "/identify",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
