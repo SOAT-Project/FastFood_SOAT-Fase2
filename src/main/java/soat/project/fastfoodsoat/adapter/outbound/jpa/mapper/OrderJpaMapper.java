@@ -29,16 +29,9 @@ public final class OrderJpaMapper {
                 OrderStatus.valueOf(orderJpa.getStatus()),
                 orderJpa.getOrderProducts().stream()
                         .filter(Objects::nonNull)
-                        .map(orderProduct -> OrderProduct.with(
-                                OrderProductId.of(orderProduct.getId()),
-                                orderProduct.getValue(),
-                                orderProduct.getQuantity(),
-                                ProductMapper.toDomain(orderProduct.getProduct()),
-                                orderProduct.getCreatedAt(),
-                                orderProduct.getUpdatedAt(),
-                                orderProduct.getDeletedAt()
-                        ))
+                        .map(OrderProductJpaMapper::fromJpa)
                         .toList(),
+                PaymentJpaMapper.fromJpa(orderJpa.getPayment()),
                 orderJpa.getCreatedAt(),
                 orderJpa.getUpdatedAt(),
                 orderJpa.getDeletedAt()
@@ -76,31 +69,11 @@ public final class OrderJpaMapper {
                 order.getDeletedAt()
         );
 
-        final List<OrderProductJpaEntity> orderProducts = toJpa(order.getOrderProducts(), orderJpa, productsJpaMap);
+        final List<OrderProductJpaEntity> orderProducts = OrderProductJpaMapper.toJpa(order.getOrderProducts(), orderJpa, productsJpaMap);
         orderJpa.setOrderProducts(orderProducts);
 
         return orderJpa;
     }
 
-    public static List<OrderProductJpaEntity> toJpa(final List<OrderProduct> orderProducts, final OrderJpaEntity orderJpa, final Map<Integer, ProductJpaEntity> productsJpaMap) {
-        return orderProducts.stream()
-                .filter(Objects::nonNull)
-                .map(orderProduct ->
-                    {
-                        ProductJpaEntity productJpaEntity = productsJpaMap.get(orderProduct.getProduct().getId().getValue());
 
-                        return new OrderProductJpaEntity(
-                                Objects.isNull(orderProduct.getId()) ? null : orderProduct.getId().getValue(),
-                                orderProduct.getValue(),
-                                orderProduct.getQuantity(),
-                                orderJpa,
-                                productJpaEntity,
-                                orderProduct.getCreatedAt(),
-                                orderProduct.getUpdatedAt(),
-                                orderProduct.getDeletedAt()
-                        );
-                    }
-                )
-                .toList();
-    }
 }
