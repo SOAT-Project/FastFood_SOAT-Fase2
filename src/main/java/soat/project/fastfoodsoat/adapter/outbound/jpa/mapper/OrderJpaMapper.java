@@ -31,7 +31,6 @@ public final class OrderJpaMapper {
                         .filter(Objects::nonNull)
                         .map(OrderProductJpaMapper::fromJpa)
                         .toList(),
-                PaymentJpaMapper.fromJpa(orderJpa.getPayment()),
                 orderJpa.getCreatedAt(),
                 orderJpa.getUpdatedAt(),
                 orderJpa.getDeletedAt()

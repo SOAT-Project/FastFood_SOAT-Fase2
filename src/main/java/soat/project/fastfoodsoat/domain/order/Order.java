@@ -157,7 +157,7 @@ public class Order extends AggregateRoot<OrderId> {
         return publicId;
     }
 
-    private static BigDecimal calculateValue(final List<OrderProduct> orderProducts) {
+    public static BigDecimal calculateValue(final List<OrderProduct> orderProducts) {
         if (orderProducts == null || orderProducts.isEmpty()) return null;
 
         return orderProducts.stream()
