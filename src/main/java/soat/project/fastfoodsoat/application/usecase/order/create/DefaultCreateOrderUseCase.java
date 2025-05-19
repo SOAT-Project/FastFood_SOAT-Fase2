@@ -80,7 +80,7 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
                         OrderPublicId.of(publicId),
                         orderNumber,
                         OrderStatus.RECEIVED,
-                        null,
+                        value,
                         orderProductDomains
                 )
         );
