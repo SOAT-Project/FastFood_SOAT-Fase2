@@ -52,13 +52,13 @@ public class Order extends AggregateRoot<OrderId> {
     }
 
     public static Order newOrder(
+            final OrderPublicId publicId,
             final Integer orderNumber,
             final OrderStatus status,
             final BigDecimal value,
             final List<OrderProduct> orderProducts
     ) {
         final OrderId orderId = null;
-        final OrderPublicId publicId = null;
         final Instant now = Instant.now();
         return new Order(
                 orderId,

@@ -6,6 +6,7 @@ import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderGateway;
+import soat.project.fastfoodsoat.domain.order.OrderPublicId;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.order.orderproduct.OrderProduct;
 import soat.project.fastfoodsoat.domain.product.Product;
@@ -16,6 +17,7 @@ import soat.project.fastfoodsoat.domain.validation.handler.Notification;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
@@ -39,7 +41,6 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
 
         final Optional<Integer> clientId = command.clientId();
         final List<CreateOrderProductCommand> orderProducts = command.orderProducts();
-        final Integer orderNumber = orderGateway.findLastOrderNumber() + 1;
 
         if (orderProducts.isEmpty()) {
             throw new NotificationException("Order must have at least one product", notification);
@@ -70,8 +71,13 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
                         })
                         .toList();
 
+        final BigDecimal value = Order.calculateValue(orderProductDomains);
+        final Integer orderNumber = orderGateway.findLastOrderNumber() + 1;
+        final UUID publicId = UUID.randomUUID();
+
         final Order order = notification.validate(() ->
                 Order.newOrder(
+                        OrderPublicId.of(publicId),
                         orderNumber,
                         OrderStatus.RECEIVED,
                         null,
@@ -83,6 +89,8 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
             throw new NotificationException("could not create order", notification);
         }
 
-        return CreateOrderOutput.from(this.orderGateway.create(order));
+        final Order createdOrder = orderGateway.create(order);
+
+        return CreateOrderOutput.from(createdOrder);
     }
 }

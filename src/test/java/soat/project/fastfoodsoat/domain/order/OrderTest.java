@@ -7,8 +7,8 @@ import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +22,7 @@ class OrderTest {
         final var imageURL = "img";
         final var categoryId = ProductCategoryId.of(1);
         final var quantity = 1;
-
+        final var publicId = OrderPublicId.of(UUID.randomUUID());
         final var product = Product.newProduct(name, description, value, imageURL, categoryId);
         final var orderProduct = List.of(OrderProduct.newOrderProduct(value, quantity, product));
 
@@ -30,12 +30,12 @@ class OrderTest {
         final var orderNumber = 1;
         final var status = OrderStatus.RECEIVED;
 
-        final var order = Order.newOrder(orderNumber, status, null, orderProduct);
+        final var order = Order.newOrder(publicId, orderNumber, status, null, orderProduct, null);
 
 
         assertNotNull(order);
         assertNull(order.getId());
-        assertNull(order.getPublicId());
+        assertNotNull(order.getPublicId());
         assertEquals(orderNumber, order.getOrderNumber());
         assertEquals(status, order.getStatus());
         assertEquals(orderProduct, order.getOrderProducts());
@@ -51,13 +51,14 @@ class OrderTest {
         final var value = BigDecimal.valueOf(25.00);
         final var orderNumber = 1;
         final var status = OrderStatus.RECEIVED;
+        final var publicId = OrderPublicId.of(UUID.randomUUID());
 
-        final var order = Order.newOrder(orderNumber, status, value, null);
+        final var order = Order.newOrder(publicId, orderNumber, status, value, null, null);
 
 
         assertNotNull(order);
         assertNull(order.getId());
-        assertNull(order.getPublicId());
+        assertNotNull(order.getPublicId());
         assertEquals(orderNumber, order.getOrderNumber());
         assertEquals(status, order.getStatus());
         assertEquals(value, order.getValue());
@@ -70,9 +71,10 @@ class OrderTest {
     void givenEmptyOrderProductsAndNullValue_whenCreateOrder_thenThrowsNotificationException() {
         final var orderNumber = 1;
         final var status = OrderStatus.RECEIVED;
+        final var publicId = OrderPublicId.of(UUID.randomUUID());
 
         final var exception = assertThrows(NotificationException.class,
-                () -> Order.newOrder(orderNumber, status, null,null));
+                () -> Order.newOrder(publicId, orderNumber, status, null,null, null));
 
         assertEquals(1, exception.getErrors().size());
         assertEquals("'value' should not be null", exception.getErrors().get(0).message());
@@ -82,9 +84,10 @@ class OrderTest {
     void givenEmptyOrderProductsAndZeroValue_whenCreateOrder_thenThrowsNotificationException() {
         final var orderNumber = 1;
         final var status = OrderStatus.RECEIVED;
+        final var publicId = OrderPublicId.of(UUID.randomUUID());
 
         final var exception = assertThrows(NotificationException.class,
-                () -> Order.newOrder(orderNumber, status, BigDecimal.ZERO,null));
+                () -> Order.newOrder(publicId, orderNumber, status, BigDecimal.ZERO,null, null));
 
         assertEquals(1, exception.getErrors().size());
         assertEquals("'value' should be greater than zero", exception.getErrors().get(0).message());
@@ -98,6 +101,7 @@ class OrderTest {
         final var imageURL = "img";
         final var categoryId = ProductCategoryId.of(1);
         final var quantity = 1;
+        final var publicId = OrderPublicId.of(UUID.randomUUID());
 
         final var product = Product.newProduct(name, description, value, imageURL, categoryId);
         final var orderProduct = List.of(OrderProduct.newOrderProduct(value, quantity, product));
@@ -105,7 +109,7 @@ class OrderTest {
         final var status = OrderStatus.RECEIVED;
 
         final var exception = assertThrows(NotificationException.class,
-                () -> Order.newOrder(null, status, null, orderProduct));
+                () -> Order.newOrder(publicId, null, status, null, orderProduct, null));
 
         assertEquals(1, exception.getErrors().size());
         assertEquals("'orderNumber' should not be null", exception.getErrors().get(0).message());
@@ -119,6 +123,7 @@ class OrderTest {
         final var imageURL = "img";
         final var categoryId = ProductCategoryId.of(1);
         final var quantity = 1;
+        final var publicId = OrderPublicId.of(UUID.randomUUID());
 
         final var product = Product.newProduct(name, description, value, imageURL, categoryId);
         final var orderProduct = List.of(OrderProduct.newOrderProduct(value, quantity, product));
@@ -127,7 +132,7 @@ class OrderTest {
         final var orderNumber = 0;
 
         final var exception = assertThrows(NotificationException.class,
-                () -> Order.newOrder(orderNumber, status, null, orderProduct));
+                () -> Order.newOrder(publicId, orderNumber, status, null, orderProduct, null));
 
         assertEquals(1, exception.getErrors().size());
         assertEquals("'orderNumber' should be greater than zero", exception.getErrors().get(0).message());
@@ -141,6 +146,7 @@ class OrderTest {
         final var imageURL = "img";
         final var categoryId = ProductCategoryId.of(1);
         final var quantity = 1;
+        final var publicId = OrderPublicId.of(UUID.randomUUID());
 
         final var product = Product.newProduct(name, description, value, imageURL, categoryId);
         final var orderProduct = List.of(OrderProduct.newOrderProduct(value, quantity, product));
@@ -148,7 +154,7 @@ class OrderTest {
         final var orderNumber = 1;
 
         final var exception = assertThrows(NotificationException.class,
-                () -> Order.newOrder(orderNumber, null, null, orderProduct));
+                () -> Order.newOrder(publicId, orderNumber, null, null, orderProduct, null));
 
         assertEquals(1, exception.getErrors().size());
         assertEquals("'status' should not be null", exception.getErrors().get(0).message());

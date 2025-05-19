@@ -123,13 +123,6 @@ public class OrderJpaEntity {
         this.deletedAt = deletedAt;
     }
 
-    @PrePersist
-    private void generatePublicId() {
-        if (this.publicId == null) {
-            this.publicId = UUID.randomUUID();
-        }
-    }
-
     public List<OrderProductJpaEntity> getOrderProducts() {
         return orderProducts;
     }
