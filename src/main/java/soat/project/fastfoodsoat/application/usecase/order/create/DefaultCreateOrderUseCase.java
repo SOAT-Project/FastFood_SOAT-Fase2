@@ -9,6 +9,8 @@ import soat.project.fastfoodsoat.domain.order.OrderGateway;
 import soat.project.fastfoodsoat.domain.order.OrderPublicId;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.order.orderproduct.OrderProduct;
+import soat.project.fastfoodsoat.domain.payment.Payment;
+import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
 import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.product.ProductGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
@@ -75,13 +77,23 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
         final Integer orderNumber = orderGateway.findLastOrderNumber() + 1;
         final UUID publicId = UUID.randomUUID();
 
+        final Payment payment = notification.validate(() ->
+                Payment.newPayment(
+                        value,
+                        null,
+                        null,
+                        PaymentStatus.PENDING
+                )
+        );
+
         final Order order = notification.validate(() ->
                 Order.newOrder(
                         OrderPublicId.of(publicId),
                         orderNumber,
                         OrderStatus.RECEIVED,
                         value,
-                        orderProductDomains
+                        orderProductDomains,
+                        null
                 )
         );
 
