@@ -34,6 +34,9 @@ public class OrderJpaEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
     private List<OrderProductJpaEntity> orderProducts;
 
+    @OneToOne
+    private PaymentJpaEntity payment;
+
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
     private Instant createdAt;
@@ -131,5 +134,9 @@ public class OrderJpaEntity {
         if (orderProducts == null) return;
 
         this.orderProducts = orderProducts;
+    }
+
+    public PaymentJpaEntity getPayment() {
+        return payment;
     }
 }
