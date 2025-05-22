@@ -1,12 +1,16 @@
 package soat.project.fastfoodsoat.adapter.outbound.jpa;
 
+import org.springframework.stereotype.Component;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.PaymentJpaEntity;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.PaymentJpaMapper;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.PaymentRepository;
-import soat.project.fastfoodsoat.domain.order.OrderId;
 import soat.project.fastfoodsoat.domain.payment.Payment;
 import soat.project.fastfoodsoat.domain.payment.PaymentGateway;
 
+import java.util.Optional;
 import java.util.UUID;
 
+@Component
 public class PaymentJpaGateway implements PaymentGateway {
 
     private final PaymentRepository paymentRepository;
@@ -17,21 +21,24 @@ public class PaymentJpaGateway implements PaymentGateway {
 
     @Override
     public Payment create(Payment payment) {
-        return null;
+        return save(payment);
     }
 
     @Override
-    public Payment findByExternalReference(UUID externalReference) {
-        return null;
+    public Payment update(Payment payment) {
+        return save(payment);
     }
 
     @Override
-    public Payment findById(OrderId orderId) {
-        return null;
+    public Optional<Payment> findByOrderPublicId(UUID orderPublicId) {
+        return paymentRepository
+                .findByOrderId(orderPublicId)
+                .map(PaymentJpaMapper::fromJpa);
     }
 
-    @Override
-    public void update(Payment payment) {
+    private Payment save(Payment payment) {
+        final PaymentJpaEntity paymentJpa = PaymentJpaMapper.toJpa(payment);
 
+        return PaymentJpaMapper.fromJpa(paymentRepository.save(paymentJpa));
     }
 }

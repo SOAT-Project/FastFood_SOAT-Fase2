@@ -20,8 +20,8 @@ public class PaymentJpaEntity {
     @Column(name = "value")
     private BigDecimal value;
 
-    @Column(name = "external_reference", nullable = false, columnDefinition = "uuid")
-    private UUID externalReference;
+    @Column(name = "external_reference")
+    private String externalReference;
 
     @Column(name = "qr_code")
     private String qrCode;
@@ -29,6 +29,10 @@ public class PaymentJpaEntity {
     @Column(name = "status")
     @ColumnTransformer(write="?::payment_status")
     private String status;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "order_id")
+    private OrderJpaEntity order;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")
@@ -43,11 +47,13 @@ public class PaymentJpaEntity {
 
     public PaymentJpaEntity() {}
 
-    public PaymentJpaEntity(BigDecimal value, UUID externalReference, String qrCode, String status, Instant createdAt, Instant updatedAt, Instant deletedAt) {
+    public PaymentJpaEntity(Integer id, BigDecimal value, String externalReference, String qrCode, String status, OrderJpaEntity order, Instant createdAt, Instant updatedAt, Instant deletedAt) {
+        this.id = id;
         this.value = value;
         this.externalReference = externalReference;
         this.qrCode = qrCode;
         this.status = status;
+        this.order = order;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -69,11 +75,11 @@ public class PaymentJpaEntity {
         this.value = value;
     }
 
-    public UUID getExternalReference() {
+    public String getExternalReference() {
         return externalReference;
     }
 
-    public void setExternalReference(UUID externalReference) {
+    public void setExternalReference(String externalReference) {
         this.externalReference = externalReference;
     }
 
@@ -115,5 +121,9 @@ public class PaymentJpaEntity {
 
     public void setDeletedAt(Instant deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public OrderJpaEntity getOrder() {
+        return order;
     }
 }
