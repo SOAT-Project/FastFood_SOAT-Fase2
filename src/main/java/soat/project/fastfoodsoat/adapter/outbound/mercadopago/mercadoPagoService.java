@@ -1,34 +1,81 @@
 package soat.project.fastfoodsoat.adapter.outbound.mercadopago;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
+import org.springframework.web.reactive.function.client.WebClient;
+import soat.project.fastfoodsoat.adapter.outbound.mercadopago.model.CreateDynamicQrCodeResponse;
+import soat.project.fastfoodsoat.domain.order.orderproduct.OrderProduct;
+import soat.project.fastfoodsoat.domain.payment.PaymentService;
+
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-public class mercadoPagoService {
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-    // Implement the methods to interact with Mercado Pago API
-    // For example, you can create a method to process a payment
-    // using the Mercado Pago SDK or REST API.
+@Component
+public class MercadoPagoService implements PaymentService {
 
-    // Example method to process a payment
-    public void processPayment() {
-        // Implement the logic to process a payment using Mercado Pago API
+    private final static String QR_CODE_URL = "https://api.mercadopago.com/instore/orders/qr/seller/collectors/%s/pos/%s/qrs";
+
+    private final String collectorId;
+
+    private final String posId;
+
+    private final String token;
+
+    private final ObjectMapper objectMapper;
+
+    private final WebClient webClient;
+
+    public MercadoPagoService(@Value("${mercadopago.token}") String token,
+                              @Value("${mercadopago.collectorId}") String collectorId,
+                              @Value("${mercadopago.posId}") String posId) {
+        this.token = token;
+        this.collectorId = collectorId;
+        this.posId = posId;
+        this.webClient = WebClient.builder()
+                .baseUrl(QR_CODE_URL.formatted(collectorId, posId))
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .build();
+        this.objectMapper = new ObjectMapper();
     }
 
-    // Método para criar um QR Code dinâmico usando a API do Mercado Pago
-    public String createDynamicQrCode(BigDecimal value, String description) {
-        // Aqui você deve implementar a chamada à API do Mercado Pago para criar um QR dinâmico.
-        // Exemplo de estrutura (substitua pelos detalhes reais da integração):
-        //
-        // 1. Montar o payload com valor, descrição, etc.
-        // 2. Fazer a requisição HTTP (POST) para o endpoint de QR dinâmico do Mercado Pago.
-        // 3. Tratar a resposta e retornar a URL ou o conteúdo do QR Code.
-        //
-        // Este é apenas um esqueleto. Consulte a documentação oficial do Mercado Pago para detalhes:
-        // https://www.mercadopago.com.br/developers/pt/reference/qr-codes-dynamic/_instore_orders_post
-        //
-        // Exemplo fictício:
-        // String qrCodeUrl = ... // chamada à API e obtenção do QR
-        // return qrCodeUrl;
-        return "url_do_qr_code_dinamico";
-    }
+    @Override
+    public String createDynamicQrCode(Integer orderNumber, UUID publicId, BigDecimal value, List<OrderProduct> orderProducts) {
+        try {
+            Map<String, Object> requestBody = Map.of(
+                    "title", "Order " + orderNumber,
+                    "description", "Order " + orderNumber,
+                    "external_reference", publicId.toString(),
+                    "total_amount", value,
+                    "items", orderProducts.stream().map(
+                            orderProduct -> Map.of(
+                                    "title", orderProduct.getProduct().getName(),
+                                    "total_amount", orderProduct.getValue(),
+                                    "quantity", orderProduct.getQuantity(),
+                                    "unit_price", orderProduct.getValue().divide(BigDecimal.valueOf(orderProduct.getQuantity())),
+                                    "unit_measure", "unit"
+                            )
+                    ).toList()
+            );
 
+            String bodyJson = objectMapper.writeValueAsString(requestBody);
+
+            final CreateDynamicQrCodeResponse response = webClient.post()
+                    .contentType(APPLICATION_JSON)
+                    .bodyValue(bodyJson)
+                    .retrieve()
+                    .bodyToMono(CreateDynamicQrCodeResponse.class)
+                    .block();
+
+            return response.getQrCode();
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error converting request body to JSON", e);
+        }
+    }
 }
