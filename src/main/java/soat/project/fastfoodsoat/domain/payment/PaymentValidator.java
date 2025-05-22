@@ -20,8 +20,6 @@ public class PaymentValidator extends Validator {
     @Override
     public void validate() {
         checkValueConstraints();
-        checkExternalReferenceConstraints();
-        checkQRCodeConstraints();
         checkStatusConstraints();
     }
 
@@ -34,20 +32,6 @@ public class PaymentValidator extends Validator {
 
         if (value.compareTo(BigDecimal.ZERO) <= 0) {
             this.validationHandler().append(new DomainError("'value' should be greater than zero"));
-        }
-    }
-
-    private void checkExternalReferenceConstraints() {
-        final UUID externalReference = this.payment.getExternalReference();
-        if (Objects.isNull(externalReference)) {
-            this.validationHandler().append(new DomainError("'externalReference' should not be null"));
-        }
-    }
-
-    private void checkQRCodeConstraints() {
-        final String QRCode = this.payment.getQRCode();
-        if (Objects.isNull(QRCode)) {
-            this.validationHandler().append(new DomainError("'QRCode' should not be null"));
         }
     }
 
