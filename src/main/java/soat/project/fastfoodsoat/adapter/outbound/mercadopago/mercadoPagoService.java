@@ -30,24 +30,23 @@ public class MercadoPagoService implements PaymentService {
 
     private final ObjectMapper objectMapper;
 
-    private final WebClient webClient;
-
     public MercadoPagoService(@Value("${mercadopago.token}") String token,
                               @Value("${mercadopago.collectorId}") String collectorId,
                               @Value("${mercadopago.posId}") String posId) {
         this.token = token;
         this.collectorId = collectorId;
         this.posId = posId;
-        this.webClient = WebClient.builder()
-                .baseUrl(QR_CODE_URL.formatted(collectorId, posId))
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                .build();
         this.objectMapper = new ObjectMapper();
     }
 
     @Override
     public String createDynamicQrCode(Integer orderNumber, UUID publicId, BigDecimal value, List<OrderProduct> orderProducts) {
         try {
+            final WebClient webClient = WebClient.builder()
+                    .baseUrl(QR_CODE_URL.formatted(collectorId, posId))
+                    .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                    .build();
+
             Map<String, Object> requestBody = Map.of(
                     "title", "Order " + orderNumber,
                     "description", "Order " + orderNumber,
@@ -75,7 +74,7 @@ public class MercadoPagoService implements PaymentService {
 
             return response.getQrCode();
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error converting request body to JSON", e);
+            throw new RuntimeException("Error creating QRCode", e);
         }
     }
 }
