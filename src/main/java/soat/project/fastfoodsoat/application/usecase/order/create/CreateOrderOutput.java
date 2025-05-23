@@ -12,9 +12,7 @@ public record CreateOrderOutput(
         Integer orderNumber,
         String status,
         BigDecimal value,
-        String paymentStatus,
-        String paymentExternalReference,
-        String qrCode,
+        CreateOrderPaymentOutput payment,
         List<CreateOrderProductOutput> orderProducts
 ) {
     public static CreateOrderOutput from(
@@ -22,12 +20,10 @@ public record CreateOrderOutput(
             final Integer orderNumber,
             final String status,
             final BigDecimal value,
-            final String paymentStatus,
-            final String paymentExternalReference,
-            final String qrCode,
+            final CreateOrderPaymentOutput payment,
             final List<CreateOrderProductOutput> orderProducts
     ) {
-        return new CreateOrderOutput(publicId, orderNumber, status, value, paymentStatus, paymentExternalReference, qrCode, orderProducts);
+        return new CreateOrderOutput(publicId, orderNumber, status, value, payment, orderProducts);
     }
 
     public static CreateOrderOutput from(final Order order, final Payment payment) {
@@ -36,9 +32,11 @@ public record CreateOrderOutput(
                 order.getOrderNumber(),
                 order.getStatus().toString(),
                 order.getValue(),
-                payment.getStatus().toString(),
-                payment.getExternalReference(),
-                payment.getQrCode(),
+                CreateOrderPaymentOutput.from(
+                        payment.getStatus().toString(),
+                        payment.getExternalReference(),
+                        payment.getQrCode()
+                ),
                 order.getOrderProducts().stream()
                         .map(CreateOrderProductOutput::from)
                         .toList()

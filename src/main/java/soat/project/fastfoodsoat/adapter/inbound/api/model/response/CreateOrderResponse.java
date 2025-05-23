@@ -7,9 +7,7 @@ public record CreateOrderResponse(
         @JsonProperty("order_number") Integer orderNumber,
         @JsonProperty("order_status") String status,
         @JsonProperty("value") String value,
-        @JsonProperty("payment_status") String paymentStatus,
-        @JsonProperty("payment_external_reference") String paymentExternalReference,
-        @JsonProperty("qr_code") String qrCode,
+        @JsonProperty("payment") CreateOrderPaymentResponse payment,
         @JsonProperty("products") CreateOrderProductResponse[] orderProducts
 ) {
 }
