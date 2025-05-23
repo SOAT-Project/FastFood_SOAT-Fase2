@@ -5,6 +5,6 @@ import java.util.UUID;
 
 public interface PaymentGateway {
     Payment create(Payment payment);
-    Optional<Payment> findByOrderPublicId(UUID orderPublicId);
+    Optional<Payment> findByExternalReference(String externalReference);
     Payment update(Payment payment);
 }

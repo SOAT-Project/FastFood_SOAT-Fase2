@@ -30,9 +30,9 @@ public class PaymentJpaGateway implements PaymentGateway {
     }
 
     @Override
-    public Optional<Payment> findByOrderPublicId(UUID orderPublicId) {
+    public Optional<Payment> findByExternalReference(String externalReference) {
         return paymentRepository
-                .findByOrderId(orderPublicId)
+                .findByExternalReference(externalReference)
                 .map(PaymentJpaMapper::fromJpa);
     }
 

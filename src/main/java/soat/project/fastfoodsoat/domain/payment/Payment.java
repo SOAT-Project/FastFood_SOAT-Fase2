@@ -8,7 +8,6 @@ import soat.project.fastfoodsoat.domain.validation.handler.Notification;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.UUID;
 
 public class Payment extends AggregateRoot<PaymentId>  {
 
