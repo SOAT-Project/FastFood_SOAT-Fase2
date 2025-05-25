@@ -31,6 +31,10 @@ public class OrderJpaEntity {
     @ColumnTransformer(write="?::order_status")
     private String status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", nullable = false)
+    private ClientJpaEntity client;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
     private List<OrderProductJpaEntity> orderProducts;
 
@@ -47,7 +51,16 @@ public class OrderJpaEntity {
 
     public OrderJpaEntity() {}
 
-    public OrderJpaEntity(Integer id, UUID publicId, BigDecimal value, Integer orderNumber, String status, List<OrderProductJpaEntity> orderProducts,Instant createdAt, Instant updatedAt, Instant deletedAt) {
+    public OrderJpaEntity(Integer id,
+                          UUID publicId,
+                          BigDecimal value,
+                          Integer orderNumber,
+                          String status,
+                          List<OrderProductJpaEntity> orderProducts,
+                          Instant createdAt,
+                          Instant updatedAt,
+                          Instant deletedAt,
+                          ClientJpaEntity client) {
         this.id = id;
         this.publicId = publicId;
         this.value = value;
@@ -57,7 +70,9 @@ public class OrderJpaEntity {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
+        this.client = client;
     }
+
 
     public Integer getId() {
         return id;
@@ -65,6 +80,14 @@ public class OrderJpaEntity {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public ClientJpaEntity getClient() {
+        return client;
+    }
+
+    public void setClient(ClientJpaEntity client) {
+        this.client = client;
     }
 
     public UUID getPublicId() {
