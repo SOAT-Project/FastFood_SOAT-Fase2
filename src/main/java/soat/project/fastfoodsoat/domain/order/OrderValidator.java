@@ -1,5 +1,6 @@
 package soat.project.fastfoodsoat.domain.order;
 
+import soat.project.fastfoodsoat.domain.client.ClientId;
 import soat.project.fastfoodsoat.domain.validation.DomainError;
 import soat.project.fastfoodsoat.domain.validation.ValidationHandler;
 import soat.project.fastfoodsoat.domain.validation.Validator;
@@ -21,6 +22,14 @@ public class OrderValidator extends Validator {
         checkValueConstraints();
         checkOrderNumberConstraints();
         checkOrderStatusConstraints();
+        checkClientIdConstraints();
+    }
+
+    private void checkClientIdConstraints() {
+        final ClientId clientId = this.order.getClientId();
+        if (Objects.isNull(clientId)) {
+            this.validationHandler().append(new DomainError("'clientId' should not be null"));
+        }
     }
 
     private void checkValueConstraints() {
