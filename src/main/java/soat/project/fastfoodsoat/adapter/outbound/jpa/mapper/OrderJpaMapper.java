@@ -1,14 +1,14 @@
 package soat.project.fastfoodsoat.adapter.outbound.jpa.mapper;
 
+import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ClientJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderProductJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
+import soat.project.fastfoodsoat.domain.client.ClientId;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderId;
 import soat.project.fastfoodsoat.domain.order.OrderPublicId;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
-import soat.project.fastfoodsoat.domain.order.orderproduct.OrderProduct;
-import soat.project.fastfoodsoat.domain.order.orderproduct.OrderProductId;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +27,7 @@ public final class OrderJpaMapper {
                 orderJpa.getValue(),
                 orderJpa.getOrderNumber(),
                 OrderStatus.valueOf(orderJpa.getStatus()),
+                ClientId.of(orderJpa.getClient().getId()),
                 orderJpa.getOrderProducts().stream()
                         .filter(Objects::nonNull)
                         .map(OrderProductJpaMapper::fromJpa)
@@ -37,7 +38,7 @@ public final class OrderJpaMapper {
         );
     }
 
-    public static OrderJpaEntity toJpa(final Order order) {
+    public static OrderJpaEntity toJpa(final Order order, final ClientJpaEntity clientJpa) {
         if (Objects.isNull(order)) return new OrderJpaEntity();
 
         return new OrderJpaEntity(
@@ -49,11 +50,13 @@ public final class OrderJpaMapper {
                 null,
                 order.getCreatedAt(),
                 order.getUpdatedAt(),
-                order.getDeletedAt()
+                order.getDeletedAt(),
+                clientJpa
         );
     }
 
-    public static OrderJpaEntity toJpa(final Order order, final Map<Integer, ProductJpaEntity> productsJpaMap) {
+
+    public static OrderJpaEntity toJpa(final Order order, final Map<Integer, ProductJpaEntity> productsJpaMap, final ClientJpaEntity clientJpa) {
         if (Objects.isNull(order)) return new OrderJpaEntity();
 
         final OrderJpaEntity orderJpa = new OrderJpaEntity(
@@ -65,7 +68,8 @@ public final class OrderJpaMapper {
                 null,
                 order.getCreatedAt(),
                 order.getUpdatedAt(),
-                order.getDeletedAt()
+                order.getDeletedAt(),
+                clientJpa
         );
 
         final List<OrderProductJpaEntity> orderProducts = OrderProductJpaMapper.toJpa(order.getOrderProducts(), orderJpa, productsJpaMap);

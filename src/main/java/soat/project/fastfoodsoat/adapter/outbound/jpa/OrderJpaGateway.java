@@ -4,8 +4,10 @@ import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.OrderJpaMapper;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ClientRepository;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderRepository;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductRepository;
+import soat.project.fastfoodsoat.domain.client.Client;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderGateway;
@@ -22,17 +24,25 @@ public class OrderJpaGateway implements OrderGateway {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final ClientRepository clientRepository;
 
     public OrderJpaGateway(OrderRepository orderRepository,
-                           ProductRepository productRepository) {
+                           ProductRepository productRepository,
+                           ClientRepository clientRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.clientRepository = clientRepository;
     }
 
     @Override
     public Order create(final Order order) {
         final Map<Integer, ProductJpaEntity> products = createMapOfProductsById(order);
-        final OrderJpaEntity orderJpa = OrderJpaMapper.toJpa(order, products);
+
+        final var clientId = order.getClientId().getValue();
+        final var client = clientRepository.findById(clientId)
+                .orElseThrow(() -> NotFoundException.with(Client.class, order.getClientId()));
+
+        final OrderJpaEntity orderJpa = OrderJpaMapper.toJpa(order, products, client);
 
         return OrderJpaMapper.fromJpa(orderRepository.save(orderJpa));
     }
