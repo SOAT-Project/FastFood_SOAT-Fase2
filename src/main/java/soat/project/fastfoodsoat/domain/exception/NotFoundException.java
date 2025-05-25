@@ -18,11 +18,12 @@ public class NotFoundException extends DomainException{
             final Class<? extends Entity<?>> entity,
             final Identifier id
     ) {
-        final var anError = "%s with id %s was not found".formatted(
+        final var errorMessage = "%s with id %s was not found".formatted(
                 entity.getSimpleName().toLowerCase(),
                 id.getValue()
         );
-        return new NotFoundException(anError, Collections.emptyList());
+        final var domainError = new DomainError(errorMessage);
+        return new NotFoundException(errorMessage, List.of(domainError));
     }
 
     public static NotFoundException with(final DomainError anError) {

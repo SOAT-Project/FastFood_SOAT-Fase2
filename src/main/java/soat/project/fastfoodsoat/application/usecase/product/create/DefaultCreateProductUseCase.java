@@ -47,6 +47,4 @@ public class DefaultCreateProductUseCase extends CreateProductUseCase {
 
         return CreateProductOutput.from(this.productGateway.create(product));
     }
-
-
 }

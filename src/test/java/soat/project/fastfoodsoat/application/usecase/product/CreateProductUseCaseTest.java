@@ -97,7 +97,7 @@ class CreateProductUseCaseTest extends UseCaseTest {
 
         assertEquals("productcategory with id 999 was not found", exception.getMessage());
 
-        assertTrue(exception.getErrors().isEmpty());
+        assertFalse(exception.getErrors().isEmpty());
 
         verify(categoryGateway, times(1)).findById(categoryId);
         verify(productGateway, never()).create(any());
