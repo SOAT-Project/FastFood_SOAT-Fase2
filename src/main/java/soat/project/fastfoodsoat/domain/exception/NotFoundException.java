@@ -3,6 +3,7 @@ package soat.project.fastfoodsoat.domain.exception;
 
 import soat.project.fastfoodsoat.domain.Entity;
 import soat.project.fastfoodsoat.domain.Identifier;
+import soat.project.fastfoodsoat.domain.PublicIdentifier;
 import soat.project.fastfoodsoat.domain.validation.DomainError;
 
 import java.util.Collections;
@@ -17,6 +18,18 @@ public class NotFoundException extends DomainException{
     public static NotFoundException with(
             final Class<? extends Entity<?>> entity,
             final Identifier id
+    ) {
+        final var errorMessage = "%s with id %s was not found".formatted(
+                entity.getSimpleName().toLowerCase(),
+                id.getValue()
+        );
+        final var domainError = new DomainError(errorMessage);
+        return new NotFoundException(errorMessage, List.of(domainError));
+    }
+
+    public static NotFoundException with(
+            final Class<? extends Entity<?>> entity,
+            final PublicIdentifier id
     ) {
         final var errorMessage = "%s with id %s was not found".formatted(
                 entity.getSimpleName().toLowerCase(),
