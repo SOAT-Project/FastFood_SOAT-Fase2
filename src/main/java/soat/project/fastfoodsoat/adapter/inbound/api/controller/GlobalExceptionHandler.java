@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
         final var error = new DefaultApiError(
                 InstantUtils.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                null
+                List.of()
         );
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
