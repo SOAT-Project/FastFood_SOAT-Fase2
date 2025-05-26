@@ -31,7 +31,7 @@ public class OrderJpaEntity {
     @ColumnTransformer(write="?::order_status")
     private String status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<OrderProductJpaEntity> orderProducts;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
