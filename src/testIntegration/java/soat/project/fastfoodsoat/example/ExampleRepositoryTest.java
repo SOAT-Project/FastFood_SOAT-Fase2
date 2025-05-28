@@ -2,20 +2,36 @@ package soat.project.fastfoodsoat.example;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import soat.project.fastfoodsoat.IntegrationTest;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ExampleEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ExampleRepository;
-import soat.project.fastfoodsoat.setup.BaseIntegrationTest;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@ActiveProfiles("integration-test")
-public class ExampleRepositoryTest extends BaseIntegrationTest {
+@IntegrationTest
+public class ExampleRepositoryTest {
 
     @Autowired
     private ExampleRepository exampleRepository;
+
+    @Container
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
+            .withDatabaseName("testdb")
+            .withUsername("testuser")
+            .withPassword("testpass");
+
+    @DynamicPropertySource
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
+    }
 
     @Test
     void deveSalvarEBuscarEmpresa() {

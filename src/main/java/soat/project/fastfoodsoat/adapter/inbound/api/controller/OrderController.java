@@ -8,6 +8,7 @@ import soat.project.fastfoodsoat.adapter.inbound.api.model.request.CreateOrderRe
 import soat.project.fastfoodsoat.adapter.inbound.api.model.request.UpdateOrderStatusRequest;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.response.CreateOrderResponse;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.response.UpdateOrderStatusResponse;
+import soat.project.fastfoodsoat.adapter.inbound.api.model.response.ListOrderResponse;
 import soat.project.fastfoodsoat.adapter.inbound.api.presenter.OrderPresenter;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderCommand;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderOutput;
@@ -15,18 +16,27 @@ import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderPro
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderUseCase;
 import soat.project.fastfoodsoat.application.usecase.order.update.changeStatus.UpdateOrderStatusCommand;
 import soat.project.fastfoodsoat.application.usecase.order.update.changeStatus.UpdateOrderStatusUseCase;
-
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderOutput;
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderUseCase;
+import soat.project.fastfoodsoat.domain.pagination.Pagination;
+import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
 import java.util.UUID;
+
 
 @RestController
 public class OrderController implements OrderAPI {
 
     private final CreateOrderUseCase createOrderUseCase;
     private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
+    private final ListOrderUseCase listOrderUseCase;
 
-    public OrderController(final CreateOrderUseCase createOrderUseCase,
-                           final UpdateOrderStatusUseCase updateOrderStatusUseCase) {
+    public OrderController(
+            final CreateOrderUseCase createOrderUseCase,
+            final UpdateOrderStatusUseCase updateOrderStatusUseCase,
+            final ListOrderUseCase listOrderUseCase
+    ) {
         this.createOrderUseCase = createOrderUseCase;
+        this.listOrderUseCase = listOrderUseCase;
         this.updateOrderStatusUseCase = updateOrderStatusUseCase;
     }
 
@@ -52,4 +62,17 @@ public class OrderController implements OrderAPI {
     }
 
 
+    public ResponseEntity<Pagination<ListOrderResponse>> list(
+            final String search,
+            final int page,
+            final int perPage,
+            final String sort,
+            final String direction
+    ) {
+        final var query = new SearchQuery(page, perPage, search, sort, direction);
+
+        final var output = this.listOrderUseCase.execute(query);
+
+        return ResponseEntity.ok(output.map(OrderPresenter::present));
+    }
 }

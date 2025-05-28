@@ -106,6 +106,10 @@ public class OrderProductJpaEntity {
         return product;
     }
 
+    public void setProduct(ProductJpaEntity product) {
+        this.product = product;
+    }
+
     public void setOrder(OrderJpaEntity orderJpaEntity) {
         this.order = orderJpaEntity;
     }
