@@ -6,6 +6,6 @@ import java.util.List;
 import java.util.Optional;
 
 public record CreateOrderRequest(
-        @JsonProperty("client_id") Optional<Integer> clientId,
+        @JsonProperty("client_id") Integer clientId,
         @JsonProperty("products") List<CreateOrderProductRequest> orderProducts
 ){}

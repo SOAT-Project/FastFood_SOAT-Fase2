@@ -11,7 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.DefaultApiError;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.request.CreateOrderRequest;
+import soat.project.fastfoodsoat.adapter.inbound.api.model.request.UpdateOrderStatusRequest;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.response.CreateOrderResponse;
+import soat.project.fastfoodsoat.adapter.inbound.api.model.response.UpdateOrderStatusResponse;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.response.ListOrderResponse;
 import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderOutput;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
@@ -53,6 +55,21 @@ public interface OrderAPI {
     )
     ResponseEntity<CreateOrderResponse> create(@RequestBody CreateOrderRequest orderRequest);
 
+  
+    @PutMapping(value = "/{publicId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Update order status")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Order status updated successfully"),
+            @ApiResponse(responseCode = "404", description = "Order not found"),
+            @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
+            @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
+    })
+    ResponseEntity<UpdateOrderStatusResponse> updateStatus(
+            @PathVariable String publicId,
+            @RequestBody UpdateOrderStatusRequest request
+    );
+  
+
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -79,5 +96,4 @@ public interface OrderAPI {
             @RequestParam(name = "sort", required = false, defaultValue = "orderNumber") final String sort,
             @RequestParam(name = "dir", required = false, defaultValue = "asc") final String direction
     );
-
 }

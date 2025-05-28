@@ -3,12 +3,11 @@ package soat.project.fastfoodsoat.adapter.outbound.jpa;
 import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ClientJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.ClientJpaMapper;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.ProductMapper;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ClientRepository;
 import soat.project.fastfoodsoat.domain.client.Client;
 import soat.project.fastfoodsoat.domain.client.ClientCpf;
 import soat.project.fastfoodsoat.domain.client.ClientGateway;
-import soat.project.fastfoodsoat.domain.product.Product;
+import soat.project.fastfoodsoat.domain.client.ClientId;
 
 import java.util.Optional;
 
@@ -31,6 +30,12 @@ public class ClientJpaGateway implements ClientGateway {
     @Override
     public Client create(Client client) {
         return save(client);
+    }
+
+    @Override
+    public Optional<Client> findById(ClientId id) {
+        return this.clientRepository.findById(id.getValue())
+                .map(ClientJpaMapper::toDomain);
     }
 
     private Client save(final Client client){

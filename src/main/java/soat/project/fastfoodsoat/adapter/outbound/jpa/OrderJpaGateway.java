@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.OrderJpaMapper;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ClientRepository;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderRepository;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductRepository;
+import soat.project.fastfoodsoat.domain.client.Client;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderGateway;
@@ -17,8 +19,8 @@ import soat.project.fastfoodsoat.domain.pagination.Pagination;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
 import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.product.ProductId;
-
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -30,26 +32,48 @@ public class OrderJpaGateway implements OrderGateway {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final ClientRepository clientRepository;
 
     public OrderJpaGateway(OrderRepository orderRepository,
-                           ProductRepository productRepository) {
+                           ProductRepository productRepository,
+                           ClientRepository clientRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.clientRepository = clientRepository;
     }
 
     @Override
     public Order create(final Order order) {
         final Map<Integer, ProductJpaEntity> products = createMapOfProductsById(order);
-        final OrderJpaEntity orderJpa = OrderJpaMapper.toJpa(order, products);
+
+        final var client = order.getClientId() != null ?
+                clientRepository.findById(order.getClientId().getValue())
+                .orElseThrow(() -> NotFoundException.with(Client.class, order.getClientId())) : null;
+
+        final OrderJpaEntity orderJpa = OrderJpaMapper.toJpa(order, products, client);
 
         return OrderJpaMapper.fromJpa(orderRepository.save(orderJpa));
     }
 
     @Override
-    public Order findByPublicId(OrderPublicId orderPublicId) {
+    public Order update(final Order order) {
+
+        final var clientId = order.getClientId().getValue();
+        final var clientJpa = clientRepository.findById(clientId)
+                .orElseThrow(() -> NotFoundException.with(Client.class, order.getClientId()));
+
+        final var productsMap = createMapOfProductsById(order);
+
+        final var orderJpa = OrderJpaMapper.toJpa(order, productsMap, clientJpa);
+        final var updatedOrderJpa = orderRepository.save(orderJpa);
+
+        return OrderJpaMapper.fromJpa(updatedOrderJpa);
+    }
+
+    @Override
+    public Optional<Order> findByPublicId(OrderPublicId orderPublicId) {
         return this.orderRepository.findOneByPublicId(orderPublicId.getValue())
-                .map(OrderJpaMapper::fromJpa)
-                .orElseThrow(() -> NotFoundException.with(Order.class, null));
+                .map(OrderJpaMapper::fromJpa);
     }
 
     @Override

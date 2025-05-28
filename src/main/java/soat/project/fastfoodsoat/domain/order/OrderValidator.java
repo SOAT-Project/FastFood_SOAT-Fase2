@@ -1,5 +1,6 @@
 package soat.project.fastfoodsoat.domain.order;
 
+import soat.project.fastfoodsoat.domain.client.ClientId;
 import soat.project.fastfoodsoat.domain.validation.DomainError;
 import soat.project.fastfoodsoat.domain.validation.ValidationHandler;
 import soat.project.fastfoodsoat.domain.validation.Validator;
@@ -22,6 +23,7 @@ public class OrderValidator extends Validator {
         checkOrderNumberConstraints();
         checkOrderStatusConstraints();
     }
+
 
     private void checkValueConstraints() {
         final BigDecimal value = this.order.getValue();
