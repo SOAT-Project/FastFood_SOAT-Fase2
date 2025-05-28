@@ -8,12 +8,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.DefaultApiError;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.request.CreateOrderRequest;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.response.CreateOrderResponse;
+import soat.project.fastfoodsoat.adapter.inbound.api.model.response.ListOrderResponse;
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderOutput;
+import soat.project.fastfoodsoat.domain.pagination.Pagination;
 
 @Tag(name = "Order")
 @RequestMapping("/orders")
@@ -51,4 +52,32 @@ public interface OrderAPI {
         }
     )
     ResponseEntity<CreateOrderResponse> create(@RequestBody CreateOrderRequest orderRequest);
+
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(
+            summary = "List orders"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Orders listed successfully"
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "An internal server error was thrown",
+                            content = @Content(schema = @Schema(implementation = DefaultApiError.class))
+                    )
+            }
+    )
+    ResponseEntity<Pagination<ListOrderResponse>> list(
+            @RequestParam(name = "search", required = false, defaultValue = "") final String search,
+            @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
+            @RequestParam(name = "perPage", required = false, defaultValue = "10") final int perPage,
+            @RequestParam(name = "sort", required = false, defaultValue = "orderNumber") final String sort,
+            @RequestParam(name = "dir", required = false, defaultValue = "asc") final String direction
+    );
+
 }
