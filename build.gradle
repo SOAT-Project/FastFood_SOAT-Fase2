@@ -38,6 +38,10 @@ sourceSets {
 	}
 }
 
+tasks.withType(Copy).configureEach {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
 apply from: 'gradle/test-integration.gradle'
 
 dependencies {
