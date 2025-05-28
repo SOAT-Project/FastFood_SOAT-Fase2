@@ -39,9 +39,9 @@ public class OrderJpaGateway implements OrderGateway {
     public Order create(final Order order) {
         final Map<Integer, ProductJpaEntity> products = createMapOfProductsById(order);
 
-        final var clientId = order.getClientId().getValue();
-        final var client = clientRepository.findById(clientId)
-                .orElseThrow(() -> NotFoundException.with(Client.class, order.getClientId()));
+        final var client = order.getClientId() != null ?
+                clientRepository.findById(order.getClientId().getValue())
+                .orElseThrow(() -> NotFoundException.with(Client.class, order.getClientId())) : null;
 
         final OrderJpaEntity orderJpa = OrderJpaMapper.toJpa(order, products, client);
 

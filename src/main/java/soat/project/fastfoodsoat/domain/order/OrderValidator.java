@@ -22,15 +22,8 @@ public class OrderValidator extends Validator {
         checkValueConstraints();
         checkOrderNumberConstraints();
         checkOrderStatusConstraints();
-        checkClientIdConstraints();
     }
 
-    private void checkClientIdConstraints() {
-        final ClientId clientId = this.order.getClientId();
-        if (Objects.isNull(clientId)) {
-            this.validationHandler().append(new DomainError("'clientId' should not be null"));
-        }
-    }
 
     private void checkValueConstraints() {
         final BigDecimal value = this.order.getValue();

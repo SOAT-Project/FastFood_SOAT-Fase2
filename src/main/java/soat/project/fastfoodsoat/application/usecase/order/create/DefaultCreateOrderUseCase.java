@@ -45,9 +45,11 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
         final Notification notification = Notification.create();
         System.out.println("CreateOrderCommand: " + command);
 
-        final var clientId = ClientId.of(command.clientId());
-        final var client = clientGateway.findById(clientId)
-                .orElseThrow(() -> NotFoundException.with(Client.class, clientId));
+        final ClientId clientId = command.clientId() != null ? ClientId.of(command.clientId()) : null;
+
+        if (clientId != null)
+            clientGateway.findById(clientId)
+                    .orElseThrow(() -> NotFoundException.with(Client.class, clientId));
 
 
         final List<CreateOrderProductCommand> orderProducts = command.orderProducts();

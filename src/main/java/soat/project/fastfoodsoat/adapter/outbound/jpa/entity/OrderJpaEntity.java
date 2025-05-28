@@ -32,7 +32,7 @@ public class OrderJpaEntity {
     private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "client_id")
     private ClientJpaEntity client;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
