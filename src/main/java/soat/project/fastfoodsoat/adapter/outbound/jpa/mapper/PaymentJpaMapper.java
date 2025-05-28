@@ -39,7 +39,7 @@ public class PaymentJpaMapper {
                 payment.getExternalReference(),
                 payment.getQrCode(),
                 payment.getStatus().toString(),
-                OrderJpaMapper.toJpa(payment.getOrder()),
+                OrderJpaMapper.toJpa(payment.getOrder(), null),
                 payment.getCreatedAt(),
                 payment.getUpdatedAt(),
                 payment.getDeletedAt()
