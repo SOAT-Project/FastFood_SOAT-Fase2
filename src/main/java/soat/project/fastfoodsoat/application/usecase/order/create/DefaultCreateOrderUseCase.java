@@ -2,6 +2,9 @@ package soat.project.fastfoodsoat.application.usecase.order.create;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
+import soat.project.fastfoodsoat.domain.client.Client;
+import soat.project.fastfoodsoat.domain.client.ClientGateway;
+import soat.project.fastfoodsoat.domain.client.ClientId;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.order.Order;
@@ -32,15 +35,19 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
 
     private final OrderGateway orderGateway;
     private final ProductGateway productGateway;
+    private final ClientGateway clientGateway;
     private final PaymentGateway paymentGateway;
     private final PaymentService paymentService;
 
     public DefaultCreateOrderUseCase(final OrderGateway orderGateway,
                                      final ProductGateway productGateway,
+                                     final ClientGateway clientGateway,
                                      final PaymentGateway paymentGateway,
                                      final PaymentService paymentService) {
+      
         this.orderGateway = requireNonNull(orderGateway);
         this.productGateway = requireNonNull(productGateway);
+        this.clientGateway = clientGateway;
         this.paymentGateway = paymentGateway;
         this.paymentService = paymentService;
     }
@@ -50,7 +57,13 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
         final Notification notification = Notification.create();
         System.out.println("CreateOrderCommand: " + command);
 
-        final Optional<Integer> clientId = command.clientId();
+        final ClientId clientId = command.clientId() != null ? ClientId.of(command.clientId()) : null;
+
+        if (clientId != null)
+            clientGateway.findById(clientId)
+                    .orElseThrow(() -> NotFoundException.with(Client.class, clientId));
+
+
         final List<CreateOrderProductCommand> orderProducts = command.orderProducts();
 
         if (orderProducts.isEmpty()) {
@@ -92,6 +105,7 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
                         OrderPublicId.of(publicId),
                         orderNumber,
                         OrderStatus.RECEIVED,
+                        clientId,
                         value,
                         orderProductDomains,
                         null

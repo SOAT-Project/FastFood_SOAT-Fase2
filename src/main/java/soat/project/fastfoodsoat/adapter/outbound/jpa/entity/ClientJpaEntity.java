@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -31,6 +32,9 @@ public class ClientJpaEntity {
     @Size(max = 11)
     @Column(name = "cpf", length = 11)
     private String cpf;
+
+    @OneToMany(mappedBy = "client")
+    private List<OrderJpaEntity> orders;
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_at")

@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 public record CreateOrderCommand(
-        Optional<Integer> clientId,
+        Integer clientId,
         List<CreateOrderProductCommand> orderProducts
 ) {
     public static CreateOrderCommand with(
-            final Optional<Integer> clientId,
+            final Integer clientId,
             final List<CreateOrderProductCommand> orderProducts
     ) {
         return new CreateOrderCommand(
