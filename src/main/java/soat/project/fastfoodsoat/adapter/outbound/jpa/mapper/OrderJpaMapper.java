@@ -17,17 +17,20 @@ import java.util.Objects;
 public final class OrderJpaMapper {
 
     private OrderJpaMapper() {
-        // Private constructor to prevent instantiation
+
     }
 
     public static Order fromJpa(final OrderJpaEntity orderJpa) {
+        final ClientId clientId = orderJpa.getClient() != null ?
+                ClientId.of(orderJpa.getClient().getId()) : null;
+
         return Order.with(
                 OrderId.of(orderJpa.getId()),
                 OrderPublicId.of(orderJpa.getPublicId()),
                 orderJpa.getValue(),
                 orderJpa.getOrderNumber(),
                 OrderStatus.valueOf(orderJpa.getStatus()),
-                ClientId.of(orderJpa.getClient().getId()),
+                clientId,
                 orderJpa.getOrderProducts().stream()
                         .filter(Objects::nonNull)
                         .map(OrderProductJpaMapper::fromJpa)

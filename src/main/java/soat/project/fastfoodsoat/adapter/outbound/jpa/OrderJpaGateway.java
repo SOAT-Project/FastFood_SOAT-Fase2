@@ -16,6 +16,7 @@ import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.product.ProductId;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -38,9 +39,9 @@ public class OrderJpaGateway implements OrderGateway {
     public Order create(final Order order) {
         final Map<Integer, ProductJpaEntity> products = createMapOfProductsById(order);
 
-        final var clientId = order.getClientId().getValue();
-        final var client = clientRepository.findById(clientId)
-                .orElseThrow(() -> NotFoundException.with(Client.class, order.getClientId()));
+        final var client = order.getClientId() != null ?
+                clientRepository.findById(order.getClientId().getValue())
+                .orElseThrow(() -> NotFoundException.with(Client.class, order.getClientId())) : null;
 
         final OrderJpaEntity orderJpa = OrderJpaMapper.toJpa(order, products, client);
 
@@ -48,10 +49,24 @@ public class OrderJpaGateway implements OrderGateway {
     }
 
     @Override
-    public Order findByPublicId(OrderPublicId orderPublicId) {
+    public Order update(final Order order) {
+
+        final var clientId = order.getClientId().getValue();
+        final var clientJpa = clientRepository.findById(clientId)
+                .orElseThrow(() -> NotFoundException.with(Client.class, order.getClientId()));
+
+        final var productsMap = createMapOfProductsById(order);
+
+        final var orderJpa = OrderJpaMapper.toJpa(order, productsMap, clientJpa);
+        final var updatedOrderJpa = orderRepository.save(orderJpa);
+
+        return OrderJpaMapper.fromJpa(updatedOrderJpa);
+    }
+
+    @Override
+    public Optional<Order> findByPublicId(OrderPublicId orderPublicId) {
         return this.orderRepository.findOneByPublicId(orderPublicId.getValue())
-                .map(OrderJpaMapper::fromJpa)
-                .orElseThrow(() -> NotFoundException.with(Order.class, null));
+                .map(OrderJpaMapper::fromJpa);
     }
 
     @Override
