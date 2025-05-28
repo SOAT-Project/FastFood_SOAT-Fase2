@@ -178,16 +178,18 @@ public class Order extends AggregateRoot<OrderId> {
 
     public ClientId getClientId() {
         return clientId;
-
-    public Payment getPayment() {
-        return payment;
     }
 
-    public static BigDecimal calculateValue(final List<OrderProduct> orderProducts) {
-        if (orderProducts == null || orderProducts.isEmpty()) return null;
+        public Payment getPayment () {
+            return payment;
+        }
 
-        return orderProducts.stream()
-                .map(OrderProduct::getValue)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
+        public static BigDecimal calculateValue ( final List<OrderProduct> orderProducts){
+            if (orderProducts == null || orderProducts.isEmpty()) return null;
+
+            return orderProducts.stream()
+                    .map(OrderProduct::getValue)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+
 }

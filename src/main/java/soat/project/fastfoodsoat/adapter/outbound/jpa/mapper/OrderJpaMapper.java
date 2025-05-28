@@ -44,12 +44,16 @@ public final class OrderJpaMapper {
     }
 
     public static Order fromJpaWithoutPayment(final OrderJpaEntity orderJpa) {
+        final ClientId clientId = orderJpa.getClient() != null ?
+                ClientId.of(orderJpa.getClient().getId()) : null;
+
         return Order.with(
                 OrderId.of(orderJpa.getId()),
                 OrderPublicId.of(orderJpa.getPublicId()),
                 orderJpa.getValue(),
                 orderJpa.getOrderNumber(),
                 OrderStatus.valueOf(orderJpa.getStatus()),
+                clientId,
                 orderJpa.getOrderProducts() != null ?orderJpa.getOrderProducts().stream()
                         .filter(Objects::nonNull)
                         .map(OrderProductJpaMapper::fromJpa)
