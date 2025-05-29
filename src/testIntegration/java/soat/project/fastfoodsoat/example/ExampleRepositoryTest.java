@@ -1,7 +1,9 @@
 package soat.project.fastfoodsoat.example;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -20,6 +22,9 @@ public class ExampleRepositoryTest {
     @Autowired
     private ExampleRepository exampleRepository;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
             .withDatabaseName("testdb")
@@ -31,6 +36,18 @@ public class ExampleRepositoryTest {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
+    }
+
+    @BeforeEach
+    void setup() {
+        jdbcTemplate.execute("""
+            CREATE TABLE IF NOT EXISTS example (
+                id VARCHAR(255) PRIMARY KEY,
+                name VARCHAR(255) NOT NULL
+            )
+        """);
+
+        exampleRepository.deleteAll();
     }
 
     @Test
