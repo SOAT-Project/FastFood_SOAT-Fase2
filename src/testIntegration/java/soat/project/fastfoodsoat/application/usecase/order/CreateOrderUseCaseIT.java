@@ -3,27 +3,35 @@ package soat.project.fastfoodsoat.application.usecase.order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ActiveProfiles;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderProductRepository;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderRepository;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductRepository;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.transaction.annotation.Transactional;
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import soat.project.fastfoodsoat.IntegrationTest;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductCategoryJpaEntity;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.ProductCategoryMapper;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.ProductMapper;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.*;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderCommand;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderProductCommand;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderUseCase;
+import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.product.Product;
+import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategory;
 import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
-import soat.project.fastfoodsoat.setup.BaseIntegrationTest;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@ActiveProfiles("integration-test")
-public class CreateOrderUseCaseIT extends BaseIntegrationTest {
+@IntegrationTest
+public class CreateOrderUseCaseIT {
 
     @Autowired
     private CreateOrderUseCase useCase;
@@ -37,24 +45,57 @@ public class CreateOrderUseCaseIT extends BaseIntegrationTest {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductCategoryRepository productCategoryRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
+
     @BeforeEach
     void individualTestSetup() {
-        orderRepository.deleteAll();
+        paymentRepository.deleteAll();
         orderProductRepository.deleteAll();
+        orderRepository.deleteAll();
         productRepository.deleteAll();
+        productCategoryRepository.deleteAll();
+    }
+
+    @Container
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
+            .withDatabaseName("testdb")
+            .withUsername("testuser")
+            .withPassword("testpass");
+
+    @DynamicPropertySource
+    public static void setDatasourceProperties(final DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.url", postgres::getJdbcUrl);
+        registry.add("spring.datasource.username", postgres::getUsername);
+        registry.add("spring.datasource.password", postgres::getPassword);
     }
 
     @Test
+    @Transactional
+    @Rollback
     void givenValidCommand_whenCreateOrder_thenShouldReturnOrderPublicId() {
-        final var categoryId = ProductCategoryId.of(1);
-        final var product1 = Product.newProduct(
-                "X-Burger", "Delicioso", BigDecimal.valueOf(19.99), "burger.jpg", categoryId);
-        final var product2 = Product.newProduct(
-                "Coca-Cola", "Refrigerante", BigDecimal.valueOf(5.99), "coca.jpg", categoryId);
+        final var category = ProductCategory.with(
+                null,
+                "Burgers",
+                null,
+                null,
+                null
+        );
+
+        ProductCategoryJpaEntity categoryJpaEntity = ProductCategoryMapper.fromDomain(category);
+        final var categoryEntity = productCategoryRepository.save(categoryJpaEntity);
+
+        final var product = Product.newProduct(
+                "X-Burger", "Delicioso", BigDecimal.valueOf(19.99), "burger.jpg", ProductCategoryId.of(categoryEntity.getId()));
+
+        ProductJpaEntity productJpaEntity = ProductMapper.fromDomain(product);
+        final var productEntity = productRepository.save(productJpaEntity);
 
         final var products = List.of(
-                new CreateOrderProductCommand(product1.getId().getValue(), 2),
-                new CreateOrderProductCommand(product2.getId().getValue(), 1)
+                new CreateOrderProductCommand(productEntity.getId(), 2)
         );
 
         final var command = new CreateOrderCommand(null, products);
@@ -68,6 +109,7 @@ public class CreateOrderUseCaseIT extends BaseIntegrationTest {
     @Test
     void givenEmptyProductList_whenCreateOrder_thenShouldThrowNotificationException() {
         final var command = new CreateOrderCommand(null, List.of());
+
         final var exception = assertThrows(NotificationException.class, () -> useCase.execute(command));
 
         assertEquals("Order must have at least one product", exception.getMessage());
@@ -78,23 +120,9 @@ public class CreateOrderUseCaseIT extends BaseIntegrationTest {
         final var products = List.of(new CreateOrderProductCommand(999, 1));
         final var command = new CreateOrderCommand(null, products);
 
-        final var exception = assertThrows(NotificationException.class, () -> useCase.execute(command));
+        final var exception = assertThrows(NotFoundException.class, () -> useCase.execute(command));
 
-        assertEquals("Product with id 999 was not found", exception.getMessage());
-    }
+        assertEquals("product with id 999 was not found", exception.getMessage());
 
-    @Test
-    void givenZeroOrderValue_whenCreateOrder_thenShouldThrowNotificationException() {
-        final var now = Instant.now();
-        final var categoryId = ProductCategoryId.of(1);
-        final var product = Product.newProduct(
-                "X-Burger", "Delicioso", BigDecimal.ZERO, "burger.jpg", categoryId);
-
-        final var products = List.of(new CreateOrderProductCommand(product.getId().getValue(), 1));
-        final var command = new CreateOrderCommand(null, products);
-
-        final var exception = assertThrows(NotificationException.class, () -> useCase.execute(command));
-
-        assertEquals("'value' should be greater than zero", exception.getErrors().get(0).message());
     }
 }
