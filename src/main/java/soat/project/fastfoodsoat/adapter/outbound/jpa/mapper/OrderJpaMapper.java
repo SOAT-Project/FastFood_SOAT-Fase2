@@ -3,7 +3,6 @@ package soat.project.fastfoodsoat.adapter.outbound.jpa.mapper;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ClientJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderProductJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.PaymentJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
 import soat.project.fastfoodsoat.domain.client.ClientId;
 import soat.project.fastfoodsoat.domain.order.Order;
