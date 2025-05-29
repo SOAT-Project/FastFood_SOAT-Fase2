@@ -126,4 +126,10 @@ public class PaymentJpaEntity {
     public OrderJpaEntity getOrder() {
         return order;
     }
+
+    public void setOrder(OrderJpaEntity savedOrder) {
+        if (savedOrder == null) return;
+
+        this.order = savedOrder;
+    }
 }
