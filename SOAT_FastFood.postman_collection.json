@@ -1,0 +1,800 @@
+{
+	"info": {
+		"_postman_id": "d0aaa65a-85d4-40f4-94dc-7ab7c79755bc",
+		"name": "SOAT_FastFood",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20774480"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Create Product - Lanche",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Lanche Exemplo\",\n    \"description\": \"Descrição do produto lanche\",\n    \"value\": 14.50,\n    \"image_url\": \"https://example.com/image.jpg\",\n    \"product_category_id\": 1\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product - Acompanhamento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Acompanhamento Exemplo\",\n    \"description\": \"Descrição do produto acompanhamento\",\n    \"value\": 15,\n    \"image_url\": \"https://example.com/image.jpg\",\n    \"product_category_id\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product - Bebida",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Bebida Exemplo\",\n    \"description\": \"Descri\\u00e7\\u00e3o do produto bebida\",\n    \"value\": 5.99,\n    \"image_url\": \"https://example.com/image.jpg\",\n    \"product_category_id\": 3\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product - Sobremesa",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sobremesa Exemplo\",\n    \"description\": \"Descri\\u00e7\\u00e3o do produto sobremesa\",\n    \"value\": 7,\n    \"image_url\": \"https://example.com/image.jpg\",\n    \"product_category_id\": 4\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/products",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/products/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/products/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Products By Category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/products/category/1?page=0&per_page=10&sort=name&dir=asc&search=",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"category",
+								"1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "name"
+								},
+								{
+									"key": "dir",
+									"value": "asc"
+								},
+								{
+									"key": "search",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Lanche Exemplo Updated\",\n    \"description\": \"Descrição do produto lanche\",\n    \"value\": 14.50,\n    \"image_url\": \"https://example.com/image.jpg\",\n    \"product_category_id\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "Create Client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@email.com\",\n    \"cpf\": \"12345678900\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Identify Client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identification\": \"12345678900\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clients/identify",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients",
+								"identify"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"client_id\": null,\r\n  \"products\": [\r\n    {\r\n      \"product_id\": 7,\r\n      \"quantity\": 5\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders?search=&page=0&per_page=10&sort=orderNumber&dir=asc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": ""
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "orderNumber"
+								},
+								{
+									"key": "dir",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Order Status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"IN_PREPARATION\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/orders/b71f1b55-15a8-4974-b14f-ecff6b5028e7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"b71f1b55-15a8-4974-b14f-ecff6b5028e7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Get QRCode by externalReference",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/payments/56a21d4a-fc57-4636-a5c6-0e5e087ea32b",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments",
+								"56a21d4a-fc57-4636-a5c6-0e5e087ea32b"
+							]
+						},
+						"description": "This endpoint retrieves the details of a specific payment with the ID \"5b7beea0-a8ac-4a31-87ff-8d17aa5ea5c3\".\n\n### Request\n\nNo request body is required for this endpoint. The request is sent via an HTTP GET method to the specified URL.\n\n### Response\n\nThe response will be a JSON object with the following schema:\n\n``` json\n{\n  \"id\": \"string\",\n  \"amount\": \"number\",\n  \"currency\": \"string\",\n  \"status\": \"string\",\n  \"timestamp\": \"string\"\n}\n\n ```\n\n- `id`: The unique identifier of the payment.\n    \n- `amount`: The amount of the payment.\n    \n- `currency`: The currency in which the payment was made.\n    \n- `status`: The status of the payment.\n    \n- `timestamp`: The timestamp when the payment was made."
+					},
+					"response": []
+				},
+				{
+					"name": "Set Paid",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"external_reference\": \"56a21d4a-fc57-4636-a5c6-0e5e087ea32b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/payments",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"payments"
+							]
+						},
+						"description": "The `POST` request to `/api/payments` endpoint is used to submit payment details. The request should include a JSON payload in the raw request body type with the `external_reference` key to uniquely identify the payment.\n\n### Request Body\n\n- `external_reference`: (string) A unique identifier for the payment.\n    \n\n### Response\n\nThe response will contain the details of the payment submission, including the status of the transaction and any relevant payment information."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Staffs",
+			"item": [
+				{
+					"name": "Auth Staff",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"identification\": \"staff@email.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auths",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auths"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "External Integration",
+			"item": [
+				{
+					"name": "Mercado Pago",
+					"item": [
+						{
+							"name": "Create Store",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"SOAT\",\n  \"location\": {\n    \"street_number\": \"123\",\n    \"street_name\": \"Rua Principal\",\n    \"city_name\": \"São Paulo\",\n    \"state_name\": \"São Paulo\",\n    \"latitude\": -23.564,\n    \"longitude\": -46.654\n  },\n  \"external_id\": \"SUC001\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.mercadopago.com/users/2448858150/stores",
+									"protocol": "https",
+									"host": [
+										"api",
+										"mercadopago",
+										"com"
+									],
+									"path": [
+										"users",
+										"2448858150",
+										"stores"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Sale Point",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Ponto de Venda\",\n  \"fixed_amount\": false,\n  \"store_id\": 70785476,\n  \"external_id\": \"SUC001POS001\",\n  \"external_store_id\": \"SUC001\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://api.mercadopago.com/pos",
+									"protocol": "https",
+									"host": [
+										"api",
+										"mercadopago",
+										"com"
+									],
+									"path": [
+										"pos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Orders",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150"
+									}
+								],
+								"url": {
+									"raw": "https://api.mercadopago.com/merchant_orders/search?external_reference=",
+									"protocol": "https",
+									"host": [
+										"api",
+										"mercadopago",
+										"com"
+									],
+									"path": [
+										"merchant_orders",
+										"search"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "preference_id",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "application_id",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "payer_id",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "sponsor_id",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "site_id",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "marketplace",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "date_created_from",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "date_created_to",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "last_updated_from",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "last_updated_to",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "items",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "external_reference",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Orders Copy",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150"
+									}
+								],
+								"url": {
+									"raw": "https://api.mercadopago.com/merchant_orders/search?external_reference=66436e7f-f028-4960-83eb-6ce3f728c7f1",
+									"protocol": "https",
+									"host": [
+										"api",
+										"mercadopago",
+										"com"
+									],
+									"path": [
+										"merchant_orders",
+										"search"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "preference_id",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "application_id",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "payer_id",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "sponsor_id",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "site_id",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "marketplace",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "date_created_from",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "date_created_to",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "last_updated_from",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "last_updated_to",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "items",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "limit",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "12123adfasdf123u4u",
+											"disabled": true
+										},
+										{
+											"key": "external_reference",
+											"value": "66436e7f-f028-4960-83eb-6ce3f728c7f1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
