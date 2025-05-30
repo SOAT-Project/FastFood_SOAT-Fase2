@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.*;
 
 @Tag(name = "Client")
-@RequestMapping("/client")
+@RequestMapping("/clients")
 public interface ClientAPI {
 
     @PostMapping(

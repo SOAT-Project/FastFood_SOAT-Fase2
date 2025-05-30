@@ -42,13 +42,13 @@ public class PaymentController implements PaymentAPI {
     }
 
     @Override
-    public UpdatePaymentToPaidStatusResponse updateToPaidStatus(UpdatePaymentToPaidStatusRequest request) {
+    public ResponseEntity<UpdatePaymentToPaidStatusResponse> updateToPaidStatus(UpdatePaymentToPaidStatusRequest request) {
         final UpdatePaymentToPaidStatusCommand command = new UpdatePaymentToPaidStatusCommand(
                 request.externalReference()
         );
 
         final UpdatePaymentToPaidStatusOutput output  = this.updatePaymentStatusUseCase.execute(command);
 
-        return PaymentPresenter.present(output);
+        return ResponseEntity.ok(PaymentPresenter.present(output));
     }
 }

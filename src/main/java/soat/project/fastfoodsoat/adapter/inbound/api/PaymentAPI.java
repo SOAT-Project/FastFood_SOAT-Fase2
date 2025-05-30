@@ -16,7 +16,7 @@ public interface PaymentAPI {
 
     @GetMapping(value = "/{external_reference}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get payment QRCode by external reference")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Payment QRCode retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Payment not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -25,10 +25,10 @@ public interface PaymentAPI {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Update payment to paid status")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Payment status updated successfully"),
             @ApiResponse(responseCode = "404", description = "Payment not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    UpdatePaymentToPaidStatusResponse updateToPaidStatus(@RequestBody UpdatePaymentToPaidStatusRequest request);
+    ResponseEntity<UpdatePaymentToPaidStatusResponse> updateToPaidStatus(@RequestBody UpdatePaymentToPaidStatusRequest request);
 }

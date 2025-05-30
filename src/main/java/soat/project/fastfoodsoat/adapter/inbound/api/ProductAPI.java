@@ -28,7 +28,7 @@ public interface ProductAPI {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Get product by ID")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product retrieved successfully"),
             @ApiResponse(responseCode = "404", description = "Product not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -37,7 +37,7 @@ public interface ProductAPI {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Update a product by ID")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Product updated successfully"),
             @ApiResponse(responseCode = "404", description = "Product not found"),
             @ApiResponse(responseCode = "422", description = "Validation error"),
@@ -47,7 +47,7 @@ public interface ProductAPI {
 
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Delete a product by ID")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Product deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Product not found"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
@@ -56,14 +56,14 @@ public interface ProductAPI {
 
     @GetMapping(value = "/category/{categoryId}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "List products by category with pagination")
-    @ApiResponses({
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Products retrieved successfully"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    Pagination<ListProductByCategoryResponse> listByCategory(
+    ResponseEntity<Pagination<ListProductByCategoryResponse>> listByCategory(
             @PathVariable(name = "categoryId") Integer categoryId,
             @RequestParam(name = "page", defaultValue = "0") int page,
-            @RequestParam(name = "perPage", defaultValue = "10") int perPage,
+            @RequestParam(name = "per_page", defaultValue = "10") int perPage,
             @RequestParam(name = "sort", defaultValue = "name") String sort,
             @RequestParam(name = "dir", defaultValue = "asc") String dir,
             @RequestParam(name = "search", defaultValue = "") String search

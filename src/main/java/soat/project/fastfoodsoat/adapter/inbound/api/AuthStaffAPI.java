@@ -16,7 +16,7 @@ import soat.project.fastfoodsoat.adapter.inbound.api.model.AuthStaffResponse;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.DefaultApiError;
 
 @Tag(name = "Auth")
-@RequestMapping("/auth")
+@RequestMapping("/auths")
 public interface AuthStaffAPI {
 
     @PostMapping(
