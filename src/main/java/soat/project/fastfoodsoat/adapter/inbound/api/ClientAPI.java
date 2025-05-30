@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.*;
 
-@Tag(name = "Client")
+@Tag(name = "Clients")
 @RequestMapping("/clients")
 public interface ClientAPI {
 
@@ -30,8 +30,7 @@ public interface ClientAPI {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Client found with success",
-                            content = @Content(schema = @Schema(implementation = ClientAuthResponse.class))
+                            description = "Client found with success"
                     ),
                     @ApiResponse(
                             responseCode = "404",
@@ -58,9 +57,20 @@ public interface ClientAPI {
     )
     @Operation(summary = "Create a new client")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Client created successfully"),
-            @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
-            @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Client created successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "422",
+                    description = "A validation error was thrown",
+                    content = @Content(schema = @Schema(implementation = DefaultApiError.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "An internal server error was thrown",
+                    content = @Content(schema = @Schema(implementation = DefaultApiError.class))
+            )
     })
     ResponseEntity<CreateClientResponse> create(@RequestBody CreateClientRequest request);
 }

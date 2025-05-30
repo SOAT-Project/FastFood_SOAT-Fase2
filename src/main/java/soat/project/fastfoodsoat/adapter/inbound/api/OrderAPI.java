@@ -15,10 +15,9 @@ import soat.project.fastfoodsoat.adapter.inbound.api.model.request.UpdateOrderSt
 import soat.project.fastfoodsoat.adapter.inbound.api.model.response.CreateOrderResponse;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.response.UpdateOrderStatusResponse;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.response.ListOrderResponse;
-import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderOutput;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
 
-@Tag(name = "Order")
+@Tag(name = "Orders")
 @RequestMapping("/orders")
 public interface OrderAPI {
 
@@ -33,8 +32,7 @@ public interface OrderAPI {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Order generated successfully",
-                            content = @Content(schema = @Schema(implementation = CreateOrderResponse.class))
+                            description = "Order generated successfully"
                     ),
                     @ApiResponse(
                             responseCode = "422",
@@ -56,13 +54,31 @@ public interface OrderAPI {
     ResponseEntity<CreateOrderResponse> create(@RequestBody CreateOrderRequest orderRequest);
 
   
-    @PutMapping(value = "/{publicId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(
+            value = "/{publicId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @Operation(summary = "Update order status")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Order status updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Order not found"),
-            @ApiResponse(responseCode = "422", description = "A validation error was thrown"),
-            @ApiResponse(responseCode = "500", description = "An internal server error was thrown")
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Order status updated successfully"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Order not found",
+                    content = @Content(schema = @Schema(implementation = DefaultApiError.class))
+            ),
+            @ApiResponse(
+                    responseCode = "422",
+                    description = "A validation error was thrown",
+                    content = @Content(schema = @Schema(implementation = DefaultApiError.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "An internal server error was thrown",
+                    content = @Content(schema = @Schema(implementation = DefaultApiError.class))
+            )
     })
     ResponseEntity<UpdateOrderStatusResponse> updateStatus(
             @PathVariable String publicId,
@@ -96,4 +112,5 @@ public interface OrderAPI {
             @RequestParam(name = "sort", required = false, defaultValue = "orderNumber") final String sort,
             @RequestParam(name = "dir", required = false, defaultValue = "asc") final String direction
     );
+
 }
