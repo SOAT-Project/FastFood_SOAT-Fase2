@@ -58,9 +58,9 @@ public class OrderJpaGateway implements OrderGateway {
     @Override
     public Order update(final Order order) {
 
-        final var clientId = order.getClientId().getValue();
-        final var clientJpa = clientRepository.findById(clientId)
-                .orElseThrow(() -> NotFoundException.with(Client.class, order.getClientId()));
+        final var clientJpa = order.getClientId() != null ?
+                clientRepository.findById(order.getClientId().getValue())
+                        .orElseThrow(() -> NotFoundException.with(Client.class, order.getClientId())) : null;
 
         final var productsMap = createMapOfProductsById(order);
 
