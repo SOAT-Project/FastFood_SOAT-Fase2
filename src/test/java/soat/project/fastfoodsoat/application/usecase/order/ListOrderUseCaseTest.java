@@ -85,8 +85,10 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 OrderPublicId.of(UUID.randomUUID()),
                 1,
                 OrderStatus.RECEIVED,
+                null,
                 orderProduct1.getValue().add(orderProduct2.getValue()),
-                List.of(orderProduct1, orderProduct2)
+                List.of(orderProduct1, orderProduct2),
+                null
         );
 
         final var orders = List.of(order);
