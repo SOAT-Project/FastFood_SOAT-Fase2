@@ -43,7 +43,7 @@ public class OrderController implements OrderAPI {
     @Override
     public ResponseEntity<CreateOrderResponse> create(final CreateOrderRequest createOrderRequest) {
         final CreateOrderCommand command = new CreateOrderCommand(
-                createOrderRequest.clientId(),
+                createOrderRequest.clientPublicId(),
                 createOrderRequest.orderProducts()
                         .stream()
                         .map(CreateOrderProductCommand::from)

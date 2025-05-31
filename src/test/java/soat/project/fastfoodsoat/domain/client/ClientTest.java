@@ -14,7 +14,7 @@ class ClientTest {
         final var expectedName = "John Doe";
         final var expectedEmail = "john.doe@email.com";
         final var expectedCpf = "12345678901";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         // When
         final var actualClient = Client.newClient(publicId, expectedName, expectedEmail, expectedCpf);
@@ -38,7 +38,7 @@ class ClientTest {
         final var expectedName = "John Doe";
         final var expectedEmail = "john.doe@email.com";
         final var expectedCpf = "123.456.789-01";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         // When
         final var actualClient = Client.newClient(publicId, expectedName, expectedEmail, expectedCpf);
@@ -64,7 +64,7 @@ class ClientTest {
         final String expectedName = null;
         final var expectedEmail = "john.doe@email.com";
         final var expectedCpf = "12345678901";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'name' should not be null";
         final var expectedErrorCount = 1;
@@ -86,7 +86,7 @@ class ClientTest {
         final var expectedName = "";
         final var expectedEmail = "john.doe@email.com";
         final var expectedCpf = "12345678901";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'name' should not be empty";
         final var expectedErrorCount = 1;
@@ -112,7 +112,7 @@ class ClientTest {
                 """;
         final var expectedEmail = "john.doe@email.com";
         final var expectedCpf = "12345678901";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'name' must be between 3 and 100 characters";
         final var expectedErrorCount = 1;
@@ -134,7 +134,7 @@ class ClientTest {
         final var expectedName = "A";
         final var expectedEmail = "john.doe@email.com";
         final var expectedCpf = "12345678901";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'name' must be between 3 and 100 characters";
         final var expectedErrorCount = 1;
@@ -157,7 +157,7 @@ class ClientTest {
         final var expectedName = "John Doe";
         final String expectedEmail = null;
         final var expectedCpf = "12345678901";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'email' should not be null";
         final var expectedErrorCount = 1;
@@ -179,7 +179,7 @@ class ClientTest {
         final var expectedName = "John Doe";
         final var expectedEmail = "";
         final var expectedCpf = "12345678901";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'email' should not be empty";
         final var expectedErrorCount = 1;
@@ -201,7 +201,7 @@ class ClientTest {
         final var expectedName = "John Doe";
         final var expectedEmail = "john.doe.com";
         final var expectedCpf = "12345678901";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'email' format is not valid";
         final var expectedErrorCount = 1;
@@ -223,7 +223,7 @@ class ClientTest {
         final var expectedName = "John Doe";
         final var expectedEmail = "john.doe@email.com";
         final String expectedCpf = null;
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'cpf' should not be null";
         final var expectedErrorCount = 1;
@@ -245,7 +245,7 @@ class ClientTest {
         final var expectedName = "John Doe";
         final var expectedEmail = "john.doe@email.com";
         final String expectedCpf = "";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'cpf' should not be empty";
         final var expectedErrorCount = 1;
@@ -267,7 +267,7 @@ class ClientTest {
         final var expectedName = "John Doe";
         final var expectedEmail = "john.doe@email.com";
         final String expectedCpf = "123456789123";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'cpf' size must be 11 digits";
         final var expectedErrorCount = 1;
@@ -289,7 +289,7 @@ class ClientTest {
         final var expectedName = "John Doe";
         final var expectedEmail = "john.doe@email.com";
         final String expectedCpf = "123456789";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'cpf' size must be 11 digits";
         final var expectedErrorCount = 1;
@@ -311,7 +311,7 @@ class ClientTest {
         final var expectedName = "John Doe";
         final var expectedEmail = "john.doe@email.com";
         final String expectedCpf = "ABCDEFGHIJK";
-        final var publicId = UUID.randomUUID();
+        final var publicId = ClientPublicId.of(UUID.randomUUID());
 
         final var expectedErrorMessage = "'cpf' should contain only digits";
         final var expectedErrorCount = 1;

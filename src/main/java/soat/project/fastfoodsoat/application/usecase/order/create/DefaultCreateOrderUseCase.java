@@ -4,7 +4,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.domain.client.Client;
 import soat.project.fastfoodsoat.domain.client.ClientGateway;
-import soat.project.fastfoodsoat.domain.client.ClientId;
+import soat.project.fastfoodsoat.domain.client.ClientPublicId;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.order.Order;
@@ -20,11 +20,9 @@ import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.product.ProductGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
-import soat.project.fastfoodsoat.utils.QRCodeGeneratorUtils;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
@@ -57,12 +55,15 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
         final Notification notification = Notification.create();
         System.out.println("CreateOrderCommand: " + command);
 
-        final ClientId clientId = command.clientId() != null ? ClientId.of(command.clientId()) : null;
+        final ClientPublicId clientPublicId = command.clientPublicId() != null ?
+                ClientPublicId.of(command.clientPublicId()) : null;
 
-        if (clientId != null)
-            clientGateway.findById(clientId)
-                    .orElseThrow(() -> NotFoundException.with(Client.class, clientId));
+        final var client = clientPublicId != null ?
+            clientGateway.findByPublicId(clientPublicId)
+                .orElseThrow(() -> NotFoundException.with(Client.class, clientPublicId))
+            : null;
 
+        final var clientId = client != null ? client.getId() : null;
 
         final List<CreateOrderProductCommand> orderProducts = command.orderProducts();
 
