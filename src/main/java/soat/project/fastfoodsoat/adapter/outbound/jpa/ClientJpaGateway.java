@@ -4,10 +4,7 @@ import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ClientJpaEntity;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.ClientJpaMapper;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ClientRepository;
-import soat.project.fastfoodsoat.domain.client.Client;
-import soat.project.fastfoodsoat.domain.client.ClientCpf;
-import soat.project.fastfoodsoat.domain.client.ClientGateway;
-import soat.project.fastfoodsoat.domain.client.ClientId;
+import soat.project.fastfoodsoat.domain.client.*;
 
 import java.util.Optional;
 
@@ -25,6 +22,12 @@ public class ClientJpaGateway implements ClientGateway {
         final var clientJpa = this.clientRepository.findByCpf(cpf.getValue());
 
         return composeClient(clientJpa);
+    }
+
+    @Override
+    public Optional<Client> findByPublicId(final ClientPublicId publicId) {
+        return this.clientRepository.findByPublicId(publicId.getValue())
+                .map(ClientJpaMapper::toDomain);
     }
 
     @Override

@@ -30,10 +30,10 @@ public class DefaultAuthClientUseCase extends AuthClientUseCase {
         final var client = retrieveClient(identification);
 
         return new AuthClientOutput(
-                client.getPublicId(),
+                client.getPublicId().getValue(),
                 client.getEmail(),
                 client.getName(),
-                client.getEmail()
+                client.getCpf().getValue()
         );
 
     }

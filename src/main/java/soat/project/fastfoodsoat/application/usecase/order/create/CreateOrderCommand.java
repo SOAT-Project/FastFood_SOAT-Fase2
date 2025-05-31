@@ -1,18 +1,18 @@
 package soat.project.fastfoodsoat.application.usecase.order.create;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 public record CreateOrderCommand(
-        Integer clientId,
+        UUID clientPublicId,
         List<CreateOrderProductCommand> orderProducts
 ) {
     public static CreateOrderCommand with(
-            final Integer clientId,
+            final UUID clientPublicId,
             final List<CreateOrderProductCommand> orderProducts
     ) {
         return new CreateOrderCommand(
-                clientId,
+                clientPublicId,
                 orderProducts
         );
     }

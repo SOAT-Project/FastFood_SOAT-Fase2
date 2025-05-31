@@ -22,7 +22,7 @@ public record CreateClientOutput (
 
     public static CreateClientOutput from(final Client client) {
         return new CreateClientOutput(
-                client.getPublicId(),
+                client.getPublicId().getValue(),
                 client.getName(),
                 client.getEmail(),
                 client.getCpf().getValue()

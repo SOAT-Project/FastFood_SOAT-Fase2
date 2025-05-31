@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
 import soat.project.fastfoodsoat.domain.client.Client;
 import soat.project.fastfoodsoat.domain.client.ClientGateway;
+import soat.project.fastfoodsoat.domain.client.ClientPublicId;
 import soat.project.fastfoodsoat.domain.exception.DomainException;
 
 import java.util.List;
@@ -33,7 +34,7 @@ class AuthClientUseCaseTest extends UseCaseTest {
     @Test
     void givenValidCommandWithCPF_WhenCallAuthClient_shouldReturnClient() {
         // Given
-        final var client = Client.newClient(UUID.randomUUID(), "john", "john@email.com", "12345678901");
+        final var client = Client.newClient(ClientPublicId.of(UUID.randomUUID()), "john", "john@email.com", "12345678901");
         final var command = new AuthClientCommand(client.getCpf().getValue());
 
         when(clientGateway.findByCpf(client.getCpf())).thenReturn(Optional.of(client));
