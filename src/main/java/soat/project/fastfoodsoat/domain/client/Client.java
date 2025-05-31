@@ -11,14 +11,14 @@ import java.util.UUID;
 
 public class Client extends AggregateRoot<ClientId> {
 
-    private UUID publicId;
+    private ClientPublicId publicId;
     private String name;
     private String email;
     private ClientCpf cpf;
 
     private Client(
             final ClientId id,
-            final UUID publicId,
+            final ClientPublicId publicId,
             final String name,
             final String email,
             final ClientCpf cpf,
@@ -40,12 +40,12 @@ public class Client extends AggregateRoot<ClientId> {
     }
 
     public static Client newClient(
-            final UUID publicId,
+            final ClientPublicId publicId,
             final String name,
             final String email,
             final String cpf
     ) {
-        final ClientId clientId = null; // O valor do ID será na camada de persistência
+        final ClientId clientId = null;
         final ClientCpf clientCpf = ClientCpf.of(cpf);
         final Instant now = InstantUtils.now();
         return new Client(
@@ -62,7 +62,7 @@ public class Client extends AggregateRoot<ClientId> {
 
     public static Client with(
             final ClientId id,
-            final UUID publicId,
+            final ClientPublicId publicId,
             final String name,
             final String email,
             final ClientCpf cpf,
@@ -96,7 +96,7 @@ public class Client extends AggregateRoot<ClientId> {
     }
 
     public Client update(
-            final UUID publicId,
+            final ClientPublicId publicId,
             final String name,
             final String email,
             final ClientCpf cpf
@@ -136,7 +136,7 @@ public class Client extends AggregateRoot<ClientId> {
         return cpf;
     }
 
-    public UUID getPublicId() {
+    public ClientPublicId getPublicId() {
         return publicId;
     }
 }
