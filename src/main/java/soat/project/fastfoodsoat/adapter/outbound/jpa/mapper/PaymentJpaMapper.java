@@ -11,7 +11,7 @@ import java.util.Objects;
 public class PaymentJpaMapper {
 
     private PaymentJpaMapper() {
-        // Private constructor to prevent instantiation
+
     }
 
     public static PaymentJpaEntity toJpa(final Payment payment, final OrderJpaEntity orderJpa) {
@@ -22,7 +22,7 @@ public class PaymentJpaMapper {
                 payment.getValue(),
                 payment.getExternalReference(),
                 payment.getQrCode(),
-                payment.getStatus().toString(),
+                payment.getStatus(),
                 orderJpa,
                 payment.getCreatedAt(),
                 payment.getUpdatedAt(),
@@ -38,7 +38,7 @@ public class PaymentJpaMapper {
                 payment.getValue(),
                 payment.getExternalReference(),
                 payment.getQrCode(),
-                payment.getStatus().toString(),
+                payment.getStatus(),
                 OrderJpaMapper.toJpa(payment.getOrder(), null),
                 payment.getCreatedAt(),
                 payment.getUpdatedAt(),
@@ -52,7 +52,7 @@ public class PaymentJpaMapper {
                 paymentJpa.getValue(),
                 paymentJpa.getExternalReference(),
                 paymentJpa.getQrCode(),
-                PaymentStatus.valueOf(paymentJpa.getStatus()),
+                paymentJpa.getStatus(),
                 paymentJpa.getOrder() != null ? OrderJpaMapper.fromJpaWithoutPayment(paymentJpa.getOrder()) : null,
                 paymentJpa.getCreatedAt(),
                 paymentJpa.getUpdatedAt(),
