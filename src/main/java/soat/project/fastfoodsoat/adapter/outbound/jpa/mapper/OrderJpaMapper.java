@@ -29,7 +29,7 @@ public final class OrderJpaMapper {
                 OrderPublicId.of(orderJpa.getPublicId()),
                 orderJpa.getValue(),
                 orderJpa.getOrderNumber(),
-                OrderStatus.valueOf(orderJpa.getStatus()),
+                orderJpa.getStatus(),
                 clientId,
                 orderJpa.getOrderProducts() != null ?orderJpa.getOrderProducts().stream()
                         .filter(Objects::nonNull)
@@ -51,7 +51,7 @@ public final class OrderJpaMapper {
                 OrderPublicId.of(orderJpa.getPublicId()),
                 orderJpa.getValue(),
                 orderJpa.getOrderNumber(),
-                OrderStatus.valueOf(orderJpa.getStatus()),
+                orderJpa.getStatus(),
                 clientId,
                 orderJpa.getOrderProducts() != null ?orderJpa.getOrderProducts().stream()
                         .filter(Objects::nonNull)
@@ -72,7 +72,7 @@ public final class OrderJpaMapper {
                 Objects.isNull(order.getPublicId()) ? null : order.getPublicId().getValue(),
                 order.getValue(),
                 order.getOrderNumber(),
-                order.getStatus().toString(),
+                order.getStatus(),
                 null,
                 null,
                 order.getCreatedAt(),
@@ -91,7 +91,7 @@ public final class OrderJpaMapper {
                 Objects.isNull(order.getPublicId()) ? null : order.getPublicId().getValue(),
                 order.getValue(),
                 order.getOrderNumber(),
-                order.getStatus().toString(),
+                order.getStatus(),
                 null,
                 null,
                 order.getCreatedAt(),

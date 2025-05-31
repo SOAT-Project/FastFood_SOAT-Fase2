@@ -3,6 +3,7 @@ package soat.project.fastfoodsoat.adapter.outbound.jpa.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.ColumnTransformer;
+import soat.project.fastfoodsoat.domain.order.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -28,8 +29,8 @@ public class OrderJpaEntity {
     private Integer orderNumber;
 
     @Column(name = "status")
-    @ColumnTransformer(write="?::order_status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id")
@@ -58,7 +59,7 @@ public class OrderJpaEntity {
                           UUID publicId,
                           BigDecimal value,
                           Integer orderNumber,
-                          String status,
+                          OrderStatus status,
                           List<OrderProductJpaEntity> orderProducts,
                           PaymentJpaEntity payment,
                           Instant createdAt,
@@ -127,11 +128,11 @@ public class OrderJpaEntity {
         this.orderNumber = orderNumber;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
