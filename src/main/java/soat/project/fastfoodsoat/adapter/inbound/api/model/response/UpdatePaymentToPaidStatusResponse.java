@@ -5,6 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record UpdatePaymentToPaidStatusResponse(
         @JsonProperty("value") String value,
         @JsonProperty("status") String paymentStatus,
-        @JsonProperty("externalReference") String externalReference
+        @JsonProperty("external_reference") String externalReference
 ) {
 }

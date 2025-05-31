@@ -15,8 +15,8 @@ import soat.project.fastfoodsoat.adapter.inbound.api.model.AuthStaffRequest;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.AuthStaffResponse;
 import soat.project.fastfoodsoat.adapter.inbound.api.model.DefaultApiError;
 
-@Tag(name = "Auth")
-@RequestMapping("/auth")
+@Tag(name = "Auths")
+@RequestMapping("/auths")
 public interface AuthStaffAPI {
 
     @PostMapping(
@@ -31,8 +31,7 @@ public interface AuthStaffAPI {
             value = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Token generated successfully",
-                            content = @Content(schema = @Schema(implementation = AuthStaffResponse.class))
+                            description = "Token generated successfully"
                     ),
                     @ApiResponse(
                             responseCode = "404",

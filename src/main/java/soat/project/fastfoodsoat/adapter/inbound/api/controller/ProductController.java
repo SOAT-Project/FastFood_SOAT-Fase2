@@ -45,7 +45,7 @@ public class ProductController implements ProductAPI {
                 input.name(),
                 input.description(),
                 input.value(),
-                input.image_URL(),
+                input.imageUrl(),
                 input.productCategoryId()
         );
         var output = createProductUseCase.execute(command);
@@ -65,7 +65,7 @@ public class ProductController implements ProductAPI {
                 request.name(),
                 request.description(),
                 request.value(),
-                request.image_URL(),
+                request.imageUrl(),
                 request.productCategoryId()
         );
         var output = updateProductUseCase.execute(command);
@@ -78,17 +78,19 @@ public class ProductController implements ProductAPI {
     }
 
     @Override
-    public Pagination<ListProductByCategoryResponse> listByCategory(Integer categoryId,
-                                                                    int page,
-                                                                    int perPage,
-                                                                    String sort,
-                                                                    String dir,
-                                                                    String search) {
+    public ResponseEntity<Pagination<ListProductByCategoryResponse>> listByCategory(
+            Integer categoryId,
+            int page,
+            int perPage,
+            String sort,
+            String dir,
+            String search
+    ) {
         var query = new SearchQuery(page, perPage, search, sort, dir);
         var params = ListByCategoryParams.with(categoryId, query);
         var result = listByCategoryUseCase.execute(params);
 
-        return new Pagination<>(
+        final var pagination = new Pagination<>(
                 result.currentPage(),
                 result.perPage(),
                 result.total(),
@@ -96,5 +98,7 @@ public class ProductController implements ProductAPI {
                         .map(ProductPresenter::present)
                         .toList()
         );
+
+        return ResponseEntity.ok(pagination);
     }
 }

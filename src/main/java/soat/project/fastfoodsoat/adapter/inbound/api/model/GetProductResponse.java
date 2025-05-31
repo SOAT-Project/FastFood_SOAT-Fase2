@@ -11,7 +11,7 @@ public record GetProductResponse(
         @JsonProperty("description") String description,
         @JsonProperty("value") BigDecimal value,
         @JsonProperty("image_url") String imageURL,
-        @JsonProperty("product_category_id") Integer productCategorieId,
+        @JsonProperty("product_category_id") Integer productCategoryId,
         @JsonProperty("created_at") Instant createdAt,
         @JsonProperty("updated_at") Instant updatedAt
 ) {
