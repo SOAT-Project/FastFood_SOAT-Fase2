@@ -106,6 +106,7 @@ public interface OrderAPI {
             }
     )
     ResponseEntity<Pagination<ListOrderResponse>> list(
+            @RequestParam(name = "only_paid", required = false, defaultValue = "false") final boolean onlyPaid,
             @RequestParam(name = "search", required = false, defaultValue = "") final String search,
             @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
             @RequestParam(name = "per_page", required = false, defaultValue = "10") final int perPage,

@@ -15,8 +15,11 @@ public class DefaultListOrderUseCase extends ListOrderUseCase {
     }
 
     @Override
-    public Pagination<ListOrderOutput> execute(final SearchQuery query) {
-        return orderGateway.findAll(query)
+    public Pagination<ListOrderOutput> execute(final ListOrderParams params) {
+        final var onlyPaid = params.onlyPaid();
+        final var query = params.searchQuery();
+
+        return orderGateway.findAll(onlyPaid, query)
                 .map(ListOrderOutput::from);
     }
 
