@@ -17,6 +17,7 @@ import soat.project.fastfoodsoat.domain.order.OrderGateway;
 import soat.project.fastfoodsoat.domain.order.OrderPublicId;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
+import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
 import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.product.ProductId;
 import java.util.Map;
@@ -83,7 +84,7 @@ public class OrderJpaGateway implements OrderGateway {
     }
 
     @Override
-    public Pagination<Order> findAll(final SearchQuery query) {
+    public Pagination<Order> findAll(final boolean onlyPaid, final SearchQuery query) {
         final var page = PageRequest.of(
                 query.page(),
                 query.perPage(),
@@ -92,7 +93,14 @@ public class OrderJpaGateway implements OrderGateway {
         );
 
         if (isNull(query.terms())) {
-            final var pageResult = this.orderRepository.findAll(page);
+            final Page<OrderJpaEntity> pageResult;
+
+            if (onlyPaid) {
+                pageResult = this.orderRepository.findAllByPayment_Status(PaymentStatus.APPROVED, page);
+            } else {
+                pageResult = this.orderRepository.findAll(page);
+            }
+
             return new Pagination<>(
                     pageResult.getNumber(),
                     pageResult.getSize(),
@@ -102,14 +110,14 @@ public class OrderJpaGateway implements OrderGateway {
         }
 
         final var terms = query.terms();
-        var pageResult = tryFindByPublicId(terms, page);
+        var pageResult = tryFindByPublicId(onlyPaid, terms, page);
 
         if (pageResult.isEmpty()) {
-            pageResult = tryFindByOrderNumber(terms, page);
+            pageResult = tryFindByOrderNumber(onlyPaid, terms, page);
         }
 
         if (pageResult.isEmpty()) {
-            pageResult = tryFindByProductName(terms, page);
+            pageResult = tryFindByProductName(onlyPaid, terms, page);
         }
 
         return new Pagination<>(
@@ -120,25 +128,38 @@ public class OrderJpaGateway implements OrderGateway {
         );
     }
 
-    private Page<OrderJpaEntity> tryFindByPublicId(final String terms, final PageRequest page) {
+    private Page<OrderJpaEntity> tryFindByPublicId(final boolean onlyPaid, final String terms, final PageRequest page) {
         try {
             final UUID uuid = UUID.fromString(terms);
+
+            if (onlyPaid) {
+                return orderRepository.findAllByPublicIdAndPayment_Status(uuid, PaymentStatus.APPROVED, page);
+            }
+
             return orderRepository.findByPublicId(uuid, page);
         } catch (IllegalArgumentException e) {
             return org.springframework.data.domain.Page.empty(page);
         }
     }
 
-    private Page<OrderJpaEntity> tryFindByOrderNumber(final String terms, final PageRequest page) {
+    private Page<OrderJpaEntity> tryFindByOrderNumber(final boolean onlyPaid, final String terms, final PageRequest page) {
         try {
             final Integer orderNumber = Integer.valueOf(terms);
+
+            if (onlyPaid) {
+                return orderRepository.findAllByOrderNumberAndPayment_Status(orderNumber, PaymentStatus.APPROVED, page);
+            }
+
             return orderRepository.findByOrderNumber(orderNumber, page);
         } catch (NumberFormatException e) {
             return org.springframework.data.domain.Page.empty(page);
         }
     }
 
-    private Page<OrderJpaEntity> tryFindByProductName(final String terms, final PageRequest page) {
+    private Page<OrderJpaEntity> tryFindByProductName(final boolean onlyPaid, final String terms, final PageRequest page) {
+        if (onlyPaid) {
+                return orderRepository.findAllByOrderProducts_ProductNameContainingIgnoreCaseAndPayment_Status(terms, PaymentStatus.APPROVED, page);
+        }
         return orderRepository.findDistinctByOrderProductsProductNameContainingIgnoreCase(terms, page);
     }
 

@@ -14,6 +14,7 @@ import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderCom
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderOutput;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderProductCommand;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderUseCase;
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderParams;
 import soat.project.fastfoodsoat.application.usecase.order.update.changeStatus.UpdateOrderStatusCommand;
 import soat.project.fastfoodsoat.application.usecase.order.update.changeStatus.UpdateOrderStatusUseCase;
 import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderOutput;
@@ -63,6 +64,7 @@ public class OrderController implements OrderAPI {
 
 
     public ResponseEntity<Pagination<ListOrderResponse>> list(
+            final boolean onlyPaid,
             final String search,
             final int page,
             final int perPage,
@@ -71,7 +73,8 @@ public class OrderController implements OrderAPI {
     ) {
         final var query = new SearchQuery(page, perPage, search, sort, direction);
 
-        final var output = this.listOrderUseCase.execute(query);
+        final var params = new ListOrderParams(onlyPaid, query);
+        final var output = this.listOrderUseCase.execute(params);
 
         return ResponseEntity.ok(output.map(OrderPresenter::present));
     }
