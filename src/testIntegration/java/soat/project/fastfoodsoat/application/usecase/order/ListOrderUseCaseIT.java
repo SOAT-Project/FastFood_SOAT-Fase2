@@ -1,32 +1,31 @@
 package soat.project.fastfoodsoat.application.usecase.order;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderProductJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductCategoryJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.*;
 import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.OrderJpaMapper;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderProductRepository;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderRepository;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductCategoryRepository;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductRepository;
+import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.*;
 import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.DefaultListOrderUseCase;
 import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderOutput;
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderParams;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
+import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
 import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
 import soat.project.fastfoodsoat.utils.InstantUtils;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,6 +47,16 @@ public class ListOrderUseCaseIT {
 
     @Autowired
     private OrderProductRepository orderProductRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
+
+    @BeforeEach
+    public void individualTestSetup() {
+        orderProductRepository.deleteAll();
+        orderRepository.deleteAll();
+        productRepository.deleteAll();
+    }
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")
@@ -116,7 +125,7 @@ public class ListOrderUseCaseIT {
                 UUID.randomUUID(),
                 product1Created.getValue().multiply(BigDecimal.valueOf(product1Quantity)).add(product2Created.getValue().multiply(BigDecimal.valueOf(product2Quantity))),
                 1000,
-                OrderStatus.RECEIVED.name(),
+                OrderStatus.RECEIVED,
                 null,
                 null,
                 InstantUtils.now(),
@@ -187,7 +196,7 @@ public class ListOrderUseCaseIT {
                 UUID.randomUUID(),
                 product3Created.getValue().multiply(BigDecimal.valueOf(product3Quantity)),
                 1001,
-                OrderStatus.READY.name(),
+                OrderStatus.READY,
                 null,
                 null,
                 InstantUtils.now(),
@@ -197,6 +206,20 @@ public class ListOrderUseCaseIT {
         );
 
         final var orderCreated = orderRepository.save(order);
+
+        final var payment = new PaymentJpaEntity(
+                null,
+                product3Created.getValue().multiply(BigDecimal.valueOf(product3Quantity)),
+                "ext-ref-1002",
+                "http://example.com/qr-code-1002",
+                PaymentStatus.PENDING,
+                orderCreated,
+                InstantUtils.now(),
+                InstantUtils.now(),
+                null
+        );
+
+        final var paymentCreated = paymentRepository.save(payment);
 
         final var orderProduct = new OrderProductJpaEntity(
                 null,
@@ -271,7 +294,7 @@ public class ListOrderUseCaseIT {
                 UUID.randomUUID(),
                 totalValue,
                 1002,
-                OrderStatus.READY.name(),
+                OrderStatus.READY,
                 null,
                 null,
                 InstantUtils.now().minusSeconds(3600), // Order created 1 hour ago
@@ -281,6 +304,20 @@ public class ListOrderUseCaseIT {
         );
 
         final var orderCreated = orderRepository.save(order);
+
+        final var payment = new PaymentJpaEntity(
+                null,
+                totalValue,
+                "ext-ref-1002",
+                "http://example.com/qr-code-1002",
+                PaymentStatus.APPROVED,
+                orderCreated,
+                InstantUtils.now(),
+                InstantUtils.now(),
+                null
+        );
+
+        final var paymentCreated = paymentRepository.save(payment);
 
         final var orderProduct1 = new OrderProductJpaEntity(
                 null,
@@ -323,10 +360,12 @@ public class ListOrderUseCaseIT {
     }
 
     @Test
+    @Transactional
     void givenValidQuery_whenCallsListOrders_shouldReturnOrders() {
         // Given
         final var orders = sortOrders(createOrders());
 
+        final var onlyPaid = false;
         final var expectedPage = 0;
         final var expectedPerPage = 10;
         final var expectedTerms = "";
@@ -342,15 +381,16 @@ public class ListOrderUseCaseIT {
                 expectedDirection
         );
 
+        final var params = new ListOrderParams(onlyPaid, query);
+
         final var expectedItems = orders.stream()
                 .map(ListOrderOutput::from)
                 .toList();
 
         // When
-        final var actualOutput = useCase.execute(query);
+        final var actualOutput = useCase.execute(params);
 
         // Then
-        
         assertEquals(expectedPage, actualOutput.currentPage());
         assertEquals(expectedPerPage, actualOutput.perPage());
         assertEquals(expectedTotal, actualOutput.total());
@@ -359,10 +399,12 @@ public class ListOrderUseCaseIT {
     }
 
     @Test
+    @Transactional
     void givenValidQueryWhithOneItemPerPage_whenCallsListOrders_shouldReturnOneOrder() {
         // Given
         final var orders = sortOrders(createOrders());
 
+        final var onlyPaid = false;
         final var expectedPage = 0;
         final var expectedPerPage = 1;
         final var expectedTerms = "";
@@ -378,19 +420,50 @@ public class ListOrderUseCaseIT {
                 expectedDirection
         );
 
-        final var expectedItems = orders.stream()
-                .map(ListOrderOutput::from)
-                .toList();
+        final var params = new ListOrderParams(onlyPaid, query);
 
         // When
-        final var actualOutput = useCase.execute(query);
+        final var actualOutput = useCase.execute(params);
 
         // Then
-
         assertEquals(expectedPage, actualOutput.currentPage());
         assertEquals(expectedPerPage, actualOutput.perPage());
         assertEquals(expectedTotal, actualOutput.total());
         assertEquals(expectedPerPage, actualOutput.items().size());
+    }
+
+    @Test
+    @Transactional
+    void givenValidQueryWhithOnlyPaidFilter_whenCallsListOrders_shouldReturnOneOrder() {
+        // Given
+        final var orders = sortOrders(createOrders());
+
+        final var onlyPaid = true;
+        final var expectedPage = 0;
+        final var expectedPerPage = 10;
+        final var expectedTerms = "";
+        final var expectedSort = "createdAt";
+        final var expectedDirection = "asc";
+        final var expectedTotal = 1;
+
+        final var query = new SearchQuery(
+                expectedPage,
+                expectedPerPage,
+                expectedTerms,
+                expectedSort,
+                expectedDirection
+        );
+
+        final var params = new ListOrderParams(onlyPaid, query);
+
+        // When
+        final var actualOutput = useCase.execute(params);
+
+        // Then
+        assertEquals(expectedPage, actualOutput.currentPage());
+        assertEquals(expectedPerPage, actualOutput.perPage());
+        assertEquals(expectedTotal, actualOutput.total());
+        assertEquals(expectedTotal, actualOutput.items().size());
     }
 
 }
