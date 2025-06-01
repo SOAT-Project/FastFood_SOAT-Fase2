@@ -62,14 +62,14 @@ public class UpdatePaymentToPaidStatusUseCaseIT {
     void givenValidPayment_whenUpdatePaymentToPaidStatus_thenShouldUpdatePayment() {
         OrderJpaEntity order = new OrderJpaEntity();
         order.setPublicId(UUID.randomUUID());
-        order.setStatus(OrderStatus.RECEIVED.toString());
+        order.setStatus(OrderStatus.RECEIVED);
         order.setValue(BigDecimal.valueOf(100.00));
         order.setOrderNumber(1);
         OrderJpaEntity savedOrder = orderRepository.save(order);
 
         PaymentJpaEntity payment = new PaymentJpaEntity();
         payment.setOrder(savedOrder);
-        payment.setStatus(PaymentStatus.PENDING.toString());
+        payment.setStatus(PaymentStatus.PENDING);
         payment.setValue(BigDecimal.valueOf(100.00));
         payment.setQrCode("QRCodeData");
         payment.setExternalReference("ext-ref-" + UUID.randomUUID());
