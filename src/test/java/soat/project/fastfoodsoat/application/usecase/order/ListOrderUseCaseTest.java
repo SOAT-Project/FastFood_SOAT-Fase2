@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
 import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.DefaultListOrderUseCase;
 import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderOutput;
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderParams;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderGateway;
 import soat.project.fastfoodsoat.domain.order.OrderPublicId;
@@ -93,6 +94,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
 
         final var orders = List.of(order);
 
+        final var onlyPaid = false;
         final var expectedPage = 0;
         final var expectedPerPage = 10;
         final var expectedTerms = "";
@@ -108,6 +110,8 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 expectedDirection
         );
 
+        final var params = new ListOrderParams(onlyPaid, query);
+
         final var expectedPagination = new Pagination<>(
                 expectedPage,
                 expectedPerPage,
@@ -119,10 +123,10 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 .map(ListOrderOutput::from)
                 .toList();
 
-        when(orderGateway.findAll(any())).thenReturn(expectedPagination);
+        when(orderGateway.findAll(anyBoolean(), any())).thenReturn(expectedPagination);
 
         // When
-        final var actualOutput = useCase.execute(query);
+        final var actualOutput = useCase.execute(params);
 
         // Then
 
@@ -131,7 +135,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
         assertEquals(expectedTotal, actualOutput.total());
         assertEquals(expectedItems, actualOutput.items());
 
-        verify(orderGateway, times(1)).findAll(any());
+        verify(orderGateway, times(1)).findAll(anyBoolean(), any());
     }
 
     @Test
@@ -139,6 +143,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
         // Given
         final var orders = List.<Order>of();
 
+        final var onlyPaid = false;
         final var expectedPage = 0;
         final var expectedPerPage = 10;
         final var expectedTerms = "";
@@ -154,6 +159,8 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 expectedDirection
         );
 
+        final var params = new ListOrderParams(onlyPaid, query);
+
         final var expectedPagination = new Pagination<>(
                 expectedPage,
                 expectedPerPage,
@@ -161,10 +168,10 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 orders
         );
 
-        when(orderGateway.findAll(any())).thenReturn(expectedPagination);
+        when(orderGateway.findAll(anyBoolean(), any())).thenReturn(expectedPagination);
 
         // When
-        final var actualOutput = useCase.execute(query);
+        final var actualOutput = useCase.execute(params);
 
         // Then
         assertEquals(expectedPage, actualOutput.currentPage());
@@ -172,12 +179,13 @@ public class ListOrderUseCaseTest extends UseCaseTest {
         assertEquals(expectedTotal, actualOutput.total());
         assertEquals(List.<ListOrderOutput>of(), actualOutput.items());
 
-        verify(orderGateway, times(1)).findAll(any());
+        verify(orderGateway, times(1)).findAll(anyBoolean(), any());
     }
 
     @Test
     void givenValidQuery_whenCallsListOrdersAndGatewayThrowsAnException_shouldReturnError() {
         // Given
+        final var onlyPaid = false;
         final var expectedPage = -1;
         final var expectedPerPage = 0;
         final var expectedTerms = "";
@@ -192,21 +200,23 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 expectedDirection
         );
 
+        final var params = new ListOrderParams(onlyPaid, query);
+
         final var expectedErrorMessage = "Gateway error";
 
-        when(orderGateway.findAll(any()))
+        when(orderGateway.findAll(anyBoolean(), any()))
                 .thenThrow(new IllegalStateException(expectedErrorMessage));
 
         // When
         final var actualException = assertThrows(
                 IllegalStateException.class,
-                () -> useCase.execute(query)
+                () -> useCase.execute(params)
         );
 
         // Then
         Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
 
-        verify(orderGateway, times(1)).findAll(any());
+        verify(orderGateway, times(1)).findAll(anyBoolean(), any());
     }
 
 
