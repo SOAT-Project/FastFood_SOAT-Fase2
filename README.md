@@ -93,12 +93,12 @@ docker-compose up
 docker-compose up -d
 ```
 
-#### Construir os serviços antes de iniciar
+#### Construir os serviços antes de iniciar (recomendado)
 ```bash
 docker-compose up --build
 ```
 
-#### Parar todos os serviços
+#### Parar todos os serviços (recomendado)
 ```bash
 docker-compose down
 ```
@@ -130,6 +130,17 @@ Você pode configurar as seguintes variáveis de ambiente:
 
 ### Testes
 
+#### Testes Unitários
+
+- Os testes de unidade pode ser executados com o seguinte comando:
+```bash
+./gradlew test
+```
+
 #### Testes de Integração
 
 - Para detalhes sobre testes de integração veja: [Documentação - Teste Integração](./docs/integration-tests.md).
+
+### Swagger
+
+A documentação da API está disponível no Swagger, acessível em: http://localhost:8080/api/swagger-ui/index.html
