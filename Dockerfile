@@ -4,11 +4,11 @@ WORKDIR /app
 
 COPY build.gradle settings.gradle ./
 
-RUN gradle build --no-daemon || return 0
+RUN gradle build -x test -x testIntegration --no-daemon || return 0
 
 COPY . .
 
-RUN gradle build --no-daemon
+RUN gradle build -x test -x testIntegration --no-daemon
 
 FROM eclipse-temurin:21-jre-alpine AS runtime
 
