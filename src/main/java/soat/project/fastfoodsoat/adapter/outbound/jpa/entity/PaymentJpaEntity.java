@@ -3,6 +3,7 @@ package soat.project.fastfoodsoat.adapter.outbound.jpa.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.ColumnTransformer;
+import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -27,8 +28,8 @@ public class PaymentJpaEntity {
     private String qrCode;
 
     @Column(name = "status")
-    @ColumnTransformer(write="?::payment_status")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
@@ -47,7 +48,15 @@ public class PaymentJpaEntity {
 
     public PaymentJpaEntity() {}
 
-    public PaymentJpaEntity(Integer id, BigDecimal value, String externalReference, String qrCode, String status, OrderJpaEntity order, Instant createdAt, Instant updatedAt, Instant deletedAt) {
+    public PaymentJpaEntity(Integer id,
+                            BigDecimal value,
+                            String externalReference,
+                            String qrCode,
+                            PaymentStatus status,
+                            OrderJpaEntity order,
+                            Instant createdAt,
+                            Instant updatedAt,
+                            Instant deletedAt) {
         this.id = id;
         this.value = value;
         this.externalReference = externalReference;
@@ -91,11 +100,11 @@ public class PaymentJpaEntity {
         this.qrCode = qrCode;
     }
 
-    public String getStatus() {
+    public PaymentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(PaymentStatus status) {
         this.status = status;
     }
 
