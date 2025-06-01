@@ -311,7 +311,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"client_id\": null,\r\n  \"products\": [\r\n    {\r\n      \"product_id\": 7,\r\n      \"quantity\": 5\r\n    }\r\n  ]\r\n}",
+							"raw": "{\r\n  \"client_public_id\": null,\r\n  \"products\": [\r\n    {\r\n      \"product_id\": 7,\r\n      \"quantity\": 5\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -339,7 +339,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/orders?search=&page=0&per_page=10&sort=orderNumber&dir=asc",
+							"raw": "http://localhost:8080/api/orders?only_paid=&search=&page=0&per_page=10&sort=orderNumber&dir=asc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -350,6 +350,11 @@
 								"orders"
 							],
 							"query": [
+								{
+									"key": "only_paid",
+									"value": "",
+									"description": "true or false"
+								},
 								{
 									"key": "search",
 									"value": ""
@@ -493,306 +498,6 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "External Integration",
-			"item": [
-				{
-					"name": "Mercado Pago",
-					"item": [
-						{
-							"name": "Create Store",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"name\": \"SOAT\",\n  \"location\": {\n    \"street_number\": \"123\",\n    \"street_name\": \"Rua Principal\",\n    \"city_name\": \"São Paulo\",\n    \"state_name\": \"São Paulo\",\n    \"latitude\": -23.564,\n    \"longitude\": -46.654\n  },\n  \"external_id\": \"SUC001\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "https://api.mercadopago.com/users/2448858150/stores",
-									"protocol": "https",
-									"host": [
-										"api",
-										"mercadopago",
-										"com"
-									],
-									"path": [
-										"users",
-										"2448858150",
-										"stores"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Create Sale Point",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n  \"name\": \"Ponto de Venda\",\n  \"fixed_amount\": false,\n  \"store_id\": 70785476,\n  \"external_id\": \"SUC001POS001\",\n  \"external_store_id\": \"SUC001\"\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "https://api.mercadopago.com/pos",
-									"protocol": "https",
-									"host": [
-										"api",
-										"mercadopago",
-										"com"
-									],
-									"path": [
-										"pos"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Orders",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150"
-									}
-								],
-								"url": {
-									"raw": "https://api.mercadopago.com/merchant_orders/search?external_reference=",
-									"protocol": "https",
-									"host": [
-										"api",
-										"mercadopago",
-										"com"
-									],
-									"path": [
-										"merchant_orders",
-										"search"
-									],
-									"query": [
-										{
-											"key": "status",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "preference_id",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "application_id",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "payer_id",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "sponsor_id",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "site_id",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "marketplace",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "date_created_from",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "date_created_to",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "last_updated_from",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "last_updated_to",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "items",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "limit",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "offset",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "external_reference",
-											"value": ""
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Get Orders Copy",
-							"request": {
-								"method": "GET",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json"
-									},
-									{
-										"key": "Authorization",
-										"value": "Bearer APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150"
-									}
-								],
-								"url": {
-									"raw": "https://api.mercadopago.com/merchant_orders/search?external_reference=66436e7f-f028-4960-83eb-6ce3f728c7f1",
-									"protocol": "https",
-									"host": [
-										"api",
-										"mercadopago",
-										"com"
-									],
-									"path": [
-										"merchant_orders",
-										"search"
-									],
-									"query": [
-										{
-											"key": "status",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "preference_id",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "application_id",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "payer_id",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "sponsor_id",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "site_id",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "marketplace",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "date_created_from",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "date_created_to",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "last_updated_from",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "last_updated_to",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "items",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "limit",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "offset",
-											"value": "12123adfasdf123u4u",
-											"disabled": true
-										},
-										{
-											"key": "external_reference",
-											"value": "66436e7f-f028-4960-83eb-6ce3f728c7f1"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					]
 				}
 			]
 		}
