@@ -28,10 +28,11 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthFilter, BasicAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.PUT, "/order/**")
-                        .hasAnyAuthority(Authorities.ADMIN.name(), Authorities.EMPLOYEE.name())
-                        .anyRequest()
-                        .permitAll()
+                        .requestMatchers(HttpMethod.PUT, "/orders/**").hasAnyAuthority(Authorities.ADMIN.name(), Authorities.EMPLOYEE.name())
+                        .requestMatchers(HttpMethod.PUT, "/products/**").hasAnyAuthority(Authorities.ADMIN.name(), Authorities.EMPLOYEE.name())
+                        .requestMatchers(HttpMethod.POST, "/products/**").hasAnyAuthority(Authorities.ADMIN.name(), Authorities.EMPLOYEE.name())
+                        .requestMatchers(HttpMethod.DELETE, "/products/**").hasAnyAuthority(Authorities.ADMIN.name(), Authorities.EMPLOYEE.name())
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
