@@ -155,3 +155,13 @@ A documentação da API está disponível no Swagger, acessível em: http://loca
 [Diagrama DDD](./docs/diagrama-ddd.drawio)
 
 [Diagrama DDD Link](https://drive.google.com/file/d/1jAH0o1r2prv5UD3AY6mZ57Uc93uPAPi9/view?usp=sharing)
+
+### Teste Local
+
+Utilizar no endpoint de /auths a identificação abaixo para gerar o token de autenticação:
+
+```json
+{
+  "identification": "12345678901"
+}
+```
