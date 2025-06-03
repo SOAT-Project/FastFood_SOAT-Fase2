@@ -31,8 +31,8 @@ public class DefaultAuthClientUseCase extends AuthClientUseCase {
 
         return new AuthClientOutput(
                 client.getPublicId().getValue(),
-                client.getEmail(),
                 client.getName(),
+                client.getEmail(),
                 client.getCpf().getValue()
         );
 
