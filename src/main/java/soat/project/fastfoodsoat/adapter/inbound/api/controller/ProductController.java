@@ -73,8 +73,9 @@ public class ProductController implements ProductAPI {
     }
 
     @Override
-    public void delete(Integer id) {
+    public ResponseEntity<Void> delete(Integer id) {
         this.deleteProductUseCase.execute(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Override

@@ -113,7 +113,7 @@ public interface ProductAPI {
             )
     })
     @SecurityRequirement(name = "bearerAuth")
-    void delete(@PathVariable Integer id);
+    ResponseEntity<Void> delete(@PathVariable Integer id);
 
     @GetMapping(
             value = "/category/{categoryId}",
