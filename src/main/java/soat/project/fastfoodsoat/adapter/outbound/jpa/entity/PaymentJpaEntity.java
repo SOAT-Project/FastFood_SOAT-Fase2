@@ -2,12 +2,10 @@ package soat.project.fastfoodsoat.adapter.outbound.jpa.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.ColumnTransformer;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.UUID;
 
 @Entity
 @Table(name = "payments")
@@ -18,16 +16,16 @@ public class PaymentJpaEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "value")
+    @Column(name = "value", columnDefinition = "decimal(10,2)")
     private BigDecimal value;
 
-    @Column(name = "external_reference")
+    @Column(name = "external_reference", nullable = false)
     private String externalReference;
 
     @Column(name = "qr_code")
     private String qrCode;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 

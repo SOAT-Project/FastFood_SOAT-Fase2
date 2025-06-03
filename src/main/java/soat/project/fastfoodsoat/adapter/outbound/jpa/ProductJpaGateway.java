@@ -80,11 +80,6 @@ public class ProductJpaGateway implements ProductGateway {
 
         final var pageResult = this.productRepository.findAll(Specification.where(specification), pageRequest);
 
-        System.out.println("Page: " + query.page());
-        System.out.println("PerPage: " + query.perPage());
-        System.out.println("Sort: " + query.sort());
-        System.out.println("Direction: " + query.direction());
-
         return new Pagination<>(
                 pageResult.getNumber(),
                 pageResult.getSize(),

@@ -18,7 +18,7 @@ public class ClientJpaEntity {
     private Integer id;
 
     @Size(max = 36)
-    @Column(name = "public_id", length = 36)
+    @Column(name = "public_id", length = 36, nullable = false, columnDefinition = "uuid")
     private UUID publicId;
 
     @Size(max = 100)

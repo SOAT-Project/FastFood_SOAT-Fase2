@@ -11,24 +11,25 @@ import java.time.Instant;
 @Entity
 @Table(name = "staff")
 public class StaffJpaEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
     @Size(max = 100)
-    @Column(name = "name", length = 100)
+    @Column(name = "name", length = 100, nullable = false)
     private String name;
 
     @Size(max = 100)
-    @Column(name = "email", length = 100)
+    @Column(name = "email", length = 100, nullable = false)
     private String email;
 
     @Size(max = 11)
-    @Column(name = "cpf", length = 11)
+    @Column(name = "cpf", length = 11, nullable = false)
     private String cpf;
 
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
 
     @ColumnDefault("CURRENT_TIMESTAMP")

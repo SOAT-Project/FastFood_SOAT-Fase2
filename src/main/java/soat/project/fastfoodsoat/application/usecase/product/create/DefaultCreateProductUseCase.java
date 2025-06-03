@@ -25,7 +25,6 @@ public class DefaultCreateProductUseCase extends CreateProductUseCase {
 
     @Override
     public CreateProductOutput execute(final CreateProductCommand command) {
-        System.out.println("CreateProductCommand: " + command);
         final var name = command.name();
         final var description = command.description();
         final var value = command.value();

@@ -8,17 +8,18 @@ import java.time.Instant;
 @Entity
 @Table(name = "staff_roles")
 public class StaffRoleJpaEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "staff_id")
+    @JoinColumn(name = "staff_id", nullable = false)
     private StaffJpaEntity staff;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id", nullable = false)
     private RoleJpaEntity role;
 
     @ColumnDefault("CURRENT_TIMESTAMP")

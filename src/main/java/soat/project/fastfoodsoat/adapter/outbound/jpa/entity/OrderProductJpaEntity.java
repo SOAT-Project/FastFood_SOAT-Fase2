@@ -16,10 +16,10 @@ public class OrderProductJpaEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "value")
+    @Column(name = "value", nullable = false, columnDefinition = "decimal(10,2)")
     private BigDecimal value;
 
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -14,6 +14,7 @@ import java.time.Instant;
 @Entity
 @Table(name="products")
 public class ProductJpaEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -27,7 +28,7 @@ public class ProductJpaEntity {
     @Column(name = "description", length = 255)
     private String description;
 
-    @Column(name = "value", nullable = false)
+    @Column(name = "value", columnDefinition = "decimal(10,2)", nullable = false)
     private BigDecimal value;
 
     @Column(name = "image_url")

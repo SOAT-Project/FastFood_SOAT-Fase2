@@ -144,3 +144,14 @@ Você pode configurar as seguintes variáveis de ambiente:
 ### Swagger
 
 A documentação da API está disponível no Swagger, acessível em: http://localhost:8080/api/swagger-ui/index.html
+
+### Diagrama de Banco de Dados
+
+![Diagrama de Banco de Dados](./docs/diagrama-db.png)
+[Diagrama de Banco de Dados Link](https://dbdiagram.io/d/FIAP-HEX-68101c011ca52373f5ba7756)
+
+### Diagrama DDD
+
+[Diagrama DDD](./docs/diagrama-ddd.drawio)
+
+[Diagrama DDD Link](https://drive.google.com/file/d/1jAH0o1r2prv5UD3AY6mZ57Uc93uPAPi9/view?usp=sharing)

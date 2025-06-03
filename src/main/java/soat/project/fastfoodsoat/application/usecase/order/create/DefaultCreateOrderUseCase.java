@@ -53,7 +53,6 @@ public class DefaultCreateOrderUseCase extends CreateOrderUseCase {
     @Override
     public CreateOrderOutput execute(final CreateOrderCommand command) {
         final Notification notification = Notification.create();
-        System.out.println("CreateOrderCommand: " + command);
 
         final ClientPublicId clientPublicId = command.clientPublicId() != null ?
                 ClientPublicId.of(command.clientPublicId()) : null;

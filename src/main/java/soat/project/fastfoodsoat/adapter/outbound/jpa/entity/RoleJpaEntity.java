@@ -8,12 +8,13 @@ import java.time.Instant;
 @Entity
 @Table(name = "roles")
 public class RoleJpaEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "role_name", columnDefinition = "role")
+    @Column(name = "role_name", nullable = false , columnDefinition = "role")
     private String roleName;
 
     @ColumnDefault("CURRENT_TIMESTAMP")

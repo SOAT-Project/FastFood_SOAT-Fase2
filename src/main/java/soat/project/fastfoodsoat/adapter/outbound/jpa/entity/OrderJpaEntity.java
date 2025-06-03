@@ -1,8 +1,8 @@
 package soat.project.fastfoodsoat.adapter.outbound.jpa.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.ColumnTransformer;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 
 import java.math.BigDecimal;
@@ -19,16 +19,17 @@ public class OrderJpaEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Size(max = 36)
     @Column(name = "public_id", nullable = false, columnDefinition = "uuid")
     private UUID publicId;
 
-    @Column(name = "value")
+    @Column(name = "value", nullable = false, columnDefinition = "decimal(10,2)")
     private BigDecimal value;
 
-    @Column(name = "order_number")
+    @Column(name = "order_number", nullable = false)
     private Integer orderNumber;
 
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
