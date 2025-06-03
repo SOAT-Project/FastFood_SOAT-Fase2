@@ -67,7 +67,7 @@ class CreateProductUseCaseIT {
         final var output = useCase.execute(command);
 
         assertNotNull(output);
-        assertEquals(1, output.id());
+        assertNotNull(output.id());
     }
 
     @Test

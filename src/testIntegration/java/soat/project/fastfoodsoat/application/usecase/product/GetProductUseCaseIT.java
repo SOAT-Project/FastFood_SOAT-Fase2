@@ -58,7 +58,7 @@ class GetProductUseCaseIT {
         final var product = productRepository.save(new ProductJpaEntity(null, name, description, price, image, categoryId, Instant.now(), Instant.now(), null));
         productRepository.save(product);
 
-        final var id = 1;
+        final var id = product.getId();
 
         final var output = useCase.execute(id);
 

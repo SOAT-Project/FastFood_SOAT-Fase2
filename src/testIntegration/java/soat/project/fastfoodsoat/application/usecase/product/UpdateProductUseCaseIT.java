@@ -60,7 +60,7 @@ class UpdateProductUseCaseIT {
         final var productJpa = productRepository.save(new ProductJpaEntity(null, name, description, price, image, categoryId, Instant.now(), Instant.now(), null));
         productRepository.save(productJpa);
 
-        final var id = 1;
+        final var id = productJpa.getId();
         final var productCategoryId = category.getId();
         final var command = new UpdateProductCommand(id, "Updated", "Description", BigDecimal.TEN, "img.png", productCategoryId);
 
