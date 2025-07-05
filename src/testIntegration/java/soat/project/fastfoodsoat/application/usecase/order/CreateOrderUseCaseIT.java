@@ -14,14 +14,14 @@ import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ProductCa
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ProductJpaEntity;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper.ProductCategoryMapper;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper.ProductMapper;
-import soat.project.fastfoodsoat.application.command.order.CreateOrderCommand;
-import soat.project.fastfoodsoat.application.command.order.CreateOrderProductCommand;
+import soat.project.fastfoodsoat.application.command.order.create.CreateOrderCommand;
+import soat.project.fastfoodsoat.application.command.order.create.CreateOrderProductCommand;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderUseCase;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.product.Product;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategory;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategory;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.*;
 
 import java.math.BigDecimal;

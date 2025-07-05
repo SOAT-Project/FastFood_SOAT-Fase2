@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+import soat.project.fastfoodsoat.infrastructure.config.MercadoPagoConfig;
 import soat.project.fastfoodsoat.infrastructure.external.mercadopago.model.CreateDynamicQrCodeResponse;
 import soat.project.fastfoodsoat.domain.orderproduct.OrderProduct;
 import soat.project.fastfoodsoat.application.gateway.PaymentService;
@@ -20,32 +22,22 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @Component
 public class MercadoPagoService implements PaymentService {
 
-    private final static String QR_CODE_URL = "https://api.mercadopago.com/instore/orders/qr/seller/collectors/%s/pos/%s/qrs";
-
+    private final WebClient webClient;
     private final String collectorId;
-
     private final String posId;
-
-    private final String token;
-
     private final ObjectMapper objectMapper;
 
-    public MercadoPagoService(@Value("${mercadopago.token}") String token,
-                              @Value("${mercadopago.collectorId}") String collectorId,
-                              @Value("${mercadopago.posId}") String posId) {
-        this.token = token;
-        this.collectorId = collectorId;
-        this.posId = posId;
+    public MercadoPagoService(WebClient mercadoPagoWebClient, MercadoPagoConfig mercadoPagoConfig) {
+        this.webClient = mercadoPagoWebClient;
+        this.collectorId = mercadoPagoConfig.getCollectorId();
+        this.posId = mercadoPagoConfig.getPosId();
         this.objectMapper = new ObjectMapper();
     }
 
     @Override
     public String createDynamicQrCode(Integer orderNumber, UUID publicId, BigDecimal value, List<OrderProduct> orderProducts) {
         try {
-            final WebClient webClient = WebClient.builder()
-                    .baseUrl(QR_CODE_URL.formatted(collectorId, posId))
-                    .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                    .build();
+            final String path = String.format("/instore/orders/qr/seller/collectors/%s/pos/%s/qrs", collectorId, posId);
 
             Map<String, Object> requestBody = Map.of(
                     "title", "Order " + orderNumber,
@@ -66,6 +58,7 @@ public class MercadoPagoService implements PaymentService {
             String bodyJson = objectMapper.writeValueAsString(requestBody);
 
             final CreateDynamicQrCodeResponse response = webClient.post()
+                    .uri(path)
                     .contentType(APPLICATION_JSON)
                     .bodyValue(bodyJson)
                     .retrieve()
@@ -74,7 +67,11 @@ public class MercadoPagoService implements PaymentService {
 
             return response.getQrCode();
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Error creating QRCode", e);
+            throw new RuntimeException("Error processing JSON for Mercado Pago payment", e);
+        } catch (WebClientResponseException e) {
+            throw new RuntimeException("Mercado Pago API error: " + e.getResponseBodyAsString(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Unexpected error during Mercado Pago payment", e);
         }
     }
 }

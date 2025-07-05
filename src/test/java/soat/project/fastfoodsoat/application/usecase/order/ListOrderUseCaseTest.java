@@ -6,8 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
 import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderUseCaseImpl;
-import soat.project.fastfoodsoat.application.output.order.ListOrderOutput;
-import soat.project.fastfoodsoat.application.command.order.ListOrderParams;
+import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderOutput;
+import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderCommand;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.application.gateway.OrderRepositoryGateway;
 import soat.project.fastfoodsoat.domain.order.OrderPublicId;
@@ -17,7 +17,7 @@ import soat.project.fastfoodsoat.domain.pagination.Pagination;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
 import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.product.ProductId;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 import soat.project.fastfoodsoat.shared.utils.InstantUtils;
 
 import java.math.BigDecimal;
@@ -110,7 +110,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 expectedDirection
         );
 
-        final var params = new ListOrderParams(onlyPaid, query);
+        final var params = new ListOrderCommand(onlyPaid, query);
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
@@ -159,7 +159,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 expectedDirection
         );
 
-        final var params = new ListOrderParams(onlyPaid, query);
+        final var params = new ListOrderCommand(onlyPaid, query);
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
@@ -200,7 +200,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 expectedDirection
         );
 
-        final var params = new ListOrderParams(onlyPaid, query);
+        final var params = new ListOrderCommand(onlyPaid, query);
 
         final var expectedErrorMessage = "Gateway error";
 

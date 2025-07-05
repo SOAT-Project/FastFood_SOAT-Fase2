@@ -11,13 +11,13 @@ import soat.project.fastfoodsoat.infrastructure.web.model.response.product.GetPr
 import soat.project.fastfoodsoat.infrastructure.web.model.response.product.ListProductByCategoryResponse;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.product.UpdateProductResponse;
 import soat.project.fastfoodsoat.infrastructure.web.presenter.ProductPresenter;
-import soat.project.fastfoodsoat.application.command.product.CreateProductCommand;
+import soat.project.fastfoodsoat.application.command.product.create.CreateProductCommand;
 import soat.project.fastfoodsoat.application.usecase.product.create.CreateProductUseCase;
 import soat.project.fastfoodsoat.application.usecase.product.delete.DeleteProductUseCase;
 import soat.project.fastfoodsoat.application.usecase.product.retrieve.get.GetProductUseCase;
-import soat.project.fastfoodsoat.application.command.product.ListByCategoryParams;
+import soat.project.fastfoodsoat.application.command.product.retrieve.list.bycategory.ListByCategoryCommand;
 import soat.project.fastfoodsoat.application.usecase.product.retrieve.list.bycategory.ListByCategoryUseCase;
-import soat.project.fastfoodsoat.application.command.product.UpdateProductCommand;
+import soat.project.fastfoodsoat.application.command.product.update.UpdateProductCommand;
 import soat.project.fastfoodsoat.application.usecase.product.update.UpdateProductUseCase;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
@@ -93,7 +93,7 @@ public class ProductController implements ProductAPI {
             String search
     ) {
         var query = new SearchQuery(page, perPage, search, sort, dir);
-        var params = ListByCategoryParams.with(categoryId, query);
+        var params = ListByCategoryCommand.with(categoryId, query);
         var result = listByCategoryUseCase.execute(params);
 
         final var pagination = new Pagination<>(

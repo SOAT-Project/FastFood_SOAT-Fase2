@@ -3,7 +3,7 @@ package soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ProductJpaEntity;
 import soat.project.fastfoodsoat.domain.product.Product;
 import soat.project.fastfoodsoat.domain.product.ProductId;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 public final class ProductMapper {
 

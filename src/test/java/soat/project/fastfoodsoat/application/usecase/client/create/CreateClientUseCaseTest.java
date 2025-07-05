@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
-import soat.project.fastfoodsoat.application.command.client.CreateClientCommand;
+import soat.project.fastfoodsoat.application.command.client.create.CreateClientCommand;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
 import soat.project.fastfoodsoat.domain.client.Client;
 import soat.project.fastfoodsoat.application.gateway.ClientRepositoryGateway;

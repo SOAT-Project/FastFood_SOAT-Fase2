@@ -1,8 +1,8 @@
 package soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper;
 
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ProductCategoryJpaEntity;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategory;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategory;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 public final class ProductCategoryMapper {
 

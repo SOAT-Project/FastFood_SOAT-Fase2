@@ -11,13 +11,13 @@ import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper.OrderJpaMapper;
 import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderUseCaseImpl;
-import soat.project.fastfoodsoat.application.output.order.ListOrderOutput;
-import soat.project.fastfoodsoat.application.command.order.ListOrderParams;
+import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderOutput;
+import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderCommand;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.*;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.*;
 import soat.project.fastfoodsoat.shared.utils.InstantUtils;
@@ -380,7 +380,7 @@ public class ListOrderUseCaseIT {
                 expectedDirection
         );
 
-        final var params = new ListOrderParams(onlyPaid, query);
+        final var params = new ListOrderCommand(onlyPaid, query);
 
         final var expectedItems = orders.stream()
                 .map(ListOrderOutput::from)
@@ -419,7 +419,7 @@ public class ListOrderUseCaseIT {
                 expectedDirection
         );
 
-        final var params = new ListOrderParams(onlyPaid, query);
+        final var params = new ListOrderCommand(onlyPaid, query);
 
         // When
         final var actualOutput = useCase.execute(params);
@@ -453,7 +453,7 @@ public class ListOrderUseCaseIT {
                 expectedDirection
         );
 
-        final var params = new ListOrderParams(onlyPaid, query);
+        final var params = new ListOrderCommand(onlyPaid, query);
 
         // When
         final var actualOutput = useCase.execute(params);

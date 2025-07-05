@@ -3,7 +3,7 @@ package soat.project.fastfoodsoat.application.usecase.staff.auth;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.staff.auth.AuthStaffCommand;
-import soat.project.fastfoodsoat.application.output.staff.AuthStaffOutput;
+import soat.project.fastfoodsoat.application.output.staff.auth.AuthStaffOutput;
 import soat.project.fastfoodsoat.domain.exception.DomainException;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.staff.Staff;

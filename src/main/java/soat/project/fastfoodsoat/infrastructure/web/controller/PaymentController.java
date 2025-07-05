@@ -6,7 +6,7 @@ import soat.project.fastfoodsoat.infrastructure.web.controller.api.PaymentAPI;
 import soat.project.fastfoodsoat.infrastructure.web.model.request.payment.UpdatePaymentToPaidStatusRequest;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.UpdatePaymentToPaidStatusResponse;
 import soat.project.fastfoodsoat.infrastructure.web.presenter.PaymentPresenter;
-import soat.project.fastfoodsoat.application.command.payment.GetQRCodeCommand;
+import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetQRCodeCommand;
 import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.GetQRCodeUseCase;
 import soat.project.fastfoodsoat.application.command.payment.UpdatePaymentToPaidStatusCommand;
 import soat.project.fastfoodsoat.application.output.payment.UpdatePaymentToPaidStatusOutput;

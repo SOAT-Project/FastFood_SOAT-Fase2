@@ -1,7 +1,7 @@
 package soat.project.fastfoodsoat.infrastructure.web.presenter;
 
 import soat.project.fastfoodsoat.infrastructure.web.model.response.client.CreateClientResponse;
-import soat.project.fastfoodsoat.application.output.client.CreateClientOutput;
+import soat.project.fastfoodsoat.application.output.client.create.CreateClientOutput;
 
 public interface ClientPresenter {
 

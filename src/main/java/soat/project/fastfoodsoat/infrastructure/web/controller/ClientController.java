@@ -10,9 +10,9 @@ import soat.project.fastfoodsoat.infrastructure.web.model.request.client.CreateC
 import soat.project.fastfoodsoat.infrastructure.web.model.response.client.CreateClientResponse;
 import soat.project.fastfoodsoat.infrastructure.web.presenter.AuthClientPresenter;
 import soat.project.fastfoodsoat.infrastructure.web.presenter.ClientPresenter;
-import soat.project.fastfoodsoat.application.command.client.AuthClientCommand;
+import soat.project.fastfoodsoat.application.command.client.auth.AuthClientCommand;
 import soat.project.fastfoodsoat.application.usecase.client.auth.AuthClientUseCase;
-import soat.project.fastfoodsoat.application.command.client.CreateClientCommand;
+import soat.project.fastfoodsoat.application.command.client.create.CreateClientCommand;
 import soat.project.fastfoodsoat.application.usecase.client.create.CreateClientUseCase;
 
 @RestController

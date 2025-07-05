@@ -3,7 +3,7 @@ package soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 
 import java.math.BigDecimal;

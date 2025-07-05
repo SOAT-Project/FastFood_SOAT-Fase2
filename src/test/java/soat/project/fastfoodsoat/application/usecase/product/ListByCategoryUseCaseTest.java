@@ -6,14 +6,14 @@ import org.mockito.Mock;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
 import soat.project.fastfoodsoat.application.usecase.product.retrieve.list.bycategory.ListByCategoryUseCaseImpl;
 import soat.project.fastfoodsoat.application.output.product.ListByCategoryOutput;
-import soat.project.fastfoodsoat.application.command.product.ListByCategoryParams;
+import soat.project.fastfoodsoat.application.command.product.retrieve.list.bycategory.ListByCategoryCommand;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
 import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategory;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategory;
 import soat.project.fastfoodsoat.application.gateway.ProductCategoryRepositoryGateway;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -45,7 +45,7 @@ class ListByCategoryUseCaseTest extends UseCaseTest {
         final var now = Instant.now();
         final var category = ProductCategory.with(ProductCategoryId.of(categoryId), "Lanches", now, now, null);
         final var query = mock(SearchQuery.class);
-        final var params = new ListByCategoryParams(categoryId, query);
+        final var params = new ListByCategoryCommand(categoryId, query);
 
 
         final var expectedPagination = Pagination.with(0, 10, 1, List.of(
@@ -68,7 +68,7 @@ class ListByCategoryUseCaseTest extends UseCaseTest {
     void givenInvalidCategoryId_whenListProducts_thenShouldThrowNotFound() {
         final var categoryId = 99;
         final var query = mock(SearchQuery.class);
-        final var params = new ListByCategoryParams(categoryId, query);
+        final var params = new ListByCategoryCommand(categoryId, query);
 
         when(categoryGateway.findById(ProductCategoryId.of(categoryId))).thenReturn(Optional.empty());
 
@@ -81,7 +81,7 @@ class ListByCategoryUseCaseTest extends UseCaseTest {
         final var categoryId = 5;
         final var category = ProductCategory.with(ProductCategoryId.of(categoryId), "Bebidas", Instant.now(), Instant.now(), null);
         final var query = mock(SearchQuery.class);
-        final var params = new ListByCategoryParams(categoryId, query);
+        final var params = new ListByCategoryCommand(categoryId, query);
         final Pagination emptyPagination = Pagination.with(0, 1, 10, List.of());
 
         when(categoryGateway.findById(ProductCategoryId.of(categoryId))).thenReturn(Optional.of(category));

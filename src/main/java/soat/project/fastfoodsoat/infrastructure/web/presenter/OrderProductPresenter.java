@@ -1,7 +1,7 @@
 package soat.project.fastfoodsoat.infrastructure.web.presenter;
 
 import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateOrderProductResponse;
-import soat.project.fastfoodsoat.application.output.order.CreateOrderProductOutput;
+import soat.project.fastfoodsoat.application.output.order.create.CreateOrderProductOutput;
 
 public interface OrderProductPresenter {
 

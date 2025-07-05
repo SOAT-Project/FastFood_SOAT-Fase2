@@ -1,7 +1,7 @@
 package soat.project.fastfoodsoat.application.gateway;
 
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategory;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategory;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 import java.util.Optional;
 

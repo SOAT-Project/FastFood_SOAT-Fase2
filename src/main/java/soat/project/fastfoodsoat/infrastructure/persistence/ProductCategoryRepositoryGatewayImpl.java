@@ -3,9 +3,9 @@ package soat.project.fastfoodsoat.infrastructure.persistence;
 import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper.ProductCategoryMapper;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ProductCategoryRepository;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategory;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategory;
 import soat.project.fastfoodsoat.application.gateway.ProductCategoryRepositoryGateway;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 import java.util.Optional;
 

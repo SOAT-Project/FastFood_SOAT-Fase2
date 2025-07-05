@@ -1,8 +1,8 @@
 package soat.project.fastfoodsoat.application.usecase.client.auth;
 
 import org.springframework.stereotype.Component;
-import soat.project.fastfoodsoat.application.command.client.AuthClientCommand;
-import soat.project.fastfoodsoat.application.output.client.AuthClientOutput;
+import soat.project.fastfoodsoat.application.command.client.auth.AuthClientCommand;
+import soat.project.fastfoodsoat.application.output.client.auth.AuthClientOutput;
 import soat.project.fastfoodsoat.domain.client.Client;
 import soat.project.fastfoodsoat.domain.client.ClientCpf;
 import soat.project.fastfoodsoat.application.gateway.ClientRepositoryGateway;

@@ -2,7 +2,7 @@ package soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcod
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
-import soat.project.fastfoodsoat.application.command.payment.GetQRCodeCommand;
+import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetQRCodeCommand;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.payment.Payment;
 import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;

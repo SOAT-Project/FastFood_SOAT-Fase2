@@ -2,8 +2,8 @@ package soat.project.fastfoodsoat.application.usecase.order.update.status;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
-import soat.project.fastfoodsoat.application.command.order.UpdateOrderStatusCommand;
-import soat.project.fastfoodsoat.application.output.order.UpdateOrderStatusOutput;
+import soat.project.fastfoodsoat.application.command.order.update.status.UpdateOrderStatusCommand;
+import soat.project.fastfoodsoat.application.output.order.update.status.UpdateOrderStatusOutput;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.application.gateway.OrderRepositoryGateway;

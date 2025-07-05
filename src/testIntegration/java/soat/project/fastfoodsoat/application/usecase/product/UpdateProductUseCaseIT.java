@@ -12,9 +12,9 @@ import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ProductJp
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ProductCategoryRepository;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ProductRepository;
 import soat.project.fastfoodsoat.application.usecase.product.update.UpdateProductUseCaseImpl;
-import soat.project.fastfoodsoat.application.command.product.UpdateProductCommand;
+import soat.project.fastfoodsoat.application.command.product.update.UpdateProductCommand;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
-import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 import java.math.BigDecimal;
 import java.time.Instant;

@@ -4,10 +4,10 @@ import soat.project.fastfoodsoat.infrastructure.web.model.response.product.Creat
 import soat.project.fastfoodsoat.infrastructure.web.model.response.product.GetProductResponse;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.product.ListProductByCategoryResponse;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.product.UpdateProductResponse;
-import soat.project.fastfoodsoat.application.output.product.CreateProductOutput;
+import soat.project.fastfoodsoat.application.output.product.create.CreateProductOutput;
 import soat.project.fastfoodsoat.application.output.product.GetProductOutput;
 import soat.project.fastfoodsoat.application.output.product.ListByCategoryOutput;
-import soat.project.fastfoodsoat.application.output.product.UpdateProductOutput;
+import soat.project.fastfoodsoat.application.output.product.update.UpdateProductOutput;
 
 public interface ProductPresenter {
 

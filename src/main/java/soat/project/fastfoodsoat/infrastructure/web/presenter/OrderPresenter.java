@@ -5,9 +5,9 @@ import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateO
 import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateOrderResponse;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.order.ListOrderProductResponse;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.order.ListOrderResponse;
-import soat.project.fastfoodsoat.application.output.order.CreateOrderOutput;
-import soat.project.fastfoodsoat.application.output.order.ListOrderOutput;
-import soat.project.fastfoodsoat.application.output.order.ListOrderProductOutput;
+import soat.project.fastfoodsoat.application.output.order.create.CreateOrderOutput;
+import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderOutput;
+import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderProductOutput;
 
 import java.util.List;
 

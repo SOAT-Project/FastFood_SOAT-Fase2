@@ -12,7 +12,7 @@ import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ClientJpaEntity;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ClientRepository;
-import soat.project.fastfoodsoat.application.command.client.CreateClientCommand;
+import soat.project.fastfoodsoat.application.command.client.create.CreateClientCommand;
 import soat.project.fastfoodsoat.application.usecase.client.create.CreateClientUseCaseImpl;
 import soat.project.fastfoodsoat.domain.client.Client;
 import soat.project.fastfoodsoat.domain.exception.ConflictException;

@@ -14,7 +14,7 @@ import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.PaymentJp
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.OrderJpaEntity;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.PaymentRepository;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.OrderRepository;
-import soat.project.fastfoodsoat.application.command.payment.GetQRCodeCommand;
+import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetQRCodeCommand;
 import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.GetQRCodeUseCaseImpl;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;

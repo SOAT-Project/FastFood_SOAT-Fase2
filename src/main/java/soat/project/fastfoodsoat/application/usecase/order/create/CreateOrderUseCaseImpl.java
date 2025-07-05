@@ -2,9 +2,9 @@ package soat.project.fastfoodsoat.application.usecase.order.create;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
-import soat.project.fastfoodsoat.application.command.order.CreateOrderCommand;
-import soat.project.fastfoodsoat.application.command.order.CreateOrderProductCommand;
-import soat.project.fastfoodsoat.application.output.order.CreateOrderOutput;
+import soat.project.fastfoodsoat.application.command.order.create.CreateOrderCommand;
+import soat.project.fastfoodsoat.application.command.order.create.CreateOrderProductCommand;
+import soat.project.fastfoodsoat.application.output.order.create.CreateOrderOutput;
 import soat.project.fastfoodsoat.domain.client.Client;
 import soat.project.fastfoodsoat.application.gateway.ClientRepositoryGateway;
 import soat.project.fastfoodsoat.domain.client.ClientPublicId;

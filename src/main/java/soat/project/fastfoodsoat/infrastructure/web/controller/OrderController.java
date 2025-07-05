@@ -10,12 +10,12 @@ import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateO
 import soat.project.fastfoodsoat.infrastructure.web.model.response.order.UpdateOrderStatusResponse;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.order.ListOrderResponse;
 import soat.project.fastfoodsoat.infrastructure.web.presenter.OrderPresenter;
-import soat.project.fastfoodsoat.application.command.order.CreateOrderCommand;
-import soat.project.fastfoodsoat.application.output.order.CreateOrderOutput;
-import soat.project.fastfoodsoat.application.command.order.CreateOrderProductCommand;
+import soat.project.fastfoodsoat.application.command.order.create.CreateOrderCommand;
+import soat.project.fastfoodsoat.application.output.order.create.CreateOrderOutput;
+import soat.project.fastfoodsoat.application.command.order.create.CreateOrderProductCommand;
 import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderUseCase;
-import soat.project.fastfoodsoat.application.command.order.ListOrderParams;
-import soat.project.fastfoodsoat.application.command.order.UpdateOrderStatusCommand;
+import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderCommand;
+import soat.project.fastfoodsoat.application.command.order.update.status.UpdateOrderStatusCommand;
 import soat.project.fastfoodsoat.application.usecase.order.update.status.UpdateOrderStatusUseCase;
 import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderUseCase;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
@@ -72,7 +72,7 @@ public class OrderController implements OrderAPI {
     ) {
         final var query = new SearchQuery(page, perPage, search, sort, direction);
 
-        final var params = new ListOrderParams(onlyPaid, query);
+        final var params = new ListOrderCommand(onlyPaid, query);
         final var output = this.listOrderUseCase.execute(params);
 
         return ResponseEntity.ok(output.map(OrderPresenter::present));
