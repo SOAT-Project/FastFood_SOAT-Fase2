@@ -12,8 +12,4 @@ public class CreateDynamicQrCodeResponse {
     public String getQrCode() {
         return qr_data;
     }
-
-    public String getStoreOrderId() {
-        return in_store_order_id;
-    }
 }

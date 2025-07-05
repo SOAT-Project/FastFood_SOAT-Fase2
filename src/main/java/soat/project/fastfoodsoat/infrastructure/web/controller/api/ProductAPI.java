@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public interface ProductAPI {
             )
     })
     @SecurityRequirement(name = "bearerAuth")
-    ResponseEntity<CreateProductResponse> create(@RequestBody CreateProductRequest request);
+    ResponseEntity<CreateProductResponse> create(@Valid @RequestBody CreateProductRequest request);
 
     @GetMapping(
             value = "/{id}",
@@ -98,7 +99,7 @@ public interface ProductAPI {
             )
     })
     @SecurityRequirement(name = "bearerAuth")
-    ResponseEntity<UpdateProductResponse> update(@PathVariable Integer id, @RequestBody UpdateProductRequest request);
+    ResponseEntity<UpdateProductResponse> update(@PathVariable Integer id, @Valid @RequestBody UpdateProductRequest request);
 
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Delete a product by ID")

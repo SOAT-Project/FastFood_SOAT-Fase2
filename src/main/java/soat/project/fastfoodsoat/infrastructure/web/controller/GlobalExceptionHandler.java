@@ -4,14 +4,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import soat.project.fastfoodsoat.domain.validation.DomainError;
 import soat.project.fastfoodsoat.infrastructure.web.model.DefaultApiError;
 import soat.project.fastfoodsoat.domain.exception.DomainException;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.shared.utils.InstantUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestControllerAdvice
@@ -63,4 +67,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<DefaultApiError> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        log.error("DomainException: ", ex);
+        List<DomainError> errorsList = ex.getBindingResult().getFieldErrors().stream()
+                .map(fieldError -> new DomainError(
+                        fieldError.getDefaultMessage()
+                )).toList();
+
+        final var error = new DefaultApiError(
+                InstantUtils.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                errorsList
+        );
+
+        return  ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(error);
+    }
 }

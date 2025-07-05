@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,7 +54,7 @@ public interface ClientAPI {
                     ),
             }
     )
-    ResponseEntity<ClientAuthResponse> findClientByCPF(@RequestBody ClientAuthRequest clientAuthRequest);
+    ResponseEntity<ClientAuthResponse> findClientByCPF(@Valid @RequestBody ClientAuthRequest clientAuthRequest);
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -76,5 +77,5 @@ public interface ClientAPI {
                     content = @Content(schema = @Schema(implementation = DefaultApiError.class))
             )
     })
-    ResponseEntity<CreateClientResponse> create(@RequestBody CreateClientRequest request);
+    ResponseEntity<CreateClientResponse> create(@Valid @RequestBody CreateClientRequest request);
 }
