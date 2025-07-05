@@ -1,0 +1,156 @@
+package soat.project.fastfoodsoat.application.usecase.order.create;
+
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Component;
+import soat.project.fastfoodsoat.application.command.order.CreateOrderCommand;
+import soat.project.fastfoodsoat.application.command.order.CreateOrderProductCommand;
+import soat.project.fastfoodsoat.application.output.order.CreateOrderOutput;
+import soat.project.fastfoodsoat.domain.client.Client;
+import soat.project.fastfoodsoat.application.gateway.ClientRepositoryGateway;
+import soat.project.fastfoodsoat.domain.client.ClientPublicId;
+import soat.project.fastfoodsoat.domain.exception.NotFoundException;
+import soat.project.fastfoodsoat.domain.exception.NotificationException;
+import soat.project.fastfoodsoat.domain.order.Order;
+import soat.project.fastfoodsoat.application.gateway.OrderRepositoryGateway;
+import soat.project.fastfoodsoat.domain.order.OrderPublicId;
+import soat.project.fastfoodsoat.domain.order.OrderStatus;
+import soat.project.fastfoodsoat.domain.orderproduct.OrderProduct;
+import soat.project.fastfoodsoat.domain.payment.Payment;
+import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
+import soat.project.fastfoodsoat.application.gateway.PaymentService;
+import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
+import soat.project.fastfoodsoat.domain.product.Product;
+import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
+import soat.project.fastfoodsoat.domain.product.ProductId;
+import soat.project.fastfoodsoat.domain.validation.handler.Notification;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+
+import static java.util.Objects.requireNonNull;
+
+@Transactional
+@Component
+public class CreateOrderUseCaseImpl extends CreateOrderUseCase {
+
+    private final OrderRepositoryGateway orderRepositoryGateway;
+    private final ProductRepositoryGateway productRepositoryGateway;
+    private final ClientRepositoryGateway clientRepositoryGateway;
+    private final PaymentRepositoryGateway paymentRepositoryGateway;
+    private final PaymentService paymentService;
+
+    public CreateOrderUseCaseImpl(final OrderRepositoryGateway orderRepositoryGateway,
+                                  final ProductRepositoryGateway productRepositoryGateway,
+                                  final ClientRepositoryGateway clientRepositoryGateway,
+                                  final PaymentRepositoryGateway paymentRepositoryGateway,
+                                  final PaymentService paymentService) {
+      
+        this.orderRepositoryGateway = requireNonNull(orderRepositoryGateway);
+        this.productRepositoryGateway = requireNonNull(productRepositoryGateway);
+        this.clientRepositoryGateway = clientRepositoryGateway;
+        this.paymentRepositoryGateway = paymentRepositoryGateway;
+        this.paymentService = paymentService;
+    }
+
+    @Override
+    public CreateOrderOutput execute(final CreateOrderCommand command) {
+        final Notification notification = Notification.create();
+
+        final ClientPublicId clientPublicId = command.clientPublicId() != null ?
+                ClientPublicId.of(command.clientPublicId()) : null;
+
+        final var client = clientPublicId != null ?
+            clientRepositoryGateway.findByPublicId(clientPublicId)
+                .orElseThrow(() -> NotFoundException.with(Client.class, clientPublicId))
+            : null;
+
+        final var clientId = client != null ? client.getId() : null;
+
+        final List<CreateOrderProductCommand> orderProducts = command.orderProducts();
+
+        if (orderProducts.isEmpty()) {
+            throw new NotificationException("Order must have at least one product", notification);
+        }
+
+        final List<Product> products = productRepositoryGateway.findByIds(
+                orderProducts.stream()
+                        .map(CreateOrderProductCommand::productId)
+                        .toList()
+        );
+
+        final List<OrderProduct> orderProductDomains =
+                orderProducts.stream()
+                        .map(orderProduct -> {
+                            final Product product = products.stream()
+                                    .filter(p -> p.getId().getValue().equals(orderProduct.productId()))
+                                    .findFirst()
+                                    .orElseThrow(() ->  NotFoundException.with(Product.class, new ProductId(orderProduct.productId())));
+
+                            final BigDecimal orderProductValue = product.getValue()
+                                    .multiply(BigDecimal.valueOf(orderProduct.quantity()));
+
+                            return OrderProduct.newOrderProduct(
+                                    orderProductValue,
+                                    orderProduct.quantity(),
+                                    product
+                            );
+                        })
+                        .toList();
+
+        final BigDecimal value = Order.calculateValue(orderProductDomains);
+        final Integer orderNumber = orderRepositoryGateway.findLastOrderNumber() + 1;
+        final UUID publicId = UUID.randomUUID();
+        final UUID externalReference = UUID.randomUUID();
+
+        final Order order = notification.validate(() ->
+                Order.newOrder(
+                        OrderPublicId.of(publicId),
+                        orderNumber,
+                        OrderStatus.RECEIVED,
+                        clientId,
+                        value,
+                        orderProductDomains,
+                        null
+                )
+        );
+
+        if (notification.hasError()) {
+            throw new NotificationException("could not create order", notification);
+        }
+
+        final Order createdOrder = orderRepositoryGateway.create(order);
+
+        final String qrCodeText = paymentService.createDynamicQrCode(
+                orderNumber,
+                externalReference,
+                value,
+                createdOrder.getOrderProducts()
+        );
+
+        if (qrCodeText == null) {
+            throw new NotificationException("could not create qr code", notification);
+        }
+
+        final Payment payment = notification.validate(() ->
+                Payment.newPayment(
+                        value,
+                        externalReference.toString(),
+                        qrCodeText,
+                        PaymentStatus.PENDING,
+                        createdOrder
+                )
+        );
+
+        if (notification.hasError()) {
+            throw new NotificationException("could not create payment", notification);
+        }
+
+        final Payment createdPayment = paymentRepositoryGateway.create(payment);
+
+        return CreateOrderOutput.from(
+                createdOrder,
+                createdPayment
+        );
+    }
+}

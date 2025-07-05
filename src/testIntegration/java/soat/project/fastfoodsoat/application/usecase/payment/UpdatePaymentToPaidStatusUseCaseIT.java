@@ -10,12 +10,12 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.PaymentJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.PaymentRepository;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderRepository;
-import soat.project.fastfoodsoat.application.usecase.payment.update.DefaultUpdatePaymentToPaidStatusUseCase;
-import soat.project.fastfoodsoat.application.usecase.payment.update.UpdatePaymentToPaidStatusCommand;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.PaymentJpaEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.OrderJpaEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.PaymentRepository;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.OrderRepository;
+import soat.project.fastfoodsoat.application.usecase.payment.update.status.UpdatePaymentToPaidStatusUseCaseImpl;
+import soat.project.fastfoodsoat.application.command.payment.UpdatePaymentToPaidStatusCommand;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UpdatePaymentToPaidStatusUseCaseIT {
 
     @Autowired
-    private DefaultUpdatePaymentToPaidStatusUseCase useCase;
+    private UpdatePaymentToPaidStatusUseCaseImpl useCase;
 
     @Autowired
     private PaymentRepository paymentRepository;

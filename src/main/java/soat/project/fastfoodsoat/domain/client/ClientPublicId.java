@@ -1,6 +1,6 @@
 package soat.project.fastfoodsoat.domain.client;
 
-import soat.project.fastfoodsoat.domain.PublicIdentifier;
+import soat.project.fastfoodsoat.domain.shared.PublicIdentifier;
 
 import java.util.Objects;
 import java.util.UUID;

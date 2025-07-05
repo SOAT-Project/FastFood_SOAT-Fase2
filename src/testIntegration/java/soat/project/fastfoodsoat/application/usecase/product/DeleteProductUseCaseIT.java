@@ -7,7 +7,7 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.application.usecase.product.delete.DefaultDeleteProductUseCase;
+import soat.project.fastfoodsoat.application.usecase.product.delete.DeleteProductUseCaseImpl;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 class DeleteProductUseCaseIT {
 
     @Autowired
-    private DefaultDeleteProductUseCase useCase;
+    private DeleteProductUseCaseImpl useCase;
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine")

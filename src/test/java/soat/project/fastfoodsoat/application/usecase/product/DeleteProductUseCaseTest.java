@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
-import soat.project.fastfoodsoat.application.usecase.product.delete.DefaultDeleteProductUseCase;
-import soat.project.fastfoodsoat.domain.product.ProductGateway;
+import soat.project.fastfoodsoat.application.usecase.product.delete.DeleteProductUseCaseImpl;
+import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
 
 import java.util.List;
@@ -17,14 +17,14 @@ import static org.mockito.Mockito.verify;
 class DeleteProductUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultDeleteProductUseCase useCase;
+    private DeleteProductUseCaseImpl useCase;
 
     @Mock
-    private ProductGateway productGateway;
+    private ProductRepositoryGateway productRepositoryGateway;
 
     @Override
     protected List<Object> getMocks() {
-        return List.of(productGateway);
+        return List.of(productRepositoryGateway);
     }
 
     @Test
@@ -32,6 +32,6 @@ class DeleteProductUseCaseTest extends UseCaseTest {
         final var productId = 123;
 
         assertDoesNotThrow(() -> useCase.execute(productId));
-        verify(productGateway, times(1)).deleteById(ProductId.of(productId));
+        verify(productRepositoryGateway, times(1)).deleteById(ProductId.of(productId));
     }
 }

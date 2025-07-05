@@ -2,7 +2,7 @@ package soat.project.fastfoodsoat.domain.product;
 
 import org.junit.jupiter.api.Test;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
 
 import java.math.BigDecimal;
 

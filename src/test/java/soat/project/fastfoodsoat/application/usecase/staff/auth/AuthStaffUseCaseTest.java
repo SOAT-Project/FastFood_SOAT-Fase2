@@ -6,12 +6,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
+import soat.project.fastfoodsoat.application.command.staff.auth.AuthStaffCommand;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
 import soat.project.fastfoodsoat.domain.exception.DomainException;
 import soat.project.fastfoodsoat.domain.staff.Staff;
-import soat.project.fastfoodsoat.domain.staff.StaffGateway;
+import soat.project.fastfoodsoat.application.gateway.StaffRepositoryGateway;
 import soat.project.fastfoodsoat.domain.token.Token;
-import soat.project.fastfoodsoat.domain.token.TokenService;
+import soat.project.fastfoodsoat.application.gateway.TokenService;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,10 +25,10 @@ import static org.mockito.Mockito.*;
 class AuthStaffUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultAuthStaffUseCase useCase;
+    private AuthStaffUseCaseImpl useCase;
 
     @Mock
-    private StaffGateway staffGateway;
+    private StaffRepositoryGateway staffRepositoryGateway;
 
     @Mock
     private TokenService tokenService;
@@ -35,7 +36,7 @@ class AuthStaffUseCaseTest extends UseCaseTest {
 
     @Override
     protected List<Object> getMocks() {
-        return List.of(staffGateway, tokenService);
+        return List.of(staffRepositoryGateway, tokenService);
     }
 
     @BeforeEach
@@ -51,7 +52,7 @@ class AuthStaffUseCaseTest extends UseCaseTest {
 
         final var command = new AuthStaffCommand(staff.getEmail());
 
-        when(staffGateway.findByEmail(anyString())).thenReturn(Optional.of(staff));
+        when(staffRepositoryGateway.findByEmail(anyString())).thenReturn(Optional.of(staff));
 
         when(tokenService.generateToken(any(), any(), any())).thenReturn(token);
 
@@ -64,9 +65,9 @@ class AuthStaffUseCaseTest extends UseCaseTest {
         assertNotNull(actualOutput.tokenType());
         assertNotNull(actualOutput.expiresIn());
 
-        verify(staffGateway, times(1)).findByEmail(anyString());
+        verify(staffRepositoryGateway, times(1)).findByEmail(anyString());
         verify(tokenService, times(1)).generateToken(any(), any(), any());
-        Mockito.verifyNoMoreInteractions(staffGateway, tokenService);
+        Mockito.verifyNoMoreInteractions(staffRepositoryGateway, tokenService);
     }
 
     @Test
@@ -77,8 +78,8 @@ class AuthStaffUseCaseTest extends UseCaseTest {
 
         final var command = new AuthStaffCommand(staff.getCpf().getValue());
 
-        when(staffGateway.findByEmail(anyString())).thenReturn(Optional.empty());
-        when(staffGateway.findByCpf(any())).thenReturn(Optional.of(staff));
+        when(staffRepositoryGateway.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(staffRepositoryGateway.findByCpf(any())).thenReturn(Optional.of(staff));
 
         when(tokenService.generateToken(any(), any(), any())).thenReturn(token);
 
@@ -91,10 +92,10 @@ class AuthStaffUseCaseTest extends UseCaseTest {
         assertNotNull(actualOutput.tokenType());
         assertNotNull(actualOutput.expiresIn());
 
-        verify(staffGateway, times(1)).findByEmail(anyString());
-        verify(staffGateway, times(1)).findByCpf(any());
+        verify(staffRepositoryGateway, times(1)).findByEmail(anyString());
+        verify(staffRepositoryGateway, times(1)).findByCpf(any());
         verify(tokenService, times(1)).generateToken(any(), any(), any());
-        Mockito.verifyNoMoreInteractions(staffGateway, tokenService);
+        Mockito.verifyNoMoreInteractions(staffRepositoryGateway, tokenService);
     }
 
     @Test
@@ -107,8 +108,8 @@ class AuthStaffUseCaseTest extends UseCaseTest {
 
         final var command = new AuthStaffCommand(staff.getCpf().getValue());
 
-        when(staffGateway.findByEmail(anyString())).thenReturn(Optional.empty());
-        when(staffGateway.findByCpf(any())).thenReturn(Optional.empty());
+        when(staffRepositoryGateway.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(staffRepositoryGateway.findByCpf(any())).thenReturn(Optional.empty());
 
         // When
         final var actualException = assertThrows(
@@ -121,9 +122,9 @@ class AuthStaffUseCaseTest extends UseCaseTest {
         assertEquals(expectedErrorCount, actualException.getErrors().size());
         assertEquals(expectedErrorMessage, actualException.getErrors().getFirst().message());
 
-        verify(staffGateway, times(1)).findByEmail(anyString());
-        verify(staffGateway, times(1)).findByCpf(any());
-        Mockito.verifyNoMoreInteractions(staffGateway, tokenService);
+        verify(staffRepositoryGateway, times(1)).findByEmail(anyString());
+        verify(staffRepositoryGateway, times(1)).findByCpf(any());
+        Mockito.verifyNoMoreInteractions(staffRepositoryGateway, tokenService);
     }
 
     @Test
@@ -145,7 +146,7 @@ class AuthStaffUseCaseTest extends UseCaseTest {
         assertEquals(expectedErrorCount, actualException.getErrors().size());
         assertEquals(expectedErrorMessage, actualException.getErrors().getFirst().message());
 
-        Mockito.verifyNoMoreInteractions(staffGateway, tokenService);
+        Mockito.verifyNoMoreInteractions(staffRepositoryGateway, tokenService);
     }
 
 }

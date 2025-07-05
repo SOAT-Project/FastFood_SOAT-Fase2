@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
-import soat.project.fastfoodsoat.application.usecase.payment.update.DefaultUpdatePaymentToPaidStatusUseCase;
-import soat.project.fastfoodsoat.application.usecase.payment.update.UpdatePaymentToPaidStatusCommand;
+import soat.project.fastfoodsoat.application.usecase.payment.update.status.UpdatePaymentToPaidStatusUseCaseImpl;
+import soat.project.fastfoodsoat.application.command.payment.UpdatePaymentToPaidStatusCommand;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.payment.Payment;
-import soat.project.fastfoodsoat.domain.payment.PaymentGateway;
+import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
 
 import java.math.BigDecimal;
@@ -23,14 +23,14 @@ import static org.mockito.Mockito.times;
 class UpdatePaymentToPaidStatusUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultUpdatePaymentToPaidStatusUseCase useCase;
+    private UpdatePaymentToPaidStatusUseCaseImpl useCase;
 
     @Mock
-    private PaymentGateway paymentGateway;
+    private PaymentRepositoryGateway paymentRepositoryGateway;
 
     @Override
     protected List<Object> getMocks() {
-        return List.of(paymentGateway);
+        return List.of(paymentRepositoryGateway);
     }
 
     @Test
@@ -42,22 +42,22 @@ class UpdatePaymentToPaidStatusUseCaseTest extends UseCaseTest {
         when(payment.getValue()).thenReturn(BigDecimal.valueOf(100.0));
         when(payment.getExternalReference()).thenReturn("123456789");
         when(payment.getQrCode()).thenReturn("QRCode");
-        when(paymentGateway.findByExternalReference(command.externalReference())).thenReturn(Optional.of(payment));
+        when(paymentRepositoryGateway.findByExternalReference(command.externalReference())).thenReturn(Optional.of(payment));
 
         final var output = useCase.execute(command);
 
         assertNotNull(output);
-        verify(paymentGateway, times(1)).findByExternalReference(command.externalReference());
-        verify(paymentGateway, times(1)).update(payment);
+        verify(paymentRepositoryGateway, times(1)).findByExternalReference(command.externalReference());
+        verify(paymentRepositoryGateway, times(1)).update(payment);
     }
 
     @Test
     void givenInvalidCommand_whenUpdatePaymentToPaidStatusUseCase_thenShouldThrowNotFoundException() {
         final var command = new UpdatePaymentToPaidStatusCommand("123456789");
 
-        when(paymentGateway.findByExternalReference(command.externalReference())).thenReturn(Optional.empty());
+        when(paymentRepositoryGateway.findByExternalReference(command.externalReference())).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class, () -> useCase.execute(command));
-        verify(paymentGateway, times(1)).findByExternalReference(command.externalReference());
+        verify(paymentRepositoryGateway, times(1)).findByExternalReference(command.externalReference());
     }
 
     @Test
@@ -66,9 +66,9 @@ class UpdatePaymentToPaidStatusUseCaseTest extends UseCaseTest {
 
         final var payment = mock(Payment.class);
         when(payment.getStatus()).thenReturn(PaymentStatus.APPROVED);
-        when(paymentGateway.findByExternalReference(command.externalReference())).thenReturn(Optional.of(payment));
+        when(paymentRepositoryGateway.findByExternalReference(command.externalReference())).thenReturn(Optional.of(payment));
 
         assertThrows(IllegalStateException.class, () -> useCase.execute(command));
-        verify(paymentGateway, times(1)).findByExternalReference(command.externalReference());
+        verify(paymentRepositoryGateway, times(1)).findByExternalReference(command.externalReference());
     }
 }

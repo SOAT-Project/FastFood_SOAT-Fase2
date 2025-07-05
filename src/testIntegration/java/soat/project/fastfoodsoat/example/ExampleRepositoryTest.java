@@ -9,8 +9,8 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ExampleEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ExampleRepository;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ExampleEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ExampleRepository;
 
 import java.util.Optional;
 

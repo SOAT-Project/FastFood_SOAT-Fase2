@@ -9,23 +9,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.*;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.OrderJpaMapper;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.*;
-import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.DefaultListOrderUseCase;
-import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderOutput;
-import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderParams;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper.OrderJpaMapper;
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderUseCaseImpl;
+import soat.project.fastfoodsoat.application.output.order.ListOrderOutput;
+import soat.project.fastfoodsoat.application.command.order.ListOrderParams;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
-import soat.project.fastfoodsoat.utils.InstantUtils;
+import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.*;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.*;
+import soat.project.fastfoodsoat.shared.utils.InstantUtils;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ListOrderUseCaseIT {
 
     @Autowired
-    private DefaultListOrderUseCase useCase;
+    private ListOrderUseCaseImpl useCase;
 
     @Autowired
     private OrderRepository orderRepository;

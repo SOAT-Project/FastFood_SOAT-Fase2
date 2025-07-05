@@ -1,8 +1,8 @@
 package soat.project.fastfoodsoat.domain.product;
 
-import soat.project.fastfoodsoat.domain.AggregateRoot;
+import soat.project.fastfoodsoat.domain.shared.AggregateRoot;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
 import soat.project.fastfoodsoat.domain.validation.ValidationHandler;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
 

@@ -1,11 +1,11 @@
 package soat.project.fastfoodsoat.domain.staff;
 
-import soat.project.fastfoodsoat.domain.AggregateRoot;
+import soat.project.fastfoodsoat.domain.shared.AggregateRoot;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
-import soat.project.fastfoodsoat.domain.staff.role.Role;
+import soat.project.fastfoodsoat.domain.role.Role;
 import soat.project.fastfoodsoat.domain.validation.ValidationHandler;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
-import soat.project.fastfoodsoat.utils.InstantUtils;
+import soat.project.fastfoodsoat.shared.utils.InstantUtils;
 
 import java.time.Instant;
 import java.util.ArrayList;

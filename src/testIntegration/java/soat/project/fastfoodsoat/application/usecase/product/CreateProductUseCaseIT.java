@@ -8,11 +8,11 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductCategoryJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductCategoryRepository;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductRepository;
-import soat.project.fastfoodsoat.application.usecase.product.create.CreateProductCommand;
-import soat.project.fastfoodsoat.application.usecase.product.create.DefaultCreateProductUseCase;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ProductCategoryJpaEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ProductCategoryRepository;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ProductRepository;
+import soat.project.fastfoodsoat.application.command.product.CreateProductCommand;
+import soat.project.fastfoodsoat.application.usecase.product.create.CreateProductUseCaseImpl;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class CreateProductUseCaseIT {
 
     @Autowired
-    private DefaultCreateProductUseCase useCase;
+    private CreateProductUseCaseImpl useCase;
 
     @Autowired
     private ProductRepository productRepository;

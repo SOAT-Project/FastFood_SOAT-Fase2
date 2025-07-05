@@ -7,14 +7,14 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductCategoryJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductCategoryRepository;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductRepository;
-import soat.project.fastfoodsoat.application.usecase.product.update.DefaultUpdateProductUseCase;
-import soat.project.fastfoodsoat.application.usecase.product.update.UpdateProductCommand;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ProductCategoryJpaEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ProductJpaEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ProductCategoryRepository;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ProductRepository;
+import soat.project.fastfoodsoat.application.usecase.product.update.UpdateProductUseCaseImpl;
+import soat.project.fastfoodsoat.application.command.product.UpdateProductCommand;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UpdateProductUseCaseIT {
 
     @Autowired
-    private DefaultUpdateProductUseCase useCase;
+    private UpdateProductUseCaseImpl useCase;
 
     @Autowired
     private ProductCategoryRepository productCategoryRepository;

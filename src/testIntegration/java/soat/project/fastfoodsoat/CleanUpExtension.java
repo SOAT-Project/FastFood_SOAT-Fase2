@@ -4,7 +4,7 @@ import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.*;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.*;
 
 import java.util.Collection;
 import java.util.List;

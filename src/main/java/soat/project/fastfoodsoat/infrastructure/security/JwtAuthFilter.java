@@ -11,7 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import soat.project.fastfoodsoat.domain.token.TokenService;
+import soat.project.fastfoodsoat.application.gateway.TokenService;
 
 import java.io.IOException;
 import java.util.List;

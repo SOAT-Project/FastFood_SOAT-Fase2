@@ -1,10 +1,10 @@
 package soat.project.fastfoodsoat.domain.order;
 
-import soat.project.fastfoodsoat.domain.AggregateRoot;
-import soat.project.fastfoodsoat.domain.PublicIdentifier;
+import soat.project.fastfoodsoat.domain.shared.AggregateRoot;
+import soat.project.fastfoodsoat.domain.shared.PublicIdentifier;
 import soat.project.fastfoodsoat.domain.client.ClientId;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
-import soat.project.fastfoodsoat.domain.order.orderproduct.OrderProduct;
+import soat.project.fastfoodsoat.domain.orderproduct.OrderProduct;
 import soat.project.fastfoodsoat.domain.payment.Payment;
 import soat.project.fastfoodsoat.domain.validation.ValidationHandler;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;

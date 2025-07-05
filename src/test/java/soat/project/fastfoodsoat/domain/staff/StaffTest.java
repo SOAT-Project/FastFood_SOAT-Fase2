@@ -2,7 +2,7 @@ package soat.project.fastfoodsoat.domain.staff;
 
 import org.junit.jupiter.api.Test;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
-import soat.project.fastfoodsoat.domain.staff.role.Role;
+import soat.project.fastfoodsoat.domain.role.Role;
 
 import java.util.List;
 

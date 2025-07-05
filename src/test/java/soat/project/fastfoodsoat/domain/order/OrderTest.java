@@ -3,9 +3,9 @@ package soat.project.fastfoodsoat.domain.order;
 import org.junit.jupiter.api.Test;
 import soat.project.fastfoodsoat.domain.client.ClientId;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
-import soat.project.fastfoodsoat.domain.order.orderproduct.OrderProduct;
+import soat.project.fastfoodsoat.domain.orderproduct.OrderProduct;
 import soat.project.fastfoodsoat.domain.product.Product;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
 
 import java.math.BigDecimal;
 import java.util.List;

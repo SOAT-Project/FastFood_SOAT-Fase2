@@ -1,6 +1,6 @@
 package soat.project.fastfoodsoat.domain.exception;
 
-import soat.project.fastfoodsoat.domain.Entity;
+import soat.project.fastfoodsoat.domain.shared.Entity;
 import soat.project.fastfoodsoat.domain.validation.DomainError;
 
 import java.util.Collections;

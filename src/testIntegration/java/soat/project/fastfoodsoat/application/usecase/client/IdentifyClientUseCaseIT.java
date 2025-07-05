@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ClientJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ClientRepository;
-import soat.project.fastfoodsoat.application.usecase.client.auth.AuthClientCommand;
-import soat.project.fastfoodsoat.application.usecase.client.auth.DefaultAuthClientUseCase;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ClientJpaEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ClientRepository;
+import soat.project.fastfoodsoat.application.command.client.AuthClientCommand;
+import soat.project.fastfoodsoat.application.usecase.client.auth.AuthClientUseCaseImpl;
 import soat.project.fastfoodsoat.domain.exception.DomainException;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
-import soat.project.fastfoodsoat.utils.InstantUtils;
+import soat.project.fastfoodsoat.shared.utils.InstantUtils;
 
 import java.util.UUID;
 
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class IdentifyClientUseCaseIT {
 
     @Autowired
-    private DefaultAuthClientUseCase useCase;
+    private AuthClientUseCaseImpl useCase;
 
     @Autowired
     private ClientRepository clientRepository;

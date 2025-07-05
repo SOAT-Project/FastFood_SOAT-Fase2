@@ -4,16 +4,16 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
-import soat.project.fastfoodsoat.application.usecase.product.retrieve.list.byCategory.DefaultListByCategoryUseCase;
-import soat.project.fastfoodsoat.application.usecase.product.retrieve.list.byCategory.ListByCategoryOutput;
-import soat.project.fastfoodsoat.application.usecase.product.retrieve.list.byCategory.ListByCategoryParams;
+import soat.project.fastfoodsoat.application.usecase.product.retrieve.list.bycategory.ListByCategoryUseCaseImpl;
+import soat.project.fastfoodsoat.application.output.product.ListByCategoryOutput;
+import soat.project.fastfoodsoat.application.command.product.ListByCategoryParams;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
-import soat.project.fastfoodsoat.domain.product.ProductGateway;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategory;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryGateway;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
+import soat.project.fastfoodsoat.domain.productCategory.ProductCategory;
+import soat.project.fastfoodsoat.application.gateway.ProductCategoryRepositoryGateway;
+import soat.project.fastfoodsoat.domain.productCategory.ProductCategoryId;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -26,17 +26,17 @@ import static org.mockito.Mockito.*;
 class ListByCategoryUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultListByCategoryUseCase useCase;
+    private ListByCategoryUseCaseImpl useCase;
 
     @Mock
-    private ProductGateway productGateway;
+    private ProductRepositoryGateway productRepositoryGateway;
 
     @Mock
-    private ProductCategoryGateway categoryGateway;
+    private ProductCategoryRepositoryGateway categoryGateway;
 
     @Override
     protected List<Object> getMocks() {
-        return List.of(productGateway, categoryGateway);
+        return List.of(productRepositoryGateway, categoryGateway);
     }
 
     @Test
@@ -55,13 +55,13 @@ class ListByCategoryUseCaseTest extends UseCaseTest {
         final var pagination = mock(Pagination.class);
 
         when(categoryGateway.findById(ProductCategoryId.of(categoryId))).thenReturn(Optional.of(category));
-        when(productGateway.findProductByCategory(ProductCategoryId.of(categoryId), query)).thenReturn(pagination);
+        when(productRepositoryGateway.findProductByCategory(ProductCategoryId.of(categoryId), query)).thenReturn(pagination);
         when(pagination.map(any())).thenReturn(expectedPagination);
 
         final var result = useCase.execute(params);
 
         assertNotNull(result);
-        verify(productGateway).findProductByCategory(ProductCategoryId.of(categoryId), query);
+        verify(productRepositoryGateway).findProductByCategory(ProductCategoryId.of(categoryId), query);
     }
 
     @Test
@@ -73,7 +73,7 @@ class ListByCategoryUseCaseTest extends UseCaseTest {
         when(categoryGateway.findById(ProductCategoryId.of(categoryId))).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> useCase.execute(params));
-        verify(productGateway, never()).findProductByCategory(any(), any());
+        verify(productRepositoryGateway, never()).findProductByCategory(any(), any());
     }
 
     @Test
@@ -85,7 +85,7 @@ class ListByCategoryUseCaseTest extends UseCaseTest {
         final Pagination emptyPagination = Pagination.with(0, 1, 10, List.of());
 
         when(categoryGateway.findById(ProductCategoryId.of(categoryId))).thenReturn(Optional.of(category));
-        when(productGateway.findProductByCategory(ProductCategoryId.of(categoryId), query)).thenReturn(emptyPagination);
+        when(productRepositoryGateway.findProductByCategory(ProductCategoryId.of(categoryId), query)).thenReturn(emptyPagination);
 
         final var result = useCase.execute(params);
 

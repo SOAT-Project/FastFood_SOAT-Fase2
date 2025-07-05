@@ -10,12 +10,12 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.PaymentJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.OrderJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.PaymentRepository;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.OrderRepository;
-import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.GetQRCodeCommand;
-import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.DefaultGetQRCodeUseCase;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.PaymentJpaEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.OrderJpaEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.PaymentRepository;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.OrderRepository;
+import soat.project.fastfoodsoat.application.command.payment.GetQRCodeCommand;
+import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.GetQRCodeUseCaseImpl;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GetQRCodeUseCaseIT {
 
     @Autowired
-    private DefaultGetQRCodeUseCase useCase;
+    private GetQRCodeUseCaseImpl useCase;
 
     @Autowired
     private PaymentRepository paymentRepository;
