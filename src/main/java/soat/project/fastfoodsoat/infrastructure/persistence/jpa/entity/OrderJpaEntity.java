@@ -19,7 +19,6 @@ public class OrderJpaEntity {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Size(max = 36)
     @Column(name = "public_id", nullable = false, columnDefinition = "uuid")
     private UUID publicId;
 

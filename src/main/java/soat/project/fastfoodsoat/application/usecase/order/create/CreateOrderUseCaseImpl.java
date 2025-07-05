@@ -46,8 +46,8 @@ public class CreateOrderUseCaseImpl extends CreateOrderUseCase {
                                   final PaymentRepositoryGateway paymentRepositoryGateway,
                                   final PaymentService paymentService) {
       
-        this.orderRepositoryGateway = requireNonNull(orderRepositoryGateway);
-        this.productRepositoryGateway = requireNonNull(productRepositoryGateway);
+        this.orderRepositoryGateway = orderRepositoryGateway;
+        this.productRepositoryGateway = productRepositoryGateway;
         this.clientRepositoryGateway = clientRepositoryGateway;
         this.paymentRepositoryGateway = paymentRepositoryGateway;
         this.paymentService = paymentService;
@@ -55,53 +55,21 @@ public class CreateOrderUseCaseImpl extends CreateOrderUseCase {
 
     @Override
     public CreateOrderOutput execute(final CreateOrderCommand command) {
-        final Notification notification = Notification.create();
-
         final ClientPublicId clientPublicId = command.clientPublicId() != null ?
                 ClientPublicId.of(command.clientPublicId()) : null;
 
-        final var client = clientPublicId != null ?
-            clientRepositoryGateway.findByPublicId(clientPublicId)
-                .orElseThrow(() -> NotFoundException.with(Client.class, clientPublicId))
-            : null;
+        final var client = getClientByPublicId(clientPublicId);
 
-        final var clientId = client != null ? client.getId() : null;
+        final Notification notification = Notification.create();
 
-        final List<CreateOrderProductCommand> orderProducts = command.orderProducts();
-
-        if (orderProducts.isEmpty()) {
-            throw new NotificationException("Order must have at least one product", notification);
-        }
-
-        final List<Product> products = productRepositoryGateway.findByIds(
-                orderProducts.stream()
-                        .map(CreateOrderProductCommand::productId)
-                        .toList()
-        );
-
-        final List<OrderProduct> orderProductDomains =
-                orderProducts.stream()
-                        .map(orderProduct -> {
-                            final Product product = products.stream()
-                                    .filter(p -> p.getId().getValue().equals(orderProduct.productId()))
-                                    .findFirst()
-                                    .orElseThrow(() ->  NotFoundException.with(Product.class, new ProductId(orderProduct.productId())));
-
-                            final BigDecimal orderProductValue = product.getValue()
-                                    .multiply(BigDecimal.valueOf(orderProduct.quantity()));
-
-                            return OrderProduct.newOrderProduct(
-                                    orderProductValue,
-                                    orderProduct.quantity(),
-                                    product
-                            );
-                        })
-                        .toList();
+        final List<OrderProduct> orderProductDomains = buildOrderProducts(command.orderProducts(), notification);
 
         final BigDecimal value = Order.calculateValue(orderProductDomains);
         final Integer orderNumber = orderRepositoryGateway.findLastOrderNumber() + 1;
         final UUID publicId = UUID.randomUUID();
         final UUID externalReference = UUID.randomUUID();
+
+        final var clientId = client != null ? client.getId() : null;
 
         final Order order = notification.validate(() ->
                 Order.newOrder(
@@ -152,5 +120,42 @@ public class CreateOrderUseCaseImpl extends CreateOrderUseCase {
                 createdOrder,
                 createdPayment
         );
+    }
+
+    private Client getClientByPublicId(final ClientPublicId clientPublicId) {
+        if (clientPublicId == null) return null;
+
+        return clientRepositoryGateway.findByPublicId(clientPublicId)
+                .orElseThrow(() -> NotFoundException.with(Client.class, clientPublicId));
+    }
+
+    private List<OrderProduct> buildOrderProducts(
+            final List<CreateOrderProductCommand> orderProductCommands,
+            final Notification notification
+    ) {
+        if (orderProductCommands.isEmpty()) {
+            throw new NotificationException("Order must have at least one product", notification);
+        }
+
+        final List<Product> products = productRepositoryGateway.findByIds(
+                orderProductCommands.stream().map(CreateOrderProductCommand::productId).toList()
+        );
+
+        return orderProductCommands.stream().map(orderProduct -> {
+            final Product product = products.stream()
+                .filter(p -> p.getId().getValue().equals(orderProduct.productId()))
+                .findFirst()
+                .orElseThrow(() ->  NotFoundException.with(Product.class, new ProductId(orderProduct.productId())));
+
+            final BigDecimal orderProductValue = product.getValue()
+                .multiply(BigDecimal.valueOf(orderProduct.quantity()));
+
+            return OrderProduct.newOrderProduct(
+                orderProductValue,
+                orderProduct.quantity(),
+                product
+            );
+        })
+        .toList();
     }
 }

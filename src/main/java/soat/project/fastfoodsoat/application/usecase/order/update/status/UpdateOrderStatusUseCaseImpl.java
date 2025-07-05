@@ -29,12 +29,9 @@ public class UpdateOrderStatusUseCaseImpl extends UpdateOrderStatusUseCase {
         final var order = orderRepositoryGateway.findByPublicId(publicId)
                 .orElseThrow(() -> NotFoundException.with(Order.class, publicId));
 
-        final var newStatus = OrderStatus.valueOf(command.newStatus());
-        validateStatus(newStatus.name());
+        final var newStatus = validateStatus(command.newStatus());
 
-        final var updatedOrder = order.update(
-                order.getValue(),
-                order.getOrderNumber(),
+        final var updatedOrder = order.updateStatus(
                 newStatus
         );
 
@@ -43,9 +40,9 @@ public class UpdateOrderStatusUseCaseImpl extends UpdateOrderStatusUseCase {
         return UpdateOrderStatusOutput.from(savedOrder);
     }
 
-    public void validateStatus(String status) {
+    public OrderStatus validateStatus(String status) {
         try {
-            OrderStatus.valueOf(status.toUpperCase());
+            return OrderStatus.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Status inválido: " + status);
         }

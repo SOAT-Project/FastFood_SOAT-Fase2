@@ -142,6 +142,14 @@ public class Order extends AggregateRoot<OrderId> {
         return this;
     }
 
+    public Order updateStatus(
+            final OrderStatus status
+    ) {
+        this.status = status;
+        this.selfValidation();
+        return this;
+    }
+
     @Override
     public void validate(final ValidationHandler handler) {
         new OrderValidator(this, handler).validate();

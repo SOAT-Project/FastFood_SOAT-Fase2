@@ -24,7 +24,6 @@ public class CreateProductUseCaseImpl extends CreateProductUseCase {
         this.categoryGateway = categoryGateway;
     }
 
-
     @Override
     public CreateProductOutput execute(final CreateProductCommand command) {
         final var name = command.name();
