@@ -132,32 +132,10 @@ public class OrderRepositoryGatewayImpl implements OrderRepositoryGateway {
     public Pagination<Order> findAll(final SearchQuery query) {
         final var page = PageRequest.of(
                 query.page(),
-                query.perPage(),
-                Sort.Direction.fromString(query.direction()),
-                query.sort()
+                query.perPage()
         );
 
-        if (isNull(query.terms())) {
-            final Page<OrderJpaEntity> pageResult = this.orderRepository.findAll(page);
-
-            return new Pagination<>(
-                    pageResult.getNumber(),
-                    pageResult.getSize(),
-                    pageResult.getTotalElements(),
-                    pageResult.map(OrderJpaMapper::fromJpa).toList()
-            );
-        }
-
-        final var terms = query.terms();
-        var pageResult = tryFindByPublicId(false, terms, page);
-
-        if (pageResult.isEmpty()) {
-            pageResult = tryFindByOrderNumber(false, terms, page);
-        }
-
-        if (pageResult.isEmpty()) {
-            pageResult = tryFindByProductName(false, terms, page);
-        }
+        final Page<OrderJpaEntity> pageResult = this.orderRepository.findAllExcludingFinalizedAndSorted(page);
 
         return new Pagination<>(
                 pageResult.getNumber(),

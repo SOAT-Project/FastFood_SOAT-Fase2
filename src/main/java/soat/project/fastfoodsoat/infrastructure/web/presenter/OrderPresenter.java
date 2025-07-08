@@ -1,6 +1,5 @@
 package soat.project.fastfoodsoat.infrastructure.web.presenter;
 
-import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderForStaffOutput;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateOrderPaymentResponse;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateOrderProductResponse;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateOrderResponse;
@@ -35,18 +34,6 @@ public interface OrderPresenter {
     }
 
     static ListOrderResponse present(final ListOrderOutput output) {
-        return new ListOrderResponse(
-                output.publicId(),
-                output.value(),
-                output.orderNumber(),
-                output.status(),
-                isNull(output.products()) ? List.of() : output.products().stream()
-                        .map(OrderPresenter::present)
-                        .toList()
-        );
-    }
-
-    static ListOrderResponse present(final ListOrderForStaffOutput output) {
         return new ListOrderResponse(
                 output.publicId(),
                 output.value(),

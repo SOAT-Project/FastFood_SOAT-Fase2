@@ -36,7 +36,8 @@ public class OrderController implements OrderAPI {
     public OrderController(
             final CreateOrderUseCase createOrderUseCase,
             final UpdateOrderStatusUseCase updateOrderStatusUseCase,
-            final ListOrderUseCase listOrderUseCase, ListOrderForStaffUseCase listOrderForStaffUseCase
+            final ListOrderUseCase listOrderUseCase,
+            final ListOrderForStaffUseCase listOrderForStaffUseCase
     ) {
         this.createOrderUseCase = createOrderUseCase;
         this.listOrderUseCase = listOrderUseCase;
@@ -65,7 +66,7 @@ public class OrderController implements OrderAPI {
         return ResponseEntity.ok(new UpdateOrderStatusResponse(output.orderPublicId().toString(), output.newStatus()));
     }
 
-
+    @Override
     public ResponseEntity<Pagination<ListOrderResponse>> list(
             final int page,
             final int perPage
@@ -78,6 +79,7 @@ public class OrderController implements OrderAPI {
         return ResponseEntity.ok(output.map(OrderPresenter::present));
     }
 
+    @Override
     public ResponseEntity<Pagination<ListOrderResponse>> listForStaff(
             final boolean onlyPaid,
             final String search,

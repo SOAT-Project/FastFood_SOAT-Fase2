@@ -29,5 +29,15 @@ public interface OrderRepository extends JpaRepository<OrderJpaEntity, Integer> 
     Page<OrderJpaEntity> findAllByOrderProducts_ProductNameContainingIgnoreCaseAndPayment_Status(
             String productName, PaymentStatus status, Pageable pageable
     );
-
+    @Query("SELECT o FROM OrderJpaEntity o " +
+            "WHERE o.status <> 'COMPLETED' " +
+            "ORDER BY " +
+            "  CASE o.status " +
+            "    WHEN 'READY' THEN 1 " +
+            "    WHEN 'IN_PREPARATION' THEN 2 " +
+            "    WHEN 'RECEIVED' THEN 3 " +
+            "    ELSE 4 " +
+            "  END, " +
+            "  o.createdAt ASC")
+    Page<OrderJpaEntity> findAllExcludingFinalizedAndSorted(Pageable pageable);
 }

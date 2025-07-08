@@ -114,7 +114,8 @@ public interface OrderAPI {
     );
 
     @GetMapping(
-            produces = MediaType.APPLICATION_JSON_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            value = "/staff"
     )
     @Operation(
             summary = "List orders for staff"
