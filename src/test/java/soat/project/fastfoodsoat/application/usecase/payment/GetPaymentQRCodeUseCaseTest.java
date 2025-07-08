@@ -3,9 +3,11 @@ package soat.project.fastfoodsoat.application.usecase.payment;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import soat.project.fastfoodsoat.application.gateway.QRCodeServiceGateway;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
 import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.GetPaymentQRCodeByExternalReferenceUseCaseImpl;
 import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetPaymentQRCodeCommand;
+import soat.project.fastfoodsoat.domain.exception.IllegalStateException;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.payment.Payment;
 import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
@@ -24,9 +26,12 @@ class GetPaymentQRCodeUseCaseTest extends UseCaseTest  {
     @Mock
     private PaymentRepositoryGateway paymentRepositoryGateway;
 
+    @Mock
+    private QRCodeServiceGateway qrCodeServiceGateway;
+
     @Override
     protected List<Object> getMocks() {
-        return List.of(paymentRepositoryGateway);
+        return List.of(paymentRepositoryGateway, qrCodeServiceGateway);
     }
 
     @Test
@@ -37,6 +42,7 @@ class GetPaymentQRCodeUseCaseTest extends UseCaseTest  {
         when(payment.getStatus()).thenReturn(PaymentStatus.PENDING);
         when(payment.getQrCode()).thenReturn("QRCode");
         when(paymentRepositoryGateway.findByExternalReference(command.externalReference())).thenReturn(java.util.Optional.of(payment));
+        when(qrCodeServiceGateway.generateQRCodeImage(anyString(), anyInt(), anyInt())).thenReturn("QRCode".getBytes());
 
         final var output = useCase.execute(command);
 
