@@ -4,11 +4,13 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.order.update.status.UpdateOrderStatusCommand;
 import soat.project.fastfoodsoat.application.output.order.update.status.UpdateOrderStatusOutput;
+import soat.project.fastfoodsoat.domain.exception.IllegalStateException;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.application.gateway.OrderRepositoryGateway;
 import soat.project.fastfoodsoat.domain.order.OrderPublicId;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
+import soat.project.fastfoodsoat.domain.validation.DomainError;
 
 import java.util.Objects;
 
@@ -44,7 +46,7 @@ public class UpdateOrderStatusUseCaseImpl extends UpdateOrderStatusUseCase {
         try {
             return OrderStatus.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Status inválido: " + status);
+            throw IllegalStateException.with(new DomainError("Status inválido: " + status));
         }
     }
 

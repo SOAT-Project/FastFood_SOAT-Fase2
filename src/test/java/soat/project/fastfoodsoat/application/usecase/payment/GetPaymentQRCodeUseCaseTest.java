@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
-import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.GetQRCodeUseCaseImpl;
-import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetQRCodeCommand;
+import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.GetPaymentQRCodeByExternalReferenceUseCaseImpl;
+import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetPaymentQRCodeCommand;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.payment.Payment;
 import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
@@ -16,10 +16,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class GetQRCodeUseCaseTest extends UseCaseTest  {
+class GetPaymentQRCodeUseCaseTest extends UseCaseTest  {
 
     @InjectMocks
-    private GetQRCodeUseCaseImpl useCase;
+    private GetPaymentQRCodeByExternalReferenceUseCaseImpl useCase;
 
     @Mock
     private PaymentRepositoryGateway paymentRepositoryGateway;
@@ -31,7 +31,7 @@ class GetQRCodeUseCaseTest extends UseCaseTest  {
 
     @Test
     void givenValidCommand_whenGetQRCodeUseCase_thenShouldReturnQRCode() {
-        final var command = new GetQRCodeCommand("123456789");
+        final var command = new GetPaymentQRCodeCommand("123456789");
 
         final var payment = mock(Payment.class);
         when(payment.getStatus()).thenReturn(PaymentStatus.PENDING);
@@ -46,7 +46,7 @@ class GetQRCodeUseCaseTest extends UseCaseTest  {
 
     @Test
     void givenInvalidCommand_whenGetQRCodeUseCase_thenShouldThrowNotFoundException() {
-        final var command = new GetQRCodeCommand("123456789");
+        final var command = new GetPaymentQRCodeCommand("123456789");
 
         when(paymentRepositoryGateway.findByExternalReference(command.externalReference())).thenReturn(java.util.Optional.empty());
 
@@ -56,7 +56,7 @@ class GetQRCodeUseCaseTest extends UseCaseTest  {
 
     @Test
     void givenPaymentNotPending_whenGetQRCodeUseCase_thenShouldThrowIllegalStateException() {
-        final var command = new GetQRCodeCommand("123456789");
+        final var command = new GetPaymentQRCodeCommand("123456789");
 
         final var payment = mock(Payment.class);
         when(payment.getStatus()).thenReturn(PaymentStatus.APPROVED);

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soat.project.fastfoodsoat.infrastructure.web.model.DefaultApiError;
 import soat.project.fastfoodsoat.infrastructure.web.model.request.payment.UpdatePaymentToPaidStatusRequest;
+import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.GetPaymentStatusByExternalReferenceResponse;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.UpdatePaymentToPaidStatusResponse;
 
 @Tag(name="Payments")
@@ -18,7 +19,7 @@ import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.Updat
 public interface PaymentAPI {
 
     @GetMapping(
-            value = "/{external_reference}",
+            value = "qrcode",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     @Operation(summary = "Get payment QRCode by external reference")
@@ -38,7 +39,30 @@ public interface PaymentAPI {
                     content = @Content(schema = @Schema(implementation = DefaultApiError.class))
             )
     })
-    ResponseEntity<byte[]> getByExternalReference(@PathVariable("external_reference") String externalReference);
+    ResponseEntity<byte[]> getQrCodeByExternalReference(@RequestParam("external_reference") String externalReference);
+
+    @GetMapping(
+            value = "status",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(summary = "Get payment status by external reference")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Payment status retrieved successfully"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Payment not found",
+                    content = @Content(schema = @Schema(implementation = DefaultApiError.class))
+            ),
+            @ApiResponse(
+                    responseCode = "500",
+                    description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = DefaultApiError.class))
+            )
+    })
+    ResponseEntity<GetPaymentStatusByExternalReferenceResponse> getStatusByExternalReference(@RequestParam("external_reference") String external_reference);
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Update payment to paid status")

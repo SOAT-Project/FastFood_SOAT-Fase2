@@ -14,8 +14,8 @@ import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.PaymentJp
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.OrderJpaEntity;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.PaymentRepository;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.OrderRepository;
-import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetQRCodeCommand;
-import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.GetQRCodeUseCaseImpl;
+import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetPaymentQRCodeCommand;
+import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.GetPaymentQRCodeByExternalReferenceUseCaseImpl;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
@@ -26,10 +26,10 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 @IntegrationTest
-public class GetQRCodeUseCaseIT {
+public class GetPaymentQRCodeUseCaseIT {
 
     @Autowired
-    private GetQRCodeUseCaseImpl useCase;
+    private GetPaymentQRCodeByExternalReferenceUseCaseImpl useCase;
 
     @Autowired
     private PaymentRepository paymentRepository;
@@ -75,7 +75,7 @@ public class GetQRCodeUseCaseIT {
         payment.setExternalReference("ext-ref-" + UUID.randomUUID());
         paymentRepository.save(payment);
 
-        GetQRCodeCommand command = new GetQRCodeCommand(payment.getExternalReference());
+        GetPaymentQRCodeCommand command = new GetPaymentQRCodeCommand(payment.getExternalReference());
         String qrCode = useCase.execute(command);
 
         assertNotNull(qrCode);
@@ -83,7 +83,7 @@ public class GetQRCodeUseCaseIT {
 
     @Test
     void givenInvalidExternalReference_whenGetQRCode_thenShouldThrowNotFoundException() {
-        GetQRCodeCommand command = new GetQRCodeCommand("invalid-ext-ref");
+        GetPaymentQRCodeCommand command = new GetPaymentQRCodeCommand("invalid-ext-ref");
         final var ex = assertThrows(NotFoundException.class, () -> useCase.execute(command));
 
         assertNotNull(ex.getMessage());
