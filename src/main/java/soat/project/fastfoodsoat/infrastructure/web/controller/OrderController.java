@@ -3,6 +3,8 @@ package soat.project.fastfoodsoat.infrastructure.web.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderForStaffCommand;
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.forstaff.ListOrderForStaffUseCase;
 import soat.project.fastfoodsoat.infrastructure.web.controller.api.OrderAPI;
 import soat.project.fastfoodsoat.infrastructure.web.model.request.order.CreateOrderRequest;
 import soat.project.fastfoodsoat.infrastructure.web.model.request.order.UpdateOrderStatusRequest;
@@ -29,15 +31,17 @@ public class OrderController implements OrderAPI {
     private final CreateOrderUseCase createOrderUseCase;
     private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
     private final ListOrderUseCase listOrderUseCase;
+    private final ListOrderForStaffUseCase listOrderForStaffUseCase;
 
     public OrderController(
             final CreateOrderUseCase createOrderUseCase,
             final UpdateOrderStatusUseCase updateOrderStatusUseCase,
-            final ListOrderUseCase listOrderUseCase
+            final ListOrderUseCase listOrderUseCase, ListOrderForStaffUseCase listOrderForStaffUseCase
     ) {
         this.createOrderUseCase = createOrderUseCase;
         this.listOrderUseCase = listOrderUseCase;
         this.updateOrderStatusUseCase = updateOrderStatusUseCase;
+        this.listOrderForStaffUseCase = listOrderForStaffUseCase;
     }
 
     @Override
@@ -63,6 +67,18 @@ public class OrderController implements OrderAPI {
 
 
     public ResponseEntity<Pagination<ListOrderResponse>> list(
+            final int page,
+            final int perPage
+    ) {
+        final var query = new SearchQuery(page, perPage, null, null, null);
+
+        final var params = new ListOrderCommand(query);
+        final var output = this.listOrderUseCase.execute(params);
+
+        return ResponseEntity.ok(output.map(OrderPresenter::present));
+    }
+
+    public ResponseEntity<Pagination<ListOrderResponse>> listForStaff(
             final boolean onlyPaid,
             final String search,
             final int page,
@@ -72,8 +88,8 @@ public class OrderController implements OrderAPI {
     ) {
         final var query = new SearchQuery(page, perPage, search, sort, direction);
 
-        final var params = new ListOrderCommand(onlyPaid, query);
-        final var output = this.listOrderUseCase.execute(params);
+        final var params = new ListOrderForStaffCommand(onlyPaid, query);
+        final var output = this.listOrderForStaffUseCase.execute(params);
 
         return ResponseEntity.ok(output.map(OrderPresenter::present));
     }

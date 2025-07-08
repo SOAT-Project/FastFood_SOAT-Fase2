@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class ListOrderUseCaseTest extends UseCaseTest {
+public class ListOrderForStaffUseCaseTest extends UseCaseTest {
 
     @InjectMocks
     private ListOrderUseCaseImpl useCase;
@@ -94,7 +94,6 @@ public class ListOrderUseCaseTest extends UseCaseTest {
 
         final var orders = List.of(order);
 
-        final var onlyPaid = false;
         final var expectedPage = 0;
         final var expectedPerPage = 10;
         final var expectedTerms = "";
@@ -110,7 +109,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 expectedDirection
         );
 
-        final var params = new ListOrderCommand(onlyPaid, query);
+        final var params = new ListOrderCommand(query);
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
@@ -123,7 +122,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 .map(ListOrderOutput::from)
                 .toList();
 
-        when(orderRepositoryGateway.findAll(anyBoolean(), any())).thenReturn(expectedPagination);
+        when(orderRepositoryGateway.findAll(any())).thenReturn(expectedPagination);
 
         // When
         final var actualOutput = useCase.execute(params);
@@ -135,7 +134,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
         assertEquals(expectedTotal, actualOutput.total());
         assertEquals(expectedItems, actualOutput.items());
 
-        verify(orderRepositoryGateway, times(1)).findAll(anyBoolean(), any());
+        verify(orderRepositoryGateway, times(1)).findAll(any());
     }
 
     @Test
@@ -143,7 +142,6 @@ public class ListOrderUseCaseTest extends UseCaseTest {
         // Given
         final var orders = List.<Order>of();
 
-        final var onlyPaid = false;
         final var expectedPage = 0;
         final var expectedPerPage = 10;
         final var expectedTerms = "";
@@ -159,7 +157,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 expectedDirection
         );
 
-        final var params = new ListOrderCommand(onlyPaid, query);
+        final var params = new ListOrderCommand(query);
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
@@ -168,7 +166,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 orders
         );
 
-        when(orderRepositoryGateway.findAll(anyBoolean(), any())).thenReturn(expectedPagination);
+        when(orderRepositoryGateway.findAll(any())).thenReturn(expectedPagination);
 
         // When
         final var actualOutput = useCase.execute(params);
@@ -179,13 +177,12 @@ public class ListOrderUseCaseTest extends UseCaseTest {
         assertEquals(expectedTotal, actualOutput.total());
         assertEquals(List.<ListOrderOutput>of(), actualOutput.items());
 
-        verify(orderRepositoryGateway, times(1)).findAll(anyBoolean(), any());
+        verify(orderRepositoryGateway, times(1)).findAll(any());
     }
 
     @Test
     void givenValidQuery_whenCallsListOrdersAndGatewayThrowsAnException_shouldReturnError() {
         // Given
-        final var onlyPaid = false;
         final var expectedPage = -1;
         final var expectedPerPage = 0;
         final var expectedTerms = "";
@@ -200,11 +197,11 @@ public class ListOrderUseCaseTest extends UseCaseTest {
                 expectedDirection
         );
 
-        final var params = new ListOrderCommand(onlyPaid, query);
+        final var params = new ListOrderCommand(query);
 
         final var expectedErrorMessage = "Gateway error";
 
-        when(orderRepositoryGateway.findAll(anyBoolean(), any()))
+        when(orderRepositoryGateway.findAll(any()))
                 .thenThrow(new IllegalStateException(expectedErrorMessage));
 
         // When
@@ -216,7 +213,7 @@ public class ListOrderUseCaseTest extends UseCaseTest {
         // Then
         Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
 
-        verify(orderRepositoryGateway, times(1)).findAll(anyBoolean(), any());
+        verify(orderRepositoryGateway, times(1)).findAll(any());
     }
 
 

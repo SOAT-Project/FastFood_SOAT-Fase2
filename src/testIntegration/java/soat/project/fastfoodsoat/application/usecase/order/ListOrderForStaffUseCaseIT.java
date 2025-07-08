@@ -30,7 +30,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
-public class ListOrderUseCaseIT {
+public class ListOrderForStaffUseCaseIT {
 
     @Autowired
     private ListOrderUseCaseImpl useCase;
@@ -364,7 +364,6 @@ public class ListOrderUseCaseIT {
         // Given
         final var orders = sortOrders(createOrders());
 
-        final var onlyPaid = false;
         final var expectedPage = 0;
         final var expectedPerPage = 10;
         final var expectedTerms = "";
@@ -380,7 +379,7 @@ public class ListOrderUseCaseIT {
                 expectedDirection
         );
 
-        final var params = new ListOrderCommand(onlyPaid, query);
+        final var params = new ListOrderCommand(query);
 
         final var expectedItems = orders.stream()
                 .map(ListOrderOutput::from)
@@ -403,7 +402,6 @@ public class ListOrderUseCaseIT {
         // Given
         final var orders = sortOrders(createOrders());
 
-        final var onlyPaid = false;
         final var expectedPage = 0;
         final var expectedPerPage = 1;
         final var expectedTerms = "";
@@ -419,7 +417,7 @@ public class ListOrderUseCaseIT {
                 expectedDirection
         );
 
-        final var params = new ListOrderCommand(onlyPaid, query);
+        final var params = new ListOrderCommand(query);
 
         // When
         final var actualOutput = useCase.execute(params);
@@ -437,7 +435,6 @@ public class ListOrderUseCaseIT {
         // Given
         final var orders = sortOrders(createOrders());
 
-        final var onlyPaid = true;
         final var expectedPage = 0;
         final var expectedPerPage = 10;
         final var expectedTerms = "";
@@ -453,7 +450,7 @@ public class ListOrderUseCaseIT {
                 expectedDirection
         );
 
-        final var params = new ListOrderCommand(onlyPaid, query);
+        final var params = new ListOrderCommand(query);
 
         // When
         final var actualOutput = useCase.execute(params);

@@ -109,6 +109,30 @@ public interface OrderAPI {
             }
     )
     ResponseEntity<Pagination<ListOrderResponse>> list(
+            @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
+            @RequestParam(name = "per_page", required = false, defaultValue = "10") final int perPage
+    );
+
+    @GetMapping(
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @Operation(
+            summary = "List orders for staff"
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Orders listed successfully"
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "An internal server error was thrown",
+                            content = @Content(schema = @Schema(implementation = DefaultApiError.class))
+                    )
+            }
+    )
+    ResponseEntity<Pagination<ListOrderResponse>> listForStaff(
             @RequestParam(name = "only_paid", required = false, defaultValue = "false") final boolean onlyPaid,
             @RequestParam(name = "search", required = false, defaultValue = "") final String search,
             @RequestParam(name = "page", required = false, defaultValue = "0") final int page,
@@ -116,5 +140,4 @@ public interface OrderAPI {
             @RequestParam(name = "sort", required = false, defaultValue = "orderNumber") final String sort,
             @RequestParam(name = "dir", required = false, defaultValue = "asc") final String direction
     );
-
 }

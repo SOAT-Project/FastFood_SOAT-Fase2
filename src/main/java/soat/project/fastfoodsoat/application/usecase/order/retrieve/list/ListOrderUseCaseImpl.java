@@ -17,10 +17,9 @@ public class ListOrderUseCaseImpl extends ListOrderUseCase {
 
     @Override
     public Pagination<ListOrderOutput> execute(final ListOrderCommand params) {
-        final var onlyPaid = params.onlyPaid();
         final var query = params.searchQuery();
 
-        return orderRepositoryGateway.findAll(onlyPaid, query)
+        return orderRepositoryGateway.findAll(query)
                 .map(ListOrderOutput::from);
     }
 }

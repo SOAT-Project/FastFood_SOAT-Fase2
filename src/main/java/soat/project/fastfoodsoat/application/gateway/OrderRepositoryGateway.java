@@ -14,5 +14,6 @@ public interface OrderRepositoryGateway {
     Order update(Order order);
     Optional<Order> findByPublicId(OrderPublicId orderPublicId);
     Integer findLastOrderNumber();
-    Pagination<Order> findAll(boolean onlyPaid, SearchQuery query);
+    Pagination<Order> findAll(SearchQuery query);
+    Pagination<Order> findAllForStaff(boolean onlyPaid, SearchQuery query);
 }
