@@ -4,12 +4,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderForStaffCommand;
-import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
-import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderOutput;
-import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.forstaff.ListOrderForStaffUseCaseImpl;
-import soat.project.fastfoodsoat.domain.order.Order;
+import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderCommand;
 import soat.project.fastfoodsoat.application.gateway.OrderRepositoryGateway;
+import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderOutput;
+import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderUseCaseImpl;
+import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderPublicId;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.orderproduct.OrderProduct;
@@ -29,10 +29,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class ListOrderForStaffUseCaseTest extends UseCaseTest {
+public class ListOrderUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private ListOrderForStaffUseCaseImpl useCase;
+    private ListOrderUseCaseImpl useCase;
 
     @Mock
     private OrderRepositoryGateway orderRepositoryGateway;
@@ -96,20 +96,17 @@ public class ListOrderForStaffUseCaseTest extends UseCaseTest {
 
         final var expectedPage = 0;
         final var expectedPerPage = 10;
-        final var expectedTerms = "";
-        final var expectedSort = "createdAt";
-        final var expectedDirection = "asc";
-        final var expectedTotal = orders.size();
+        final var expectedTotal = 0;
 
         final var query = new SearchQuery(
                 expectedPage,
                 expectedPerPage,
-                expectedTerms,
-                expectedSort,
-                expectedDirection
+                null,
+                null,
+                null
         );
 
-        final var params = new ListOrderForStaffCommand(false, query);
+        final var params = new ListOrderCommand(query);
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
@@ -122,7 +119,7 @@ public class ListOrderForStaffUseCaseTest extends UseCaseTest {
                 .map(ListOrderOutput::from)
                 .toList();
 
-        when(orderRepositoryGateway.findAllForStaff(anyBoolean(), any())).thenReturn(expectedPagination);
+        when(orderRepositoryGateway.findAll(any())).thenReturn(expectedPagination);
 
         // When
         final var actualOutput = useCase.execute(params);
@@ -134,7 +131,7 @@ public class ListOrderForStaffUseCaseTest extends UseCaseTest {
         assertEquals(expectedTotal, actualOutput.total());
         assertEquals(expectedItems, actualOutput.items());
 
-        verify(orderRepositoryGateway, times(1)).findAllForStaff(anyBoolean(), any());
+        verify(orderRepositoryGateway, times(1)).findAll(any());
     }
 
     @Test
@@ -144,20 +141,17 @@ public class ListOrderForStaffUseCaseTest extends UseCaseTest {
 
         final var expectedPage = 0;
         final var expectedPerPage = 10;
-        final var expectedTerms = "";
-        final var expectedSort = "createdAt";
-        final var expectedDirection = "asc";
         final var expectedTotal = 0;
 
         final var query = new SearchQuery(
                 expectedPage,
                 expectedPerPage,
-                expectedTerms,
-                expectedSort,
-                expectedDirection
+                null,
+                null,
+                null
         );
 
-        final var params = new ListOrderForStaffCommand(false, query);
+        final var params = new ListOrderCommand(query);
 
         final var expectedPagination = new Pagination<>(
                 expectedPage,
@@ -166,7 +160,7 @@ public class ListOrderForStaffUseCaseTest extends UseCaseTest {
                 orders
         );
 
-        when(orderRepositoryGateway.findAllForStaff(anyBoolean(), any())).thenReturn(expectedPagination);
+        when(orderRepositoryGateway.findAll(any())).thenReturn(expectedPagination);
 
         // When
         final var actualOutput = useCase.execute(params);
@@ -177,7 +171,7 @@ public class ListOrderForStaffUseCaseTest extends UseCaseTest {
         assertEquals(expectedTotal, actualOutput.total());
         assertEquals(List.<ListOrderOutput>of(), actualOutput.items());
 
-        verify(orderRepositoryGateway, times(1)).findAllForStaff(anyBoolean(),any());
+        verify(orderRepositoryGateway, times(1)).findAll(any());
     }
 
     @Test
@@ -185,23 +179,20 @@ public class ListOrderForStaffUseCaseTest extends UseCaseTest {
         // Given
         final var expectedPage = -1;
         final var expectedPerPage = 0;
-        final var expectedTerms = "";
-        final var expectedSort = "createdAt";
-        final var expectedDirection = "asc";
 
         final var query = new SearchQuery(
                 expectedPage,
                 expectedPerPage,
-                expectedTerms,
-                expectedSort,
-                expectedDirection
+                null,
+                null,
+                null
         );
 
-        final var params = new ListOrderForStaffCommand(false, query);
+        final var params = new ListOrderCommand(query);
 
         final var expectedErrorMessage = "Gateway error";
 
-        when(orderRepositoryGateway.findAllForStaff(anyBoolean(), any()))
+        when(orderRepositoryGateway.findAll(any()))
                 .thenThrow(new IllegalStateException(expectedErrorMessage));
 
         // When
@@ -213,7 +204,7 @@ public class ListOrderForStaffUseCaseTest extends UseCaseTest {
         // Then
         Assertions.assertEquals(expectedErrorMessage, actualException.getMessage());
 
-        verify(orderRepositoryGateway, times(1)).findAllForStaff(anyBoolean(),any());
+        verify(orderRepositoryGateway, times(1)).findAll(any());
     }
 
 

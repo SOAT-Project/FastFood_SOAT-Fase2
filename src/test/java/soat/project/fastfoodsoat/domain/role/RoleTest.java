@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.domain.staff.role;
+package soat.project.fastfoodsoat.domain.role;
 
 import org.junit.jupiter.api.Test;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;

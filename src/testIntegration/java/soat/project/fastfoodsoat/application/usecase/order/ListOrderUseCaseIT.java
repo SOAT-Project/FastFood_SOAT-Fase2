@@ -9,16 +9,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderForStaffCommand;
-import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.forstaff.ListOrderForStaffUseCaseImpl;
-import soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper.OrderJpaMapper;
+import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderCommand;
 import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderOutput;
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderUseCaseImpl;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
 import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.*;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper.OrderJpaMapper;
 import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.*;
 import soat.project.fastfoodsoat.shared.utils.InstantUtils;
 
@@ -30,10 +30,10 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @IntegrationTest
-public class ListOrderForStaffUseCaseIT {
+public class ListOrderUseCaseIT {
 
     @Autowired
-    private ListOrderForStaffUseCaseImpl useCase;
+    private ListOrderUseCaseImpl useCase;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -379,7 +379,7 @@ public class ListOrderForStaffUseCaseIT {
                 expectedDirection
         );
 
-        final var params = new ListOrderForStaffCommand(false, query);
+        final var params = new ListOrderCommand(query);
 
         final var expectedItems = orders.stream()
                 .map(ListOrderOutput::from)
@@ -395,71 +395,4 @@ public class ListOrderForStaffUseCaseIT {
         assertEquals(expectedItems.size(), actualOutput.items().size());
         assertEquals(sortOutputs(expectedItems), sortOutputs(actualOutput.items()));
     }
-
-    @Test
-    @Transactional
-    void givenValidQueryWhithOneItemPerPage_whenCallsListOrders_shouldReturnOneOrder() {
-        // Given
-        final var orders = sortOrders(createOrders());
-
-        final var expectedPage = 0;
-        final var expectedPerPage = 1;
-        final var expectedTerms = "";
-        final var expectedSort = "createdAt";
-        final var expectedDirection = "asc";
-        final var expectedTotal = orders.size();
-
-        final var query = new SearchQuery(
-                expectedPage,
-                expectedPerPage,
-                expectedTerms,
-                expectedSort,
-                expectedDirection
-        );
-
-        final var params = new ListOrderForStaffCommand(false, query);
-
-        // When
-        final var actualOutput = useCase.execute(params);
-
-        // Then
-        assertEquals(expectedPage, actualOutput.currentPage());
-        assertEquals(expectedPerPage, actualOutput.perPage());
-        assertEquals(expectedTotal, actualOutput.total());
-        assertEquals(expectedPerPage, actualOutput.items().size());
-    }
-
-    @Test
-    @Transactional
-    void givenValidQueryWhithOnlyPaidFilter_whenCallsListOrders_shouldReturnOneOrder() {
-        // Given
-        final var orders = sortOrders(createOrders());
-
-        final var expectedPage = 0;
-        final var expectedPerPage = 10;
-        final var expectedTerms = "";
-        final var expectedSort = "createdAt";
-        final var expectedDirection = "asc";
-        final var expectedTotal = 1;
-
-        final var query = new SearchQuery(
-                expectedPage,
-                expectedPerPage,
-                expectedTerms,
-                expectedSort,
-                expectedDirection
-        );
-
-        final var params = new ListOrderForStaffCommand(true, query);
-
-        // When
-        final var actualOutput = useCase.execute(params);
-
-        // Then
-        assertEquals(expectedPage, actualOutput.currentPage());
-        assertEquals(expectedPerPage, actualOutput.perPage());
-        assertEquals(expectedTotal, actualOutput.total());
-        assertEquals(expectedTotal, actualOutput.items().size());
-    }
-
 }

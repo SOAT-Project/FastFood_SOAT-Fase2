@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.domain.order.orderproduct;
+package soat.project.fastfoodsoat.domain.orderproduct;
 
 import org.junit.jupiter.api.Test;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
