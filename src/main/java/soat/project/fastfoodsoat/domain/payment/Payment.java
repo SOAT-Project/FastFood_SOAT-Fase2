@@ -152,4 +152,11 @@ public class Payment extends AggregateRoot<PaymentId>  {
     public Order getOrder() {
         return order;
     }
+
+    public void updateStatus(PaymentStatus newStatus) {
+        this.status = newStatus;
+        this.updatedAt = Instant.now();
+
+        this.selfValidation();
+    }
 }

@@ -180,7 +180,7 @@ public class Order extends AggregateRoot<OrderId> {
         return orderProducts;
     }
 
-    public PublicIdentifier getPublicId() {
+    public OrderPublicId getPublicId() {
         return publicId;
     }
 

@@ -10,9 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soat.project.fastfoodsoat.infrastructure.web.model.DefaultApiError;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.payment.UpdatePaymentToPaidStatusRequest;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.GetPaymentStatusByExternalReferenceResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.UpdatePaymentToPaidStatusResponse;
 
 @Tag(name="Payments")
 @RequestMapping(value="payments")
@@ -63,25 +61,4 @@ public interface PaymentAPI {
             )
     })
     ResponseEntity<GetPaymentStatusByExternalReferenceResponse> getStatusByExternalReference(@RequestParam("external_reference") String external_reference);
-
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Update payment to paid status")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Payment status updated successfully"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Payment not found",
-                    content = @Content(schema = @Schema(implementation = DefaultApiError.class))
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Internal server error",
-                    content = @Content(schema = @Schema(implementation = DefaultApiError.class))
-            )
-    })
-    ResponseEntity<UpdatePaymentToPaidStatusResponse> updateToPaidStatus(@RequestBody UpdatePaymentToPaidStatusRequest request);
-
 }

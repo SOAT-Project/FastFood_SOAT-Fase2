@@ -1,0 +1,69 @@
+package soat.project.fastfoodsoat.application.usecase.payment.update.status;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import soat.project.fastfoodsoat.application.command.payment.update.UpdatePaymentStatusCommand;
+import soat.project.fastfoodsoat.application.gateway.OrderRepositoryGateway;
+import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
+import soat.project.fastfoodsoat.application.output.payment.UpdatePaymentStatusOutput;
+import soat.project.fastfoodsoat.domain.exception.IllegalStateException;
+import soat.project.fastfoodsoat.domain.exception.NotFoundException;
+import soat.project.fastfoodsoat.domain.order.Order;
+import soat.project.fastfoodsoat.domain.order.OrderStatus;
+import soat.project.fastfoodsoat.domain.payment.Payment;
+import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
+import soat.project.fastfoodsoat.domain.validation.DomainError;
+
+@Transactional
+@Component
+public class UpdatePaymentStatusUseCaseImpl extends UpdatePaymentStatusUseCase {
+
+    private final PaymentRepositoryGateway paymentRepositoryGateway;
+    private final OrderRepositoryGateway orderRepositoryGateway;
+
+    public UpdatePaymentStatusUseCaseImpl(
+            final PaymentRepositoryGateway paymentRepositoryGateway,
+            final OrderRepositoryGateway orderRepositoryGateway
+    ) {
+        this.paymentRepositoryGateway = paymentRepositoryGateway;
+        this.orderRepositoryGateway = orderRepositoryGateway;
+    }
+
+    @Override
+    public UpdatePaymentStatusOutput execute(UpdatePaymentStatusCommand command) {
+        final var externalReference = command.externalReference();
+        final var newStatus = validateStatus(command.newStatus());
+
+        final Payment payment = paymentRepositoryGateway.findByExternalReference(externalReference)
+                .orElseThrow(() -> NotFoundException.with(new DomainError("Payment not found for externalReference: " + externalReference)));
+
+        payment.updateStatus(newStatus);
+
+        final Payment updatedPayment = paymentRepositoryGateway.update(payment);
+
+        if (newStatus == PaymentStatus.APPROVED) {
+            final var order = orderRepositoryGateway.findByPublicId(updatedPayment.getOrder().getPublicId())
+                    .orElseThrow(() -> NotFoundException.with(Order.class, updatedPayment.getOrder().getPublicId()));
+
+            if (order.getStatus() == OrderStatus.RECEIVED) {
+                order.updateStatus(OrderStatus.IN_PREPARATION);
+                orderRepositoryGateway.update(order);
+            }
+        }
+
+        return UpdatePaymentStatusOutput.from(
+                updatedPayment.getExternalReference(),
+                updatedPayment.getStatus(),
+                updatedPayment.getOrder().getPublicId(),
+                updatedPayment.getUpdatedAt()
+        );
+    }
+
+    public PaymentStatus validateStatus(String status) {
+        try {
+            return PaymentStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw IllegalStateException.with(new DomainError("Status inválido: " + status));
+        }
+    }
+}

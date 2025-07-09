@@ -6,15 +6,10 @@ import soat.project.fastfoodsoat.application.command.payment.retrieve.get.status
 import soat.project.fastfoodsoat.application.output.payment.GetPaymentStatusByExternalReferenceOutput;
 import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.status.GetPaymentStatusByExternalReferenceUseCase;
 import soat.project.fastfoodsoat.infrastructure.web.controller.api.PaymentAPI;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.payment.UpdatePaymentToPaidStatusRequest;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.GetPaymentStatusByExternalReferenceResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.UpdatePaymentToPaidStatusResponse;
 import soat.project.fastfoodsoat.infrastructure.web.presenter.PaymentPresenter;
 import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetPaymentQRCodeCommand;
 import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode.GetPaymentQRCodeByExternalReferenceUseCase;
-import soat.project.fastfoodsoat.application.command.payment.UpdatePaymentToPaidStatusCommand;
-import soat.project.fastfoodsoat.application.output.payment.UpdatePaymentToPaidStatusOutput;
-import soat.project.fastfoodsoat.application.usecase.payment.update.status.UpdatePaymentToPaidStatusUseCase;
 
 import java.util.Base64;
 
@@ -23,14 +18,11 @@ public class PaymentController implements PaymentAPI {
 
     private final GetPaymentQRCodeByExternalReferenceUseCase getPaymentQRCodeUseCase;
     private final GetPaymentStatusByExternalReferenceUseCase getPaymentStatusUseCase;
-    private final UpdatePaymentToPaidStatusUseCase updatePaymentStatusUseCase;
 
     public PaymentController(final GetPaymentQRCodeByExternalReferenceUseCase getPaymentQRCodeUseCase,
-                             final GetPaymentStatusByExternalReferenceUseCase getPaymentStatusUseCase,
-                             final UpdatePaymentToPaidStatusUseCase updatePaymentStatusUseCase) {
+                             final GetPaymentStatusByExternalReferenceUseCase getPaymentStatusUseCase) {
         this.getPaymentQRCodeUseCase = getPaymentQRCodeUseCase;
         this.getPaymentStatusUseCase = getPaymentStatusUseCase;
-        this.updatePaymentStatusUseCase = updatePaymentStatusUseCase;
     }
 
     @Override
@@ -56,17 +48,6 @@ public class PaymentController implements PaymentAPI {
         );
 
         final GetPaymentStatusByExternalReferenceOutput output = this.getPaymentStatusUseCase.execute(command);
-
-        return ResponseEntity.ok(PaymentPresenter.present(output));
-    }
-
-    @Override
-    public ResponseEntity<UpdatePaymentToPaidStatusResponse> updateToPaidStatus(UpdatePaymentToPaidStatusRequest request) {
-        final UpdatePaymentToPaidStatusCommand command = new UpdatePaymentToPaidStatusCommand(
-                request.externalReference()
-        );
-
-        final UpdatePaymentToPaidStatusOutput output  = this.updatePaymentStatusUseCase.execute(command);
 
         return ResponseEntity.ok(PaymentPresenter.present(output));
     }
