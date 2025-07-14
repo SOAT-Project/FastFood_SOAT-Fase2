@@ -15,7 +15,6 @@ public interface PaymentPresenter {
 
     static MercadoPagoWebhookResponse present(final UpdatePaymentStatusOutput output) {
         return new MercadoPagoWebhookResponse(
-                output.orderPublicId().toString(),
                 output.newPaymentStatus().name(),
                 output.externalReference()
         );
