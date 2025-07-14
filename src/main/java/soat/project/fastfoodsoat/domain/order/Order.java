@@ -1,10 +1,10 @@
 package soat.project.fastfoodsoat.domain.order;
 
-import soat.project.fastfoodsoat.domain.AggregateRoot;
-import soat.project.fastfoodsoat.domain.PublicIdentifier;
+import soat.project.fastfoodsoat.domain.shared.AggregateRoot;
+import soat.project.fastfoodsoat.domain.shared.PublicIdentifier;
 import soat.project.fastfoodsoat.domain.client.ClientId;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
-import soat.project.fastfoodsoat.domain.order.orderproduct.OrderProduct;
+import soat.project.fastfoodsoat.domain.orderproduct.OrderProduct;
 import soat.project.fastfoodsoat.domain.payment.Payment;
 import soat.project.fastfoodsoat.domain.validation.ValidationHandler;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
@@ -142,6 +142,14 @@ public class Order extends AggregateRoot<OrderId> {
         return this;
     }
 
+    public Order updateStatus(
+            final OrderStatus status
+    ) {
+        this.status = status;
+        this.selfValidation();
+        return this;
+    }
+
     @Override
     public void validate(final ValidationHandler handler) {
         new OrderValidator(this, handler).validate();
@@ -172,7 +180,7 @@ public class Order extends AggregateRoot<OrderId> {
         return orderProducts;
     }
 
-    public PublicIdentifier getPublicId() {
+    public OrderPublicId getPublicId() {
         return publicId;
     }
 

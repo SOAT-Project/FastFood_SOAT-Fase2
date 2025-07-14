@@ -8,8 +8,9 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.StaffJpaMapper;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.StaffRepository;
+import soat.project.fastfoodsoat.application.command.staff.auth.AuthStaffCommand;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper.StaffJpaMapper;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.StaffRepository;
 import soat.project.fastfoodsoat.domain.exception.DomainException;
 import soat.project.fastfoodsoat.domain.staff.Staff;
 

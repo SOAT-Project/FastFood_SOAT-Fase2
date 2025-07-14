@@ -4,13 +4,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
-import soat.project.fastfoodsoat.application.usecase.product.update.DefaultUpdateProductUseCase;
-import soat.project.fastfoodsoat.application.usecase.product.update.UpdateProductCommand;
+import soat.project.fastfoodsoat.application.usecase.product.update.UpdateProductUseCaseImpl;
+import soat.project.fastfoodsoat.application.command.product.update.UpdateProductCommand;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.product.Product;
-import soat.project.fastfoodsoat.domain.product.ProductGateway;
+import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,14 +23,14 @@ import static org.mockito.Mockito.*;
 class UpdateProductUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultUpdateProductUseCase useCase;
+    private UpdateProductUseCaseImpl useCase;
 
     @Mock
-    private ProductGateway productGateway;
+    private ProductRepositoryGateway productRepositoryGateway;
 
     @Override
     protected List<Object> getMocks() {
-        return List.of(productGateway);
+        return List.of(productRepositoryGateway);
     }
 
     @Test
@@ -44,14 +44,14 @@ class UpdateProductUseCaseTest extends UseCaseTest {
 
         when(product.getId()).thenReturn(productId);
         when(product.getProductCategoryId()).thenReturn(productCategory);
-        when(productGateway.findById(productId)).thenReturn(Optional.of(product));
-        when(productGateway.update(product)).thenReturn(product);
+        when(productRepositoryGateway.findById(productId)).thenReturn(Optional.of(product));
+        when(productRepositoryGateway.update(product)).thenReturn(product);
 
         final var output = useCase.execute(command);
 
         assertNotNull(output);
         verify(product).update("Updated", "Description", BigDecimal.TEN, "img.png", productCategory);
-        verify(productGateway).update(product);
+        verify(productRepositoryGateway).update(product);
     }
 
 
@@ -60,7 +60,7 @@ class UpdateProductUseCaseTest extends UseCaseTest {
     void givenInvalidId_whenUpdateProduct_thenShouldThrowNotFound() {
         final var command = new UpdateProductCommand(999, "Updated", "Description", BigDecimal.TEN, "img.png", 10);
 
-        when(productGateway.findById(ProductId.of(999))).thenReturn(Optional.empty());
+        when(productRepositoryGateway.findById(ProductId.of(999))).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> useCase.execute(command));
     }

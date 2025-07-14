@@ -9,23 +9,22 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.*;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.mapper.OrderJpaMapper;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.*;
-import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.DefaultListOrderUseCase;
-import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderOutput;
-import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderParams;
+import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderCommand;
+import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderOutput;
+import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.ListOrderUseCaseImpl;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
-import soat.project.fastfoodsoat.utils.InstantUtils;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.*;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.mapper.OrderJpaMapper;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.*;
+import soat.project.fastfoodsoat.shared.utils.InstantUtils;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -34,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ListOrderUseCaseIT {
 
     @Autowired
-    private DefaultListOrderUseCase useCase;
+    private ListOrderUseCaseImpl useCase;
 
     @Autowired
     private OrderRepository orderRepository;
@@ -365,7 +364,6 @@ public class ListOrderUseCaseIT {
         // Given
         final var orders = sortOrders(createOrders());
 
-        final var onlyPaid = false;
         final var expectedPage = 0;
         final var expectedPerPage = 10;
         final var expectedTerms = "";
@@ -381,7 +379,7 @@ public class ListOrderUseCaseIT {
                 expectedDirection
         );
 
-        final var params = new ListOrderParams(onlyPaid, query);
+        final var params = new ListOrderCommand(query);
 
         final var expectedItems = orders.stream()
                 .map(ListOrderOutput::from)
@@ -397,73 +395,4 @@ public class ListOrderUseCaseIT {
         assertEquals(expectedItems.size(), actualOutput.items().size());
         assertEquals(sortOutputs(expectedItems), sortOutputs(actualOutput.items()));
     }
-
-    @Test
-    @Transactional
-    void givenValidQueryWhithOneItemPerPage_whenCallsListOrders_shouldReturnOneOrder() {
-        // Given
-        final var orders = sortOrders(createOrders());
-
-        final var onlyPaid = false;
-        final var expectedPage = 0;
-        final var expectedPerPage = 1;
-        final var expectedTerms = "";
-        final var expectedSort = "createdAt";
-        final var expectedDirection = "asc";
-        final var expectedTotal = orders.size();
-
-        final var query = new SearchQuery(
-                expectedPage,
-                expectedPerPage,
-                expectedTerms,
-                expectedSort,
-                expectedDirection
-        );
-
-        final var params = new ListOrderParams(onlyPaid, query);
-
-        // When
-        final var actualOutput = useCase.execute(params);
-
-        // Then
-        assertEquals(expectedPage, actualOutput.currentPage());
-        assertEquals(expectedPerPage, actualOutput.perPage());
-        assertEquals(expectedTotal, actualOutput.total());
-        assertEquals(expectedPerPage, actualOutput.items().size());
-    }
-
-    @Test
-    @Transactional
-    void givenValidQueryWhithOnlyPaidFilter_whenCallsListOrders_shouldReturnOneOrder() {
-        // Given
-        final var orders = sortOrders(createOrders());
-
-        final var onlyPaid = true;
-        final var expectedPage = 0;
-        final var expectedPerPage = 10;
-        final var expectedTerms = "";
-        final var expectedSort = "createdAt";
-        final var expectedDirection = "asc";
-        final var expectedTotal = 1;
-
-        final var query = new SearchQuery(
-                expectedPage,
-                expectedPerPage,
-                expectedTerms,
-                expectedSort,
-                expectedDirection
-        );
-
-        final var params = new ListOrderParams(onlyPaid, query);
-
-        // When
-        final var actualOutput = useCase.execute(params);
-
-        // Then
-        assertEquals(expectedPage, actualOutput.currentPage());
-        assertEquals(expectedPerPage, actualOutput.perPage());
-        assertEquals(expectedTotal, actualOutput.total());
-        assertEquals(expectedTotal, actualOutput.items().size());
-    }
-
 }

@@ -1,6 +1,6 @@
 package soat.project.fastfoodsoat.domain.payment;
 
-import soat.project.fastfoodsoat.domain.AggregateRoot;
+import soat.project.fastfoodsoat.domain.shared.AggregateRoot;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.order.Order;
 import soat.project.fastfoodsoat.domain.validation.ValidationHandler;
@@ -151,5 +151,12 @@ public class Payment extends AggregateRoot<PaymentId>  {
 
     public Order getOrder() {
         return order;
+    }
+
+    public void updateStatus(PaymentStatus newStatus) {
+        this.status = newStatus;
+        this.updatedAt = Instant.now();
+
+        this.selfValidation();
     }
 }

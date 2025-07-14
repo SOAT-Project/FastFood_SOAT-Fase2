@@ -5,19 +5,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
-import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderCommand;
-import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderProductCommand;
-import soat.project.fastfoodsoat.application.usecase.order.create.DefaultCreateOrderUseCase;
+import soat.project.fastfoodsoat.application.command.order.create.CreateOrderCommand;
+import soat.project.fastfoodsoat.application.command.order.create.CreateOrderProductCommand;
+import soat.project.fastfoodsoat.application.usecase.order.create.CreateOrderUseCaseImpl;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
-import soat.project.fastfoodsoat.domain.order.OrderGateway;
+import soat.project.fastfoodsoat.application.gateway.OrderRepositoryGateway;
 import soat.project.fastfoodsoat.domain.order.OrderPublicId;
-import soat.project.fastfoodsoat.domain.payment.PaymentGateway;
-import soat.project.fastfoodsoat.domain.payment.PaymentService;
+import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
+import soat.project.fastfoodsoat.application.gateway.PaymentService;
 import soat.project.fastfoodsoat.domain.product.Product;
-import soat.project.fastfoodsoat.domain.product.ProductGateway;
+import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -31,23 +31,23 @@ import static org.mockito.Mockito.*;
 class CreateOrderUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultCreateOrderUseCase useCase;
+    private CreateOrderUseCaseImpl useCase;
 
     @Mock
-    private OrderGateway orderGateway;
+    private OrderRepositoryGateway orderRepositoryGateway;
 
     @Mock
-    private ProductGateway productGateway;
+    private ProductRepositoryGateway productRepositoryGateway;
 
     @Mock
-    private PaymentGateway paymentGateway;
+    private PaymentRepositoryGateway paymentRepositoryGateway;
 
     @Mock
     private PaymentService paymentService;
 
     @Override
     protected List<Object> getMocks() {
-        return List.of(orderGateway, productGateway, paymentGateway, paymentService);
+        return List.of(orderRepositoryGateway, productRepositoryGateway, paymentRepositoryGateway, paymentService);
     }
 
     @Test
@@ -64,13 +64,13 @@ class CreateOrderUseCaseTest extends UseCaseTest {
 
         final var command = new CreateOrderCommand(null, products);
 
-        when(orderGateway.findLastOrderNumber()).thenReturn(1);
-        when(productGateway.findByIds(List.of(products.get(0).productId(), products.get(1).productId())))
+        when(orderRepositoryGateway.findLastOrderNumber()).thenReturn(1);
+        when(productRepositoryGateway.findByIds(List.of(products.get(0).productId(), products.get(1).productId())))
                 .thenReturn(List.of(
                         Product.with(ProductId.of(1), "X-Burger", "podrão de queijo", BigDecimal.valueOf(19.99), "burger.jpg", ProductCategoryId.of(categoryId), now, now, null),
                         Product.with(ProductId.of(2), "Coca", "bebida boa", BigDecimal.valueOf(5.99), "coca.jpg", ProductCategoryId.of(drinkCategoryId), now, now, null)
         ));
-        when(orderGateway.create(any())).thenAnswer(invocation -> {
+        when(orderRepositoryGateway.create(any())).thenAnswer(invocation -> {
             final var order = invocation.getArgument(0);
             ReflectionTestUtils.setField(order, "publicId", OrderPublicId.of(publicId));
             return order;
@@ -83,7 +83,7 @@ class CreateOrderUseCaseTest extends UseCaseTest {
                 any()
         )).thenReturn("https://example.com/qr-code");
 
-        when(paymentGateway.create(
+        when(paymentRepositoryGateway.create(
                 any()
         )).thenAnswer(invocation -> {
             final var payment = invocation.getArgument(0);
@@ -94,11 +94,11 @@ class CreateOrderUseCaseTest extends UseCaseTest {
 
         assertNotNull(output);
         assertEquals(publicId, output.publicId());
-        verify(orderGateway, times(1)).findLastOrderNumber();
-        verify(orderGateway, times(1)).create(any());
-        verify(productGateway, times(1)).findByIds(any());
+        verify(orderRepositoryGateway, times(1)).findLastOrderNumber();
+        verify(orderRepositoryGateway, times(1)).create(any());
+        verify(productRepositoryGateway, times(1)).findByIds(any());
         verify(paymentService, times(1)).createDynamicQrCode(any(),any(),any(),any());
-        verify(paymentGateway, times(1)).create(any());
+        verify(paymentRepositoryGateway, times(1)).create(any());
     }
 
     @Test
@@ -114,13 +114,13 @@ class CreateOrderUseCaseTest extends UseCaseTest {
 
         final var command = new CreateOrderCommand(null, products);
 
-        when(orderGateway.findLastOrderNumber()).thenReturn(1);
-        when(productGateway.findByIds(List.of(products.get(0).productId(), products.get(1).productId())))
+        when(orderRepositoryGateway.findLastOrderNumber()).thenReturn(1);
+        when(productRepositoryGateway.findByIds(List.of(products.get(0).productId(), products.get(1).productId())))
                 .thenReturn(List.of(
                         Product.with(ProductId.of(1), "X-Burger", "podrão de queijo", BigDecimal.valueOf(19.99), "burger.jpg", ProductCategoryId.of(categoryId), now, now, null),
                         Product.with(ProductId.of(2), "Coca", "bebida boa", BigDecimal.valueOf(5.99), "coca.jpg", ProductCategoryId.of(drinkCategoryId), now, now, null)
                 ));
-        when(orderGateway.create(any())).thenAnswer(invocation -> {
+        when(orderRepositoryGateway.create(any())).thenAnswer(invocation -> {
             final var order = invocation.getArgument(0);
             ReflectionTestUtils.setField(order, "publicId", OrderPublicId.of(publicId));
             return order;
@@ -135,11 +135,11 @@ class CreateOrderUseCaseTest extends UseCaseTest {
 
         final var ex = assertThrows(NotificationException.class, () -> useCase.execute(command));
 
-        verify(orderGateway, times(1)).findLastOrderNumber();
-        verify(orderGateway, times(1)).create(any());
-        verify(productGateway, times(1)).findByIds(any());
+        verify(orderRepositoryGateway, times(1)).findLastOrderNumber();
+        verify(orderRepositoryGateway, times(1)).create(any());
+        verify(productRepositoryGateway, times(1)).findByIds(any());
         verify(paymentService, times(1)).createDynamicQrCode(any(),any(),any(),any());
-        verify(paymentGateway, never()).create(any());
+        verify(paymentRepositoryGateway, never()).create(any());
         assertEquals("could not create qr code", ex.getMessage());
     }
 
@@ -166,7 +166,7 @@ class CreateOrderUseCaseTest extends UseCaseTest {
 
         final var ex = assertThrows(NotFoundException.class, () -> useCase.execute(command));
         assertEquals("product with id 1 was not found", ex.getMessage());
-        verify(orderGateway, never()).create(any());
+        verify(orderRepositoryGateway, never()).create(any());
     }
 
 
@@ -183,8 +183,8 @@ class CreateOrderUseCaseTest extends UseCaseTest {
 
         final var command = new CreateOrderCommand(null, products);
 
-        when(orderGateway.findLastOrderNumber()).thenReturn(-1);
-        when(productGateway.findByIds(List.of(products.get(0).productId(), products.get(1).productId())))
+        when(orderRepositoryGateway.findLastOrderNumber()).thenReturn(-1);
+        when(productRepositoryGateway.findByIds(List.of(products.get(0).productId(), products.get(1).productId())))
                 .thenReturn(List.of(
                         Product.with(ProductId.of(1), "X-Burger", "podrão de queijo", BigDecimal.valueOf(19.99), "burger.jpg", ProductCategoryId.of(categoryId), now, now, null),
                         Product.with(ProductId.of(2), "Coca", "bebida boa", BigDecimal.valueOf(5.99), "coca.jpg", ProductCategoryId.of(drinkCategoryId), now, now, null)
@@ -192,7 +192,7 @@ class CreateOrderUseCaseTest extends UseCaseTest {
 
         final var ex = assertThrows(NotificationException.class, () -> useCase.execute(command));
         assertEquals("could not create order", ex.getMessage());
-        verify(orderGateway, times(1)).findLastOrderNumber();
-        verify(orderGateway, never()).create(any());
+        verify(orderRepositoryGateway, times(1)).findLastOrderNumber();
+        verify(orderRepositoryGateway, never()).create(any());
     }
 }

@@ -1,6 +1,6 @@
 package soat.project.fastfoodsoat.domain.staff;
 
-import soat.project.fastfoodsoat.domain.ValueObject;
+import soat.project.fastfoodsoat.domain.shared.ValueObject;
 
 import java.util.Objects;
 

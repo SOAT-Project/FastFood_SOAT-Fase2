@@ -5,16 +5,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
 import soat.project.fastfoodsoat.application.usecase.UseCaseTest;
-import soat.project.fastfoodsoat.application.usecase.product.create.CreateProductCommand;
-import soat.project.fastfoodsoat.application.usecase.product.create.DefaultCreateProductUseCase;
+import soat.project.fastfoodsoat.application.command.product.create.CreateProductCommand;
+import soat.project.fastfoodsoat.application.usecase.product.create.CreateProductUseCaseImpl;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.product.Product;
-import soat.project.fastfoodsoat.domain.product.ProductGateway;
+import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategory;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryGateway;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategory;
+import soat.project.fastfoodsoat.application.gateway.ProductCategoryRepositoryGateway;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -27,17 +27,17 @@ import static org.mockito.Mockito.*;
 class CreateProductUseCaseTest extends UseCaseTest {
 
     @InjectMocks
-    private DefaultCreateProductUseCase useCase;
+    private CreateProductUseCaseImpl useCase;
 
     @Mock
-    private ProductGateway productGateway;
+    private ProductRepositoryGateway productRepositoryGateway;
 
     @Mock
-    private ProductCategoryGateway categoryGateway;
+    private ProductCategoryRepositoryGateway categoryGateway;
 
     @Override
     protected List<Object> getMocks() {
-        return List.of(productGateway, categoryGateway);
+        return List.of(productRepositoryGateway, categoryGateway);
     }
 
     @Test
@@ -54,7 +54,7 @@ class CreateProductUseCaseTest extends UseCaseTest {
         final var category = ProductCategory.with(ProductCategoryId.of(categoryId), "Lanches", now, now, null);
 
         when(categoryGateway.findById(ProductCategoryId.of(categoryId))).thenReturn(Optional.of(category));
-        when(productGateway.create(any())).thenAnswer(invocation -> {
+        when(productRepositoryGateway.create(any())).thenAnswer(invocation -> {
             Product p = invocation.getArgument(0);
             ReflectionTestUtils.setField(p, "id", ProductId.of(1));
             return p;
@@ -66,7 +66,7 @@ class CreateProductUseCaseTest extends UseCaseTest {
         assertNotNull(output);
         assertEquals(1, output.id());
         verify(categoryGateway, times(1)).findById(ProductCategoryId.of(categoryId));
-        verify(productGateway, times(1)).create(any());
+        verify(productRepositoryGateway, times(1)).create(any());
     }
 
     @Test
@@ -81,7 +81,7 @@ class CreateProductUseCaseTest extends UseCaseTest {
 
         assertEquals("could not create product", ex.getMessage());
         assertFalse(ex.getErrors().isEmpty());
-        verify(productGateway, never()).create(any());
+        verify(productRepositoryGateway, never()).create(any());
     }
 
 
@@ -100,6 +100,6 @@ class CreateProductUseCaseTest extends UseCaseTest {
         assertFalse(exception.getErrors().isEmpty());
 
         verify(categoryGateway, times(1)).findById(categoryId);
-        verify(productGateway, never()).create(any());
+        verify(productRepositoryGateway, never()).create(any());
     }
 }

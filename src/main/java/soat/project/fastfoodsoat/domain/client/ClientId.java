@@ -1,6 +1,6 @@
 package soat.project.fastfoodsoat.domain.client;
 
-import soat.project.fastfoodsoat.domain.Identifier;
+import soat.project.fastfoodsoat.domain.shared.Identifier;
 
 import java.util.Objects;
 

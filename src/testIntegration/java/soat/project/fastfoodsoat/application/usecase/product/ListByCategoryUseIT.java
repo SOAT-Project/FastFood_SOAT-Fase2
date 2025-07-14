@@ -8,15 +8,15 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import soat.project.fastfoodsoat.IntegrationTest;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductCategoryJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.entity.ProductJpaEntity;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductCategoryRepository;
-import soat.project.fastfoodsoat.adapter.outbound.jpa.repository.ProductRepository;
-import soat.project.fastfoodsoat.application.usecase.product.retrieve.list.byCategory.DefaultListByCategoryUseCase;
-import soat.project.fastfoodsoat.application.usecase.product.retrieve.list.byCategory.ListByCategoryParams;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ProductCategoryJpaEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.entity.ProductJpaEntity;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ProductCategoryRepository;
+import soat.project.fastfoodsoat.infrastructure.persistence.jpa.repository.ProductRepository;
+import soat.project.fastfoodsoat.application.usecase.product.retrieve.list.bycategory.ListByCategoryUseCaseImpl;
+import soat.project.fastfoodsoat.application.command.product.retrieve.list.bycategory.ListByCategoryCommand;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
-import soat.project.fastfoodsoat.domain.product.productCategory.ProductCategoryId;
+import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ListByCategoryUseIT {
 
     @Autowired
-    private DefaultListByCategoryUseCase useCase;
+    private ListByCategoryUseCaseImpl useCase;
 
     @Autowired
     private ProductRepository productRepository;
@@ -86,7 +86,7 @@ class ListByCategoryUseIT {
 
         final var categoryId = category.getId();
         final var query = new SearchQuery(0,10,"", "name", "asc");
-        final var params = new ListByCategoryParams(categoryId, query);
+        final var params = new ListByCategoryCommand(categoryId, query);
 
         final var result = useCase.execute(params);
 
@@ -97,7 +97,7 @@ class ListByCategoryUseIT {
     void givenInvalidCategoryId_whenListProducts_thenShouldThrowNotFound() {
         final var categoryId = 10;
         final var query = new SearchQuery(0,10,"", "name", "asc");
-        final var params = new ListByCategoryParams(categoryId, query);
+        final var params = new ListByCategoryCommand(categoryId, query);
 
         assertThrows(NotFoundException.class, () -> useCase.execute(params));
     }
@@ -108,7 +108,7 @@ class ListByCategoryUseIT {
 
         final var categoryId = category.getId();
         final var query = new SearchQuery(0,10,"", "name", "asc");
-        final var params = new ListByCategoryParams(categoryId, query);
+        final var params = new ListByCategoryCommand(categoryId, query);
 
         final var result = useCase.execute(params);
 

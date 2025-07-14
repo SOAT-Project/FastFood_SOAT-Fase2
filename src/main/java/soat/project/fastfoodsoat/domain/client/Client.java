@@ -1,13 +1,12 @@
 package soat.project.fastfoodsoat.domain.client;
 
-import soat.project.fastfoodsoat.domain.AggregateRoot;
+import soat.project.fastfoodsoat.domain.shared.AggregateRoot;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.validation.ValidationHandler;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
-import soat.project.fastfoodsoat.utils.InstantUtils;
+import soat.project.fastfoodsoat.shared.utils.InstantUtils;
 
 import java.time.Instant;
-import java.util.UUID;
 
 public class Client extends AggregateRoot<ClientId> {
 
