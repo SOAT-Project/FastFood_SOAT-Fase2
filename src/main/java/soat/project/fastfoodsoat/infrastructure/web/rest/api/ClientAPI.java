@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.controller.api;
+package soat.project.fastfoodsoat.infrastructure.web.rest.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import soat.project.fastfoodsoat.infrastructure.web.model.*;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.client.ClientAuthRequest;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.client.CreateClientRequest;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.client.ClientAuthResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.client.CreateClientResponse;
+import soat.project.fastfoodsoat.infrastructure.client.model.request.ClientAuthRequest;
+import soat.project.fastfoodsoat.infrastructure.client.model.request.CreateClientRequest;
+import soat.project.fastfoodsoat.infrastructure.client.model.response.ClientAuthResponse;
+import soat.project.fastfoodsoat.infrastructure.client.model.response.CreateClientResponse;
 
 @Tag(name = "Clients")
 @RequestMapping("/clients")

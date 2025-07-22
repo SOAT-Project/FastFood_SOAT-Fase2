@@ -1,10 +1,10 @@
-package soat.project.fastfoodsoat.infrastructure.web.controller;
+package soat.project.fastfoodsoat.infrastructure.web.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import soat.project.fastfoodsoat.application.command.payment.update.UpdatePaymentStatusCommand;
 import soat.project.fastfoodsoat.application.usecase.payment.update.status.UpdatePaymentStatusUseCase;
-import soat.project.fastfoodsoat.infrastructure.web.controller.api.PaymentWebhookAPI;
+import soat.project.fastfoodsoat.infrastructure.web.rest.api.PaymentWebhookAPI;
 import soat.project.fastfoodsoat.infrastructure.web.model.request.payment.MercadoPagoWebhookRequest;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.MercadoPagoWebhookResponse;
 import soat.project.fastfoodsoat.infrastructure.web.presenter.PaymentPresenter;

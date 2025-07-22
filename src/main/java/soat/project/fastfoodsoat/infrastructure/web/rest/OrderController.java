@@ -1,11 +1,11 @@
-package soat.project.fastfoodsoat.infrastructure.web.controller;
+package soat.project.fastfoodsoat.infrastructure.web.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderForStaffCommand;
 import soat.project.fastfoodsoat.application.usecase.order.retrieve.list.forstaff.ListOrderForStaffUseCase;
-import soat.project.fastfoodsoat.infrastructure.web.controller.api.OrderAPI;
+import soat.project.fastfoodsoat.infrastructure.web.rest.api.OrderAPI;
 import soat.project.fastfoodsoat.infrastructure.web.model.request.order.CreateOrderRequest;
 import soat.project.fastfoodsoat.infrastructure.web.model.request.order.UpdateOrderStatusRequest;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateOrderResponse;

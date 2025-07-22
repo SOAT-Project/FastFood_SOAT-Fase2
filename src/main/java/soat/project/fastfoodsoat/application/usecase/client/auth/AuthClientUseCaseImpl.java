@@ -1,18 +1,16 @@
 package soat.project.fastfoodsoat.application.usecase.client.auth;
 
-import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.client.auth.AuthClientCommand;
+import soat.project.fastfoodsoat.application.gateway.ClientRepositoryGateway;
 import soat.project.fastfoodsoat.application.output.client.auth.AuthClientOutput;
 import soat.project.fastfoodsoat.domain.client.Client;
 import soat.project.fastfoodsoat.domain.client.ClientCpf;
-import soat.project.fastfoodsoat.application.gateway.ClientRepositoryGateway;
 import soat.project.fastfoodsoat.domain.exception.DomainException;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.validation.DomainError;
 
 import java.util.Objects;
 
-@Component
 public class AuthClientUseCaseImpl extends AuthClientUseCase {
 
     private final ClientRepositoryGateway clientRepositoryGateway;

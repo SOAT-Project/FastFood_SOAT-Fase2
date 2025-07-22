@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.controller;
+package soat.project.fastfoodsoat.infrastructure.web.rest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +13,7 @@ import soat.project.fastfoodsoat.domain.exception.DomainException;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.shared.utils.InstantUtils;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @RestControllerAdvice

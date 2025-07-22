@@ -1,11 +1,11 @@
-package soat.project.fastfoodsoat.infrastructure.web.controller;
+package soat.project.fastfoodsoat.infrastructure.web.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import soat.project.fastfoodsoat.application.command.payment.retrieve.get.status.GetPaymentStatusByExternalReferenceCommand;
 import soat.project.fastfoodsoat.application.output.payment.GetPaymentStatusByExternalReferenceOutput;
 import soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.status.GetPaymentStatusByExternalReferenceUseCase;
-import soat.project.fastfoodsoat.infrastructure.web.controller.api.PaymentAPI;
+import soat.project.fastfoodsoat.infrastructure.web.rest.api.PaymentAPI;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.GetPaymentStatusByExternalReferenceResponse;
 import soat.project.fastfoodsoat.infrastructure.web.presenter.PaymentPresenter;
 import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetPaymentQRCodeCommand;

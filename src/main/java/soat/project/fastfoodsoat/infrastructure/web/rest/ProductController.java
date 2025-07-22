@@ -1,9 +1,9 @@
-package soat.project.fastfoodsoat.infrastructure.web.controller;
+package soat.project.fastfoodsoat.infrastructure.web.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import soat.project.fastfoodsoat.infrastructure.web.controller.api.ProductAPI;
+import soat.project.fastfoodsoat.infrastructure.web.rest.api.ProductAPI;
 import soat.project.fastfoodsoat.infrastructure.web.model.request.product.CreateProductRequest;
 import soat.project.fastfoodsoat.infrastructure.web.model.request.product.UpdateProductRequest;
 import soat.project.fastfoodsoat.infrastructure.web.model.response.product.CreateProductResponse;

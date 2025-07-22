@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.model.request.client;
+package soat.project.fastfoodsoat.infrastructure.client.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;

@@ -1,17 +1,15 @@
 package soat.project.fastfoodsoat.application.usecase.client.create;
 
-import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.client.create.CreateClientCommand;
+import soat.project.fastfoodsoat.application.gateway.ClientRepositoryGateway;
 import soat.project.fastfoodsoat.application.output.client.create.CreateClientOutput;
 import soat.project.fastfoodsoat.domain.client.Client;
-import soat.project.fastfoodsoat.application.gateway.ClientRepositoryGateway;
 import soat.project.fastfoodsoat.domain.client.ClientPublicId;
 import soat.project.fastfoodsoat.domain.exception.ConflictException;
 
 import java.util.UUID;
 import java.util.function.Consumer;
 
-@Component
 public class CreateClientUseCaseImpl extends CreateClientUseCase {
 
     private final ClientRepositoryGateway clientRepositoryGateway;

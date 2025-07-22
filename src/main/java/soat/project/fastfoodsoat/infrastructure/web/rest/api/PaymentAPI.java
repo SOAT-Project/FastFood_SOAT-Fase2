@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.controller.api;
+package soat.project.fastfoodsoat.infrastructure.web.rest.api;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
