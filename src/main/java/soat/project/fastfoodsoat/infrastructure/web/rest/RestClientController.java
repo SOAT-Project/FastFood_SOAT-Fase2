@@ -3,6 +3,7 @@ package soat.project.fastfoodsoat.infrastructure.web.rest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import soat.project.fastfoodsoat.infrastructure.client.controller.ClientController;
 import soat.project.fastfoodsoat.infrastructure.client.model.request.ClientAuthRequest;
 import soat.project.fastfoodsoat.infrastructure.client.model.request.CreateClientRequest;
 import soat.project.fastfoodsoat.infrastructure.client.model.response.ClientAuthResponse;
@@ -12,9 +13,9 @@ import soat.project.fastfoodsoat.infrastructure.web.rest.api.ClientAPI;
 @RestController
 public class RestClientController implements ClientAPI {
 
-    private final soat.project.fastfoodsoat.infrastructure.client.controller.ClientController clientFacade;
+    private final ClientController clientFacade;
 
-    public RestClientController(final soat.project.fastfoodsoat.infrastructure.client.controller.ClientController clientFacade) {
+    public RestClientController(final ClientController clientFacade) {
         this.clientFacade = clientFacade;
     }
 
