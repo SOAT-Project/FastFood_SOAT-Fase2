@@ -1,7 +1,5 @@
 package soat.project.fastfoodsoat.application.usecase.staff.auth;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.staff.auth.AuthStaffCommand;
 import soat.project.fastfoodsoat.application.output.staff.auth.AuthStaffOutput;
 import soat.project.fastfoodsoat.domain.exception.DomainException;
@@ -18,19 +16,18 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-@Component
 public class AuthStaffUseCaseImpl extends AuthStaffUseCase {
 
-    @Value("${security.auth.token.expiration}")
-    private Long tokenExpiration;
-
+    private final Long tokenExpiration;
     private final StaffRepositoryGateway staffRepositoryGateway;
     private final TokenService tokenService;
 
     public AuthStaffUseCaseImpl(
+            final Long tokenExpiration,
             final StaffRepositoryGateway staffRepositoryGateway,
             final TokenService tokenService
     ) {
+        this.tokenExpiration = tokenExpiration;
         this.staffRepositoryGateway = staffRepositoryGateway;
         this.tokenService = tokenService;
     }
