@@ -1,6 +1,5 @@
 package soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.status;
 
-import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.payment.retrieve.get.status.GetPaymentStatusByExternalReferenceCommand;
 import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
 import soat.project.fastfoodsoat.application.output.payment.GetPaymentStatusByExternalReferenceOutput;
@@ -8,7 +7,6 @@ import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.payment.Payment;
 import soat.project.fastfoodsoat.domain.validation.DomainError;
 
-@Component
 public class GetPaymentStatusByExternalReferenceUseCaseImpl extends GetPaymentStatusByExternalReferenceUseCase {
 
     private final PaymentRepositoryGateway paymentRepositoryGateway;

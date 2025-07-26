@@ -1,7 +1,5 @@
 package soat.project.fastfoodsoat.application.usecase.payment.update.status;
 
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import soat.project.fastfoodsoat.application.command.payment.update.UpdatePaymentStatusCommand;
 import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
 import soat.project.fastfoodsoat.application.output.payment.UpdatePaymentStatusOutput;
@@ -11,8 +9,6 @@ import soat.project.fastfoodsoat.domain.payment.Payment;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
 import soat.project.fastfoodsoat.domain.validation.DomainError;
 
-@Transactional
-@Component
 public class UpdatePaymentStatusUseCaseImpl extends UpdatePaymentStatusUseCase {
 
     private final PaymentRepositoryGateway paymentRepositoryGateway;
