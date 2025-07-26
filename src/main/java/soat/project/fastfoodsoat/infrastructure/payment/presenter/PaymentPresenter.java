@@ -1,9 +1,9 @@
-package soat.project.fastfoodsoat.infrastructure.web.presenter;
+package soat.project.fastfoodsoat.infrastructure.payment.presenter;
 
 import soat.project.fastfoodsoat.application.output.payment.GetPaymentStatusByExternalReferenceOutput;
 import soat.project.fastfoodsoat.application.output.payment.UpdatePaymentStatusOutput;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.GetPaymentStatusByExternalReferenceResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.MercadoPagoWebhookResponse;
+import soat.project.fastfoodsoat.infrastructure.payment.model.response.GetPaymentStatusByExternalReferenceResponse;
+import soat.project.fastfoodsoat.infrastructure.payment.model.response.MercadoPagoWebhookResponse;
 
 public interface PaymentPresenter {
 

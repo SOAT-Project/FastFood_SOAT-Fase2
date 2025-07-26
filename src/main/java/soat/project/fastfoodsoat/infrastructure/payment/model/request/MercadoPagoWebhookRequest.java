@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.model.request.payment;
+package soat.project.fastfoodsoat.infrastructure.payment.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
