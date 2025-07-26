@@ -1,6 +1,6 @@
-package soat.project.fastfoodsoat.infrastructure.web.presenter;
+package soat.project.fastfoodsoat.infrastructure.auth.presenter;
 
-import soat.project.fastfoodsoat.infrastructure.web.model.response.auth.AuthStaffResponse;
+import soat.project.fastfoodsoat.infrastructure.auth.model.response.AuthStaffResponse;
 import soat.project.fastfoodsoat.application.output.staff.auth.AuthStaffOutput;
 
 public interface AuthStaffPresenter {

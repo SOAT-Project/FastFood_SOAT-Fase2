@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.model.request.auth;
+package soat.project.fastfoodsoat.infrastructure.auth.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;

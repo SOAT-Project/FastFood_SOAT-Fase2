@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.presenter;
+package soat.project.fastfoodsoat.infrastructure.auth.presenter;
 
 import soat.project.fastfoodsoat.infrastructure.client.model.response.ClientAuthResponse;
 import soat.project.fastfoodsoat.application.output.client.auth.AuthClientOutput;

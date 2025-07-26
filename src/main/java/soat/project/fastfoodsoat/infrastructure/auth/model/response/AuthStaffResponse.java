@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.model.response.auth;
+package soat.project.fastfoodsoat.infrastructure.auth.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
