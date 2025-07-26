@@ -1,29 +1,26 @@
-package soat.project.fastfoodsoat.infrastructure.web.rest;
+package soat.project.fastfoodsoat.infrastructure.product.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-import soat.project.fastfoodsoat.infrastructure.web.rest.api.ProductAPI;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.product.CreateProductRequest;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.product.UpdateProductRequest;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.CreateProductResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.GetProductResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.ListProductByCategoryResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.UpdateProductResponse;
-import soat.project.fastfoodsoat.infrastructure.web.presenter.ProductPresenter;
+import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.product.create.CreateProductCommand;
+import soat.project.fastfoodsoat.application.command.product.retrieve.list.bycategory.ListByCategoryCommand;
+import soat.project.fastfoodsoat.application.command.product.update.UpdateProductCommand;
 import soat.project.fastfoodsoat.application.usecase.product.create.CreateProductUseCase;
 import soat.project.fastfoodsoat.application.usecase.product.delete.DeleteProductUseCase;
 import soat.project.fastfoodsoat.application.usecase.product.retrieve.get.GetProductUseCase;
-import soat.project.fastfoodsoat.application.command.product.retrieve.list.bycategory.ListByCategoryCommand;
 import soat.project.fastfoodsoat.application.usecase.product.retrieve.list.bycategory.ListByCategoryUseCase;
-import soat.project.fastfoodsoat.application.command.product.update.UpdateProductCommand;
 import soat.project.fastfoodsoat.application.usecase.product.update.UpdateProductUseCase;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
 import soat.project.fastfoodsoat.domain.pagination.SearchQuery;
+import soat.project.fastfoodsoat.infrastructure.product.model.request.CreateProductRequest;
+import soat.project.fastfoodsoat.infrastructure.product.model.request.UpdateProductRequest;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.CreateProductResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.GetProductResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.ListProductByCategoryResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.UpdateProductResponse;
+import soat.project.fastfoodsoat.infrastructure.product.presenter.ProductPresenter;
 
-@RestController
-public class ProductController implements ProductAPI {
+@Component
+public class ProductControllerImpl implements ProductController {
 
     private final CreateProductUseCase createProductUseCase;
     private final GetProductUseCase getProductUseCase;
@@ -31,12 +28,13 @@ public class ProductController implements ProductAPI {
     private final DeleteProductUseCase deleteProductUseCase;
     private final ListByCategoryUseCase listByCategoryUseCase;
 
-    public ProductController(
+    public ProductControllerImpl(
             final CreateProductUseCase createProductUseCase,
             final GetProductUseCase getProductUseCase,
             final UpdateProductUseCase updateProductUseCase,
             final DeleteProductUseCase deleteProductUseCase,
-            final ListByCategoryUseCase listByCategoryUseCase) {
+            final ListByCategoryUseCase listByCategoryUseCase
+    ) {
         this.createProductUseCase = createProductUseCase;
         this.getProductUseCase = getProductUseCase;
         this.updateProductUseCase = updateProductUseCase;
@@ -45,26 +43,26 @@ public class ProductController implements ProductAPI {
     }
 
     @Override
-    public ResponseEntity<CreateProductResponse> create(CreateProductRequest input) {
+    public CreateProductResponse create(final CreateProductRequest request) {
         var command = new CreateProductCommand(
-                input.name(),
-                input.description(),
-                input.value(),
-                input.imageUrl(),
-                input.productCategoryId()
+                request.name(),
+                request.description(),
+                request.value(),
+                request.imageUrl(),
+                request.productCategoryId()
         );
         var output = createProductUseCase.execute(command);
-        return ResponseEntity.status(HttpStatus.CREATED).body(ProductPresenter.present(output));
+        return ProductPresenter.present(output);
     }
 
     @Override
-    public ResponseEntity<GetProductResponse> getById(Integer id) {
+    public GetProductResponse getById(final Integer id) {
         final var output = getProductUseCase.execute(id);
-        return ResponseEntity.ok(ProductPresenter.present(output));
+        return ProductPresenter.present(output);
     }
 
     @Override
-    public ResponseEntity<UpdateProductResponse> update(Integer id, UpdateProductRequest request) {
+    public UpdateProductResponse update(final Integer id, final UpdateProductRequest request) {
         var command = new UpdateProductCommand(
                 id,
                 request.name(),
@@ -74,29 +72,28 @@ public class ProductController implements ProductAPI {
                 request.productCategoryId()
         );
         var output = updateProductUseCase.execute(command);
-        return ResponseEntity.ok(ProductPresenter.present(output));
+        return ProductPresenter.present(output);
     }
 
     @Override
-    public ResponseEntity<Void> delete(Integer id) {
+    public void delete(final Integer id) {
         this.deleteProductUseCase.execute(id);
-        return ResponseEntity.noContent().build();
     }
 
     @Override
-    public ResponseEntity<Pagination<ListProductByCategoryResponse>> listByCategory(
-            Integer categoryId,
-            int page,
-            int perPage,
-            String sort,
-            String dir,
-            String search
+    public Pagination<ListProductByCategoryResponse> listByCategory(
+            final Integer categoryId,
+            final int page,
+            final int perPage,
+            final String sort,
+            final String dir,
+            final String search
     ) {
         var query = new SearchQuery(page, perPage, search, sort, dir);
         var params = ListByCategoryCommand.with(categoryId, query);
         var result = listByCategoryUseCase.execute(params);
 
-        final var pagination = new Pagination<>(
+        return new Pagination<>(
                 result.currentPage(),
                 result.perPage(),
                 result.total(),
@@ -104,7 +101,5 @@ public class ProductController implements ProductAPI {
                         .map(ProductPresenter::present)
                         .toList()
         );
-
-        return ResponseEntity.ok(pagination);
     }
 }
