@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.model.response.payment;
+package soat.project.fastfoodsoat.infrastructure.payment.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

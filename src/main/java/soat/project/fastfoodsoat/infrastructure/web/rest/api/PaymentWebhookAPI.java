@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import soat.project.fastfoodsoat.infrastructure.web.model.DefaultApiError;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.payment.MercadoPagoWebhookRequest;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.MercadoPagoWebhookResponse;
+import soat.project.fastfoodsoat.infrastructure.payment.model.request.MercadoPagoWebhookRequest;
+import soat.project.fastfoodsoat.infrastructure.payment.model.response.MercadoPagoWebhookResponse;
 
 @Tag(name = "Webhooks")
 @RequestMapping(value = "/webhooks/mercadopago")

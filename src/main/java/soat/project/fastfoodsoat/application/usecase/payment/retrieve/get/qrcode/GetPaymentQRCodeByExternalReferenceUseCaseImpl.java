@@ -1,19 +1,16 @@
 package soat.project.fastfoodsoat.application.usecase.payment.retrieve.get.qrcode;
 
-import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.payment.retrieve.get.qrcode.GetPaymentQRCodeCommand;
+import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
 import soat.project.fastfoodsoat.application.gateway.QRCodeServiceGateway;
 import soat.project.fastfoodsoat.domain.exception.IllegalStateException;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.payment.Payment;
-import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
 import soat.project.fastfoodsoat.domain.validation.DomainError;
+
 import java.util.Base64;
 
-@Transactional
-@Component
 public class GetPaymentQRCodeByExternalReferenceUseCaseImpl extends GetPaymentQRCodeByExternalReferenceUseCase {
 
     private final PaymentRepositoryGateway paymentRepositoryGateway;

@@ -4,17 +4,17 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+import soat.project.fastfoodsoat.infrastructure.payment.model.request.MercadoPagoWebhookRequest;
+import soat.project.fastfoodsoat.infrastructure.payment.model.response.MercadoPagoWebhookResponse;
 import soat.project.fastfoodsoat.infrastructure.web.rest.api.PaymentWebhookAPI;
 import soat.project.fastfoodsoat.infrastructure.web.rest.api.PaymentWebhookMockAPI;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.payment.MercadoPagoWebhookRequest;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.MercadoPagoWebhookResponse;
 
 @RestController
-public class PaymentWebhookMockController implements PaymentWebhookMockAPI {
+public class RestPaymentWebhookMockController implements PaymentWebhookMockAPI {
 
     private final PaymentWebhookAPI paymentWebhookAPI;
 
-    public PaymentWebhookMockController(final PaymentWebhookAPI paymentWebhookAPI) {
+    public RestPaymentWebhookMockController(final PaymentWebhookAPI paymentWebhookAPI) {
         this.paymentWebhookAPI = paymentWebhookAPI;
     }
 
