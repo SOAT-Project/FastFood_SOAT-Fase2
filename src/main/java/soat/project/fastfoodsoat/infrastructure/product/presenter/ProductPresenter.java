@@ -1,9 +1,9 @@
-package soat.project.fastfoodsoat.infrastructure.web.presenter;
+package soat.project.fastfoodsoat.infrastructure.product.presenter;
 
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.CreateProductResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.GetProductResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.ListProductByCategoryResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.UpdateProductResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.CreateProductResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.GetProductResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.ListProductByCategoryResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.UpdateProductResponse;
 import soat.project.fastfoodsoat.application.output.product.create.CreateProductOutput;
 import soat.project.fastfoodsoat.application.output.product.GetProductOutput;
 import soat.project.fastfoodsoat.application.output.product.ListByCategoryOutput;

@@ -1,20 +1,18 @@
 package soat.project.fastfoodsoat.application.usecase.product.update;
 
-import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.product.update.UpdateProductCommand;
+import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
 import soat.project.fastfoodsoat.application.output.product.update.UpdateProductOutput;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.product.Product;
-import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
 import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
 
 import java.util.function.Supplier;
 
-@Component
-public class UpdateProductUseCaseImpl extends UpdateProductUseCase{
+public class UpdateProductUseCaseImpl extends UpdateProductUseCase {
 
     private final ProductRepositoryGateway productRepositoryGateway;
 
