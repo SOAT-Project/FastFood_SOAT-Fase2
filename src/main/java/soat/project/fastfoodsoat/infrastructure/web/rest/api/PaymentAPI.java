@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soat.project.fastfoodsoat.infrastructure.web.model.DefaultApiError;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.payment.GetPaymentStatusByExternalReferenceResponse;
+import soat.project.fastfoodsoat.infrastructure.payment.model.response.GetPaymentStatusByExternalReferenceResponse;
 
 @Tag(name="Payments")
 @RequestMapping(value="payments")
