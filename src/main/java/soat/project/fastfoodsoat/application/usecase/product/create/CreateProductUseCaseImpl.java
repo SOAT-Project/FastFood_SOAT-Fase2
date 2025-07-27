@@ -1,18 +1,16 @@
 package soat.project.fastfoodsoat.application.usecase.product.create;
 
-import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.product.create.CreateProductCommand;
+import soat.project.fastfoodsoat.application.gateway.ProductCategoryRepositoryGateway;
+import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
 import soat.project.fastfoodsoat.application.output.product.create.CreateProductOutput;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.product.Product;
-import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
 import soat.project.fastfoodsoat.domain.productcategory.ProductCategory;
-import soat.project.fastfoodsoat.application.gateway.ProductCategoryRepositoryGateway;
 import soat.project.fastfoodsoat.domain.productcategory.ProductCategoryId;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
 
-@Component
 public class CreateProductUseCaseImpl extends CreateProductUseCase {
 
     private final ProductRepositoryGateway productRepositoryGateway;

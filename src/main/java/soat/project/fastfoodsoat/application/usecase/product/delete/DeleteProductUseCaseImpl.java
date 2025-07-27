@@ -1,10 +1,8 @@
 package soat.project.fastfoodsoat.application.usecase.product.delete;
 
-import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
 
-@Component
 public class DeleteProductUseCaseImpl extends DeleteProductUseCase{
 
     private final ProductRepositoryGateway productRepositoryGateway;

@@ -13,12 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
 import soat.project.fastfoodsoat.infrastructure.web.model.*;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.product.CreateProductRequest;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.product.UpdateProductRequest;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.CreateProductResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.GetProductResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.ListProductByCategoryResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.product.UpdateProductResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.request.CreateProductRequest;
+import soat.project.fastfoodsoat.infrastructure.product.model.request.UpdateProductRequest;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.CreateProductResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.GetProductResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.ListProductByCategoryResponse;
+import soat.project.fastfoodsoat.infrastructure.product.model.response.UpdateProductResponse;
 
 @Tag(name="Products")
 @RequestMapping(value="products")
