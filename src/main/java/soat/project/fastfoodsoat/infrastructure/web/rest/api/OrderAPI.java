@@ -11,13 +11,13 @@ import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import soat.project.fastfoodsoat.infrastructure.web.model.DefaultApiError;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.order.CreateOrderRequest;
-import soat.project.fastfoodsoat.infrastructure.web.model.request.order.UpdateOrderStatusRequest;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateOrderResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.order.UpdateOrderStatusResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.order.ListOrderResponse;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
+import soat.project.fastfoodsoat.infrastructure.order.model.request.CreateOrderRequest;
+import soat.project.fastfoodsoat.infrastructure.order.model.request.UpdateOrderStatusRequest;
+import soat.project.fastfoodsoat.infrastructure.order.model.response.CreateOrderResponse;
+import soat.project.fastfoodsoat.infrastructure.order.model.response.ListOrderResponse;
+import soat.project.fastfoodsoat.infrastructure.order.model.response.UpdateOrderStatusResponse;
+import soat.project.fastfoodsoat.infrastructure.web.model.DefaultApiError;
 
 @Tag(name = "Orders")
 @RequestMapping("/orders")
