@@ -1,26 +1,20 @@
 package soat.project.fastfoodsoat.application.usecase.order.create;
 
-import jakarta.transaction.Transactional;
-import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.order.create.CreateOrderCommand;
 import soat.project.fastfoodsoat.application.command.order.create.CreateOrderProductCommand;
+import soat.project.fastfoodsoat.application.gateway.*;
 import soat.project.fastfoodsoat.application.output.order.create.CreateOrderOutput;
 import soat.project.fastfoodsoat.domain.client.Client;
-import soat.project.fastfoodsoat.application.gateway.ClientRepositoryGateway;
 import soat.project.fastfoodsoat.domain.client.ClientPublicId;
 import soat.project.fastfoodsoat.domain.exception.NotFoundException;
 import soat.project.fastfoodsoat.domain.exception.NotificationException;
 import soat.project.fastfoodsoat.domain.order.Order;
-import soat.project.fastfoodsoat.application.gateway.OrderRepositoryGateway;
 import soat.project.fastfoodsoat.domain.order.OrderPublicId;
 import soat.project.fastfoodsoat.domain.order.OrderStatus;
 import soat.project.fastfoodsoat.domain.orderproduct.OrderProduct;
 import soat.project.fastfoodsoat.domain.payment.Payment;
-import soat.project.fastfoodsoat.application.gateway.PaymentRepositoryGateway;
-import soat.project.fastfoodsoat.application.gateway.PaymentService;
 import soat.project.fastfoodsoat.domain.payment.PaymentStatus;
 import soat.project.fastfoodsoat.domain.product.Product;
-import soat.project.fastfoodsoat.application.gateway.ProductRepositoryGateway;
 import soat.project.fastfoodsoat.domain.product.ProductId;
 import soat.project.fastfoodsoat.domain.validation.handler.Notification;
 
@@ -28,10 +22,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.Objects.requireNonNull;
-
-@Transactional
-@Component
 public class CreateOrderUseCaseImpl extends CreateOrderUseCase {
 
     private final OrderRepositoryGateway orderRepositoryGateway;
