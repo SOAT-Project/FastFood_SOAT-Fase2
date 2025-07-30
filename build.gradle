@@ -56,6 +56,9 @@ dependencies {
 	// Spring WebFlux
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
+	// Spring actuator
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 	// ZXing
 	implementation 'com.google.zxing:core:3.5.1'
 	implementation 'com.google.zxing:javase:3.5.1'

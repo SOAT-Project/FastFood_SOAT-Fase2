@@ -26,6 +26,21 @@ spring:
     serialization:
       indent_output: true
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+
 springdoc:
   api-docs:
     path: /api-docs
