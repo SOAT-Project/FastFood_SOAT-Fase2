@@ -1,12 +1,10 @@
 package soat.project.fastfoodsoat.application.usecase.order.retrieve.list.forstaff;
 
-import org.springframework.stereotype.Component;
 import soat.project.fastfoodsoat.application.command.order.retrieve.list.ListOrderForStaffCommand;
 import soat.project.fastfoodsoat.application.gateway.OrderRepositoryGateway;
 import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderOutput;
 import soat.project.fastfoodsoat.domain.pagination.Pagination;
 
-@Component
 public class ListOrderForStaffUseCaseImpl extends ListOrderForStaffUseCase {
 
     private final OrderRepositoryGateway orderRepositoryGateway;

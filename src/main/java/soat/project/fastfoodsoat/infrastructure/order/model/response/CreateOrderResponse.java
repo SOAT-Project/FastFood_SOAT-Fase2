@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.model.response.order;
+package soat.project.fastfoodsoat.infrastructure.order.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -1,4 +1,4 @@
-package soat.project.fastfoodsoat.infrastructure.web.model.request.order;
+package soat.project.fastfoodsoat.infrastructure.order.model.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Min;

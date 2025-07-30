@@ -1,6 +1,6 @@
 package soat.project.fastfoodsoat.application.command.order.create;
 
-import soat.project.fastfoodsoat.infrastructure.web.model.request.order.CreateOrderProductRequest;
+import soat.project.fastfoodsoat.infrastructure.order.model.request.CreateOrderProductRequest;
 
 public record CreateOrderProductCommand(
         Integer productId,

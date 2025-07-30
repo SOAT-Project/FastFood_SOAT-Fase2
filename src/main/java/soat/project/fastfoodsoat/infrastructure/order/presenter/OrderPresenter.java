@@ -1,10 +1,10 @@
-package soat.project.fastfoodsoat.infrastructure.web.presenter;
+package soat.project.fastfoodsoat.infrastructure.order.presenter;
 
-import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateOrderPaymentResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateOrderProductResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.order.CreateOrderResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.order.ListOrderProductResponse;
-import soat.project.fastfoodsoat.infrastructure.web.model.response.order.ListOrderResponse;
+import soat.project.fastfoodsoat.infrastructure.order.model.response.CreateOrderPaymentResponse;
+import soat.project.fastfoodsoat.infrastructure.order.model.response.CreateOrderProductResponse;
+import soat.project.fastfoodsoat.infrastructure.order.model.response.CreateOrderResponse;
+import soat.project.fastfoodsoat.infrastructure.order.model.response.ListOrderProductResponse;
+import soat.project.fastfoodsoat.infrastructure.order.model.response.ListOrderResponse;
 import soat.project.fastfoodsoat.application.output.order.create.CreateOrderOutput;
 import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderOutput;
 import soat.project.fastfoodsoat.application.output.order.retrieve.list.ListOrderProductOutput;
