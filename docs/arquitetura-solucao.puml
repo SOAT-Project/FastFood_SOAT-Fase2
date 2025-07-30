@@ -1,0 +1,49 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+LAYOUT_LEFT_RIGHT()
+
+Person(dev, "Usuário", "Interage com a API do FastFood")
+
+System_Boundary(fastfood_system, "Sistema FastFood - Kubernetes (Cluster)") {
+
+  Container(loadBalancer, "Service (LoadBalancer)", "Kubernetes Service", "Exposição externa do serviço")
+  Container(appDeployment, "Deployment", "Kubernetes Deployment", "Gerencia múltiplos pods")
+  Container(hpa, "HorizontalPodAutoscaler", "Kubernetes HPA", "Escala o Deployment com base em CPU")
+
+  Container(appContainer, "FastFood API", "Java (Spring Boot)", "API REST")
+  Container(initContainer, "InitContainer", "PostgreSQL", "Aguarda inicialização do banco")
+
+  Container(configMap, "ConfigMap", "Kubernetes ConfigMap", "Configurações não sensíveis")
+  Container(secret, "Secret", "Kubernetes Secret", "Credenciais sensíveis")
+
+  Container(clusterIp, "Service (ClusterIP)", "Kubernetes Service", "Interface interna para acesso ao banco")
+
+  ContainerDb(db, "PostgreSQL", "Kubernetes StatefulSet", "Banco de dados")
+  Container(pvc, "PersistentVolumeClaim", "Kubernetes Storage", "Volume persistente do Banco de dados")
+
+}
+
+System_Ext(mp, "Mercado Pago", "API Externa")
+
+' Conexões externas
+Rel(dev, loadBalancer, "HTTP")
+Rel(loadBalancer, appContainer, "Encaminha requisições", "HTTP")
+
+' App e banco
+Rel(appContainer, initContainer, "Executa antes", "InitContainer")
+Rel(appContainer, configMap, "Consulta configs")
+Rel(appContainer, secret, "Consulta secrets")
+Rel(appContainer, clusterIp, "Conecta")
+Rel(clusterIp, db, "Estabelece conexão")
+Rel(db, pvc, "Armazena dados")
+Rel(db, configMap, "Consulta configs")
+Rel(db, secret, "Consulta secrets")
+
+' Externo'
+Rel(appContainer, mp, "Consome API", "HTTPS")
+
+' Infra
+Rel(hpa, appDeployment, "Escala com base em CPU")
+Rel(appDeployment, appContainer, "Contém")
+Rel(appDeployment, initContainer, "Contém")
+@enduml
