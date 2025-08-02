@@ -1126,7 +1126,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/mock",
+							"raw": "http://localhost:8080/api/mock/simulate-mercadopago-webhook",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1134,7 +1134,8 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"mock"
+								"mock",
+								"simulate-mercadopago-webhook"
 							]
 						}
 					},
