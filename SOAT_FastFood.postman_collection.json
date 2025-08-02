@@ -918,9 +918,62 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "List Orders For Staff",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/staff?only_paid=false&page=0&per_page=10&sort=orderNumber&dir=asc&search=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"staff"
+							],
+							"query": [
+								{
+									"key": "only_paid",
+									"value": "false",
+									"description": "Defini se serão listados apenas os pedidos pagos, podendo ser true or false. (Default: false)"
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"description": "Pagina da consulta desejada. (Default: 0)"
+								},
+								{
+									"key": "per_page",
+									"value": "10",
+									"description": "Numero de itens desejados por pagina. (Default: 10)"
+								},
+								{
+									"key": "sort",
+									"value": "orderNumber",
+									"description": "Atributo a ser utilizada para a ordenacao. (Default: orderNumber)"
+								},
+								{
+									"key": "dir",
+									"value": "asc",
+									"description": "Direcao a ser utilizada para a ordenacao. (Default: asc)"
+								},
+								{
+									"key": "search",
+									"value": "",
+									"description": "Trecho do numero da ordem, nome do produto ou identifcador publico dos produtos desejados. (Default: \"\")"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			],
-			"description": "# 🧾 Order API\n\nAPI responsável pela criação, atualização de status e listagem de pedidos no sistema.\n\n> **Base URL:** `/orders`  \n**Autenticação:** `Bearer Token` requerida para atualização de status. \n  \n\n---\n\n## ➕ Criar Pedido\n\n**POST** `/orders`\n\nCria um novo pedido com base nos dados enviados.\n\n### 🔸 Body (JSON)\n\n``` json\n{\n  \"clientId\": \"uuid-do-cliente\",\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 2\n    },\n    {\n      \"productId\": 2,\n      \"quantity\": 1\n    }\n  ],\n  \"paymentMethod\": \"CREDIT_CARD\"\n}\n\n ```\n\n### 🔸 Responses\n\n- `200 OK`: Pedido criado com sucesso\n    \n- `404 Not Found`: Entidade não encontrada (cliente ou produto)\n    \n- `422 Unprocessable Entity`: Erro de validação\n    \n- `500 Internal Server Error`\n    \n\n---\n\n## 🔄 Atualizar Status do Pedido\n\n**PUT** `/orders/{publicId}`  \nAtualiza o status de um pedido existente.\n\n> 🔐 Requer autenticação via `bearerAuth` \n  \n\n### 🔸 Body (JSON)\n\n``` json\n{\n  \"status\": \"PAID\"\n}\n\n ```\n\n### 🔸 Responses\n\n- `200 OK`: Status atualizado com sucesso\n    \n- `404 Not Found`: Pedido não encontrado\n    \n- `422 Unprocessable Entity`: Erro de validação\n    \n- `500 Internal Server Error`\n    \n\n---\n\n## 📃 Listar Pedidos\n\n**GET** `/orders`\n\nLista todos os pedidos com suporte a filtros e paginação.\n\n### 🔸 Query Params\n\n| Parâmetro | Descrição | Default |\n| --- | --- | --- |\n| `only_paid` | Filtra apenas pedidos pagos | `false` |\n| `search` | Filtro por número do pedido ou cliente | `\"\"` |\n| `page` | Número da página | `0` |\n| `per_page` | Itens por página | `10` |\n| `sort` | Campo de ordenação | `orderNumber` |\n| `dir` | Direção da ordenação (`asc` ou `desc`) | `asc` |\n\n### 🔸 Responses\n\n- `200 OK`: Lista de pedidos retornada\n    \n- `500 Internal Server Error`\n    \n\n---"
+			"description": "# 🧾 Order API\n\nAPI responsável pela criação, atualização de status e listagem de pedidos no sistema.\n\n**Base URL:** `/orders`  \n**Autenticação:** Requer Bearer Token apenas para atualização de status.\n\n---\n\n## ➕ Criar Pedido\n\n**POST** `/orders`  \nCria um novo pedido com base nos dados enviados.\n\n### 🔸 Body (JSON)\n\n``` json\n{\n  \"clientId\": \"uuid-do-cliente\",\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 2\n    },\n    {\n      \"productId\": 2,\n      \"quantity\": 1\n    }\n  ],\n  \"paymentMethod\": \"CREDIT_CARD\"\n}\n\n ```\n\n### 🔸 Responses\n\n- `200 OK`: Pedido criado com sucesso\n    \n- `404 Not Found`: Cliente ou produto não encontrado\n    \n- `422 Unprocessable Entity`: Erro de validação\n    \n- `500 Internal Server Error`: Erro interno do servidor\n    \n\n---\n\n## 🔄 Atualizar Status do Pedido\n\n**PUT** `/orders/{publicId}`  \nAtualiza o status de um pedido existente.\n\n🔐 **Requer autenticação via Bearer Token**\n\n### 🔸 Body (JSON)\n\n``` json\n{\n  \"status\": \"PAID\"\n}\n\n ```\n\n### 🔸 Responses\n\n- `200 OK`: Status atualizado com sucesso\n    \n- `404 Not Found`: Pedido não encontrado\n    \n- `422 Unprocessable Entity`: Erro de validação\n    \n- `500 Internal Server Error`: Erro interno do servidor\n    \n\n---\n\n## 📃 Listar Pedidos (Clientes)\n\n**GET** `/orders`  \nLista pedidos realizados pelo cliente autenticado. Retorna resultados paginados.\n\n### 🔸 Query Params\n\n| Parâmetro | Descrição | Padrão |\n| --- | --- | --- |\n| `page` | Número da página | `0` |\n| `per_page` | Itens por página | `10` |\n\n### 🔸 Responses\n\n- `200 OK`: Lista de pedidos retornada\n    \n- `500 Internal Server Error`\n    \n\n---\n\n## 📋 Listar Pedidos (Staff)\n\n**GET** `/orders/staff`  \nLista todos os pedidos do sistema com filtros e paginação. Endpoint voltado para operadores internos.\n\n### 🔸 Query Params\n\n| Parâmetro | Descrição | Padrão |\n| --- | --- | --- |\n| `only_paid` | Filtra apenas pedidos pagos | `false` |\n| `search` | Filtro por número do pedido ou cliente | `\"\"` |\n| `page` | Número da página | `0` |\n| `per_page` | Itens por página | `10` |\n| `sort` | Campo de ordenação | `orderNumber` |\n| `dir` | Direção da ordenação (`asc` ou `desc`) | `asc` |\n\n### 🔸 Responses\n\n- `200 OK`: Lista de pedidos retornada com sucesso\n    \n- `500 Internal Server Error`\n    \n\n---"
 		},
 		{
 			"name": "Payments",
@@ -986,6 +1039,71 @@
 				}
 			],
 			"description": "# 💳 Payment API\n\nAPI responsável pela recuperação do QR Code de pagamento e atualização do status de pagamento.\n\n> **Base URL:** `/payments`  \n**Autenticação:** Não requerida \n  \n\n---\n\n## 📥 Obter QR Code de Pagamento\n\n**GET** `/payments/{external_reference}`\n\nBusca o QR Code de pagamento a partir da referência externa.\n\n### 🔸 Path Variable\n\n- `external_reference`: Referência externa do pedido/pagamento\n    \n\n### 🔸 Responses\n\n- `200 OK`: QR Code retornado com sucesso (em `byte[]`, ex: imagem)\n- `404 Not Found`: Pagamento não encontrado\n- `500 Internal Server Error`\n    \n\n---\n\n## ✅ Atualizar Pagamento para Pago\n\n**POST** `/payments`\n\nAtualiza o status de um pagamento para \"pago\".\n\n### 🔸 Responses\n\n- `200 OK`: Pagamento atualizado com sucesso\n- `404 Not Found`: Pagamento não encontrado\n- `500 Internal Server Error`\n    \n\n---"
+		},
+		{
+			"name": "Payment Webhook",
+			"item": [
+				{
+					"name": "Payment Webhook",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"56a21d4a-fc57-4636-a5c6-0e5e087ea32b\",\n    \"topic\": \"payment.created\",\n    \"resource\": \"http://mock-url.com/payment/56a21d4a-fc57-4636-a5c6-0e5e087ea32b\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/webhooks/mercadopago",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"webhooks",
+								"mercadopago"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Webhook Mock",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"56a21d4a-fc57-4636-a5c6-0e5e087ea32b\",\n    \"topic\": \"payment.created\",\n    \"resource\": \"http://mock-url.com/payment/56a21d4a-fc57-4636-a5c6-0e5e087ea32b\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/mock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"mock"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "# 📬 Webhook de Pagamento - Mercado Pago\n\nAPI responsável por receber notificações de atualização de status de pagamento enviadas pelo Mercado Pago.\n\n**Base URL:** `/webhooks/mercadopago`  \n**Autenticação:** Não requer autenticação — uso exclusivo do Mercado Pago.\n\n---\n\n## 📥 Receber Notificação de Pagamento\n\n**POST** `/webhooks/mercadopago`  \nEndpoint chamado pelo Mercado Pago para envio de atualizações de status de pagamento.\n\n### 🔸 Body (JSON)\n\n``` json\n{\n  \"id\": \"1234567890\",\n  \"topic\": \"payment.created\",\n  \"resource\": \"https://api.mercadopago.com/v1/payments/1234567890\"\n}\n\n ```\n\n### 🔸 Campos\n\n| Campo | Tipo | Obrigatório | Descrição |\n| --- | --- | --- | --- |\n| `id` | string | Sim | Identificador externo do pagamento (`external_reference`) |\n| `topic` | string | Sim | Tipo de evento (ex: `payment.update`, `payment.created`, `payment.rejected`) |\n| `resource` | string | Sim | URL do recurso relacionado ao pagamento |\n\n### 🔸 Responses\n\n- `200 OK`: Notificação processada com sucesso\n    \n- `400 Bad Request`: Corpo da requisição inválido\n    \n- `404 Not Found`: Pagamento não encontrado\n    \n- `500 Internal Server Error`: Erro interno do servidor"
 		},
 		{
 			"name": "Staffs",
