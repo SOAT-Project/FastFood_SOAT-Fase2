@@ -12,6 +12,16 @@
 				{
 					"name": "Create Product",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpYXQiOjE3NTQxMDQyMTIsImV4cCI6MTc1NDE0NzQxMn0.gk8CGcm9APHuVMq5yoK_ZZ7joHHQ3ue2yRCnoxy9ckU",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -166,6 +176,16 @@
 				{
 					"name": "Update Product",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpYXQiOjE3NTQxMDQyMTIsImV4cCI6MTc1NDE0NzQxMn0.gk8CGcm9APHuVMq5yoK_ZZ7joHHQ3ue2yRCnoxy9ckU",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -392,6 +412,16 @@
 				{
 					"name": "Delete Product",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpYXQiOjE3NTQxMDQyMTIsImV4cCI6MTc1NDE0NzQxMn0.gk8CGcm9APHuVMq5yoK_ZZ7joHHQ3ue2yRCnoxy9ckU",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -422,7 +452,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/products/category/:categoryId?page=0&per_page=10&sort=name&dir=asc&search=X-T",
+							"raw": "localhost:8080/api/products/category/:categoryId?page=0&per_page=10&sort=name&dir=asc&search=Cheese",
 							"host": [
 								"localhost"
 							],
@@ -456,7 +486,7 @@
 								},
 								{
 									"key": "search",
-									"value": "X-T",
+									"value": "Cheese",
 									"description": "Trecho do nome ou descricao dos produtos desejados. (Default: \"\")"
 								}
 							],
@@ -582,7 +612,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"client_public_id\": \"1234\",\r\n  \"products\": [\r\n    {\r\n      \"product_id\": 7,\r\n      \"quantity\": 5\r\n    }\r\n  ]\r\n}",
+							"raw": "{\r\n  \"client_public_id\": \"67020536-c27d-44c2-b0a0-66170fc69233\",\r\n  \"products\": [\r\n    {\r\n      \"product_id\": 7,\r\n      \"quantity\": 5\r\n    }\r\n  ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -672,6 +702,16 @@
 				{
 					"name": "Update Order Status",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huLmRvZUBlbWFpbC5jb20iLCJyb2xlcyI6WyJBRE1JTiJdLCJpYXQiOjE3NTQxMDQyMTIsImV4cCI6MTc1NDE0NzQxMn0.gk8CGcm9APHuVMq5yoK_ZZ7joHHQ3ue2yRCnoxy9ckU",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -698,7 +738,7 @@
 							"variable": [
 								{
 									"key": "orderId",
-									"value": "3e3667b3-d548-4c71-b307-e776ed4a5bd1",
+									"value": "67020536-c27d-44c2-b0a0-66170fc69233",
 									"description": "Identificador do pedido a ser atualizado."
 								}
 							]
@@ -984,7 +1024,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/payments/:externalReference",
+							"raw": "http://localhost:8080/api/payments/qrcode?external_reference=d7ebf6a9-01db-47bb-b58c-bf873e46a0b4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -993,12 +1033,12 @@
 							"path": [
 								"api",
 								"payments",
-								":externalReference"
+								"qrcode"
 							],
-							"variable": [
+							"query": [
 								{
-									"key": "externalReference",
-									"value": "56a21d4a-fc57-4636-a5c6-0e5e087ea32b",
+									"key": "external_reference",
+									"value": "d7ebf6a9-01db-47bb-b58c-bf873e46a0b4",
 									"description": "Identificador externo referente ao pagamento."
 								}
 							]
@@ -1008,21 +1048,12 @@
 					"response": []
 				},
 				{
-					"name": "Set Paid",
+					"name": "Get Payment Status",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"external_reference\": \"56a21d4a-fc57-4636-a5c6-0e5e087ea32b\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/api/payments",
+							"raw": "http://localhost:8080/api/payments/status?external_reference=a93021f8-a72c-4fcd-b1aa-ec4ee377a95e",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1030,15 +1061,22 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"payments"
+								"payments",
+								"status"
+							],
+							"query": [
+								{
+									"key": "external_reference",
+									"value": "a93021f8-a72c-4fcd-b1aa-ec4ee377a95e",
+									"description": "Identificador externo referente ao pagamento."
+								}
 							]
-						},
-						"description": "The `POST` request to `/api/payments` endpoint is used to submit payment details. The request should include a JSON payload in the raw request body type with the `external_reference` key to uniquely identify the payment.\n\n### Request Body\n\n- `external_reference`: (string) A unique identifier for the payment.\n    \n\n### Response\n\nThe response will contain the details of the payment submission, including the status of the transaction and any relevant payment information."
+						}
 					},
 					"response": []
 				}
 			],
-			"description": "# 💳 Payment API\n\nAPI responsável pela recuperação do QR Code de pagamento e atualização do status de pagamento.\n\n> **Base URL:** `/payments`  \n**Autenticação:** Não requerida \n  \n\n---\n\n## 📥 Obter QR Code de Pagamento\n\n**GET** `/payments/{external_reference}`\n\nBusca o QR Code de pagamento a partir da referência externa.\n\n### 🔸 Path Variable\n\n- `external_reference`: Referência externa do pedido/pagamento\n    \n\n### 🔸 Responses\n\n- `200 OK`: QR Code retornado com sucesso (em `byte[]`, ex: imagem)\n- `404 Not Found`: Pagamento não encontrado\n- `500 Internal Server Error`\n    \n\n---\n\n## ✅ Atualizar Pagamento para Pago\n\n**POST** `/payments`\n\nAtualiza o status de um pagamento para \"pago\".\n\n### 🔸 Responses\n\n- `200 OK`: Pagamento atualizado com sucesso\n- `404 Not Found`: Pagamento não encontrado\n- `500 Internal Server Error`\n    \n\n---"
+			"description": "## 📦 Payments API\n\n### 🔗 Base URL\n\n`/payments`\n\n---\n\n### 📥 `GET /payments/qrcode`\n\n**Resumo:** Retorna o QR Code do pagamento com base na referência externa.\n\n**Parâmetros de Consulta:**\n\n| Nome | Tipo | Obrigatório | Descrição |\n| --- | --- | --- | --- |\n| `external_reference` | string | Sim | Referência externa do pagamento |\n\n**Respostas:**\n\n| Código | Descrição | Conteúdo |\n| --- | --- | --- |\n| 200 | QR Code retornado com sucesso | `byte[]` (`application/json`) |\n| 404 | Pagamento não encontrado | `DefaultApiError` (JSON) |\n| 500 | Erro interno no servidor | `DefaultApiError` (JSON) |\n\n---\n\n### 📥 `GET /payments/status`\n\n**Resumo:** Retorna o status do pagamento com base na referência externa.\n\n**Parâmetros de Consulta:**\n\n| Nome | Tipo | Obrigatório | Descrição |\n| --- | --- | --- | --- |\n| `external_reference` | string | Sim | Referência externa do pagamento |\n\n**Respostas:**\n\n| Código | Descrição | Conteúdo |\n| --- | --- | --- |\n| 200 | Status do pagamento retornado com sucesso | `GetPaymentStatusByExternalReferenceResponse` (JSON) |\n| 404 | Pagamento não encontrado | `DefaultApiError` (JSON) |\n| 500 | Erro interno no servidor | `DefaultApiError` (JSON) |\n\n---"
 		},
 		{
 			"name": "Payment Webhook",
@@ -1115,7 +1153,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"identification\": \"staff@email.com\"\n}",
+							"raw": "{\n    \"identification\": \"john.doe@email.com\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
