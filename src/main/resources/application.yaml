@@ -2,8 +2,21 @@ server:
   port: ${APPLICATION_PORT:8080}
   servlet:
     context-path: /api
+    encoding:
+      force: true
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  undertow:
+    threads:
+      worker: 64
+      io: 4
+  shutdown: graceful
 
 spring:
+  main:
+    banner-mode: off
   application:
     name: fast-food-soat
 
@@ -20,6 +33,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        connection:
+          autocommit: false
+        generate_statistics: false
     open-in-view: false
 
   jackson:
