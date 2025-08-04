@@ -1,164 +1,60 @@
-# FastFood SOAT
+# 📦 FastFood API
 
-## Executando a aplicação com Docker
+Este projeto é uma API RESTful para um sistema de pedidos de fast food, desenvolvida em Java com Spring Boot. A aplicação utiliza PostgreSQL como banco de dados e segue os princípios da Clean Architecture.
 
-### Pré-requisitos
-- [Docker](https://www.docker.com/get-started) instalado
-- [Docker Compose](https://docs.docker.com/compose/install/) instalado
+## 🚀 Formas de Deploy
 
-### Configuração do ambiente
+A aplicação pode ser executada de diversas formas. Confira abaixo as opções disponíveis e a documentação detalhada para cada uma:
 
-Antes de iniciar a aplicação, é necessário configurar as variáveis de ambiente. Você tem duas opções:
+- [📄 Deploy com Docker](./docs/docker.md)
+- [📄 Deploy com Kubernetes](./docs/kubernetes.md)
 
-#### Opção 1: Usando arquivo .env
-Crie um arquivo `.env` na raiz do projeto com as variáveis de ambiente. Você pode usar o arquivo `.env.example` como modelo:
+## 🧪 Testes
 
-```bash
-cp .env.example .env
-```
+### ✅ Testes Unitários
 
-Em seguida, edite o arquivo `.env` e configure os valores apropriados para o seu ambiente, exemplo:
+Execute os testes unitários com o seguinte comando:
 
-```
-APPLICATION_PORT=8080
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-DATABASE_NAME=postgres
-DATABASE_USER=postgres
-DATABASE_PASS=P@ssw0rd
-AUTH_TOKEN_EXPIRATION=43200
-MP_TOKEN=APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150
-COLLECTOR_ID=2448858150
-POS_ID=SUC001POS001
-```
-
-#### Opção 2: Usando variáveis de ambiente do sistema
-Se não existir um arquivo `.env`, o Docker Compose utilizará as variáveis de ambiente definidas no sistema operacional. Você pode defini-las antes de executar os comandos do Docker Compose:
-
-- Linux/macOS:
-```bash
-export APPLICATION_PORT=8080
-export DATABASE_HOST=localhost
-export DATABASE_PORT=5432
-export DATABASE_NAME=postgres
-export DATABASE_USER=postgres
-export DATABASE_PASS=P@ssw0rd
-export AUTH_TOKEN_EXPIRATION=43200
-export MP_TOKEN=APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150
-export COLLECTOR_ID=2448858150
-export POS_ID=SUC001POS001
-```
-- Windows (PowerShell):
-```PowerShell
-$env:APPLICATION_PORT="8080"
-$env:DATABASE_HOST="localhost"
-$env:DATABASE_PORT="5432"
-$env:DATABASE_NAME="postgres"
-$env:DATABASE_USER="postgres"
-$env:DATABASE_PASS="P@ssw0rd"
-$env:AUTH_TOKEN_EXPIRATION="43200"
-$env:MP_TOKEN="APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150"
-$env:COLLECTOR_ID="2448858150"
-$env:POS_ID="SUC001POS001"
-```
-
-Se nenhuma das opções acima for configurada, o Docker Compose utilizará os valores padrão definidos no arquivo `docker-compose.yaml`.
-
-### Comandos Docker
-
-#### Construir a imagem da aplicação
-```bash
-docker build -t fastfood-soat --build-arg APPLICATION_PORT=8080 .
-```
-
-#### Executar o container da aplicação
-```bash
-docker run --name fastfood-container -p 8080:8080 fastfood-soat
-```
-
-#### Parar o container
-```bash
-docker stop fastfood-container
-```
-
-### Utilizando Docker Compose
-
-#### Iniciar todos os serviços
-```bash
-docker-compose up
-```
-
-#### Iniciar em modo detached (background)
-```bash
-docker-compose up -d
-```
-
-#### Construir os serviços antes de iniciar (recomendado)
-```bash
-docker-compose up --build
-```
-
-#### Parar todos os serviços (recomendado)
-```bash
-docker-compose down
-```
-
-#### Visualizar logs
-```bash
-docker-compose logs -f
-```
-
-### Estrutura do Docker Compose
-
-O arquivo `docker-compose.yaml` configura os seguintes serviços:
-- **application**: Aplicação principal (container name: application)
-- **database**: Banco de dados (container name: database)
-
-### Variáveis de ambiente
-
-Você pode configurar as seguintes variáveis de ambiente:
-- `DATABASE_HOST`: Host do banco de dados (padrão: localhost ou database no compose)
-- `DATABASE_PORT`: Porta do banco de dados (padrão: 5432)
-- `DATABASE_USER`: Usuário do banco de dados (padrão: postgres)
-- `DATABASE_PASS`: Senha do banco de dados (padrão: P@ssw0rd)
-- `DATABASE_NAME`: Nome do banco de dados (padrão: postgres)
-- `APPLICATION_PORT`: Porta da aplicação (padrão: 8080, também usada como build-arg)
-- `AUTH_TOKEN_EXPIRATION`: Tempo de expiração do token de autenticação em segundos (padrão: 43200)
-- `MP_TOKEN`: Token de autenticação para o MP (padrão: APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150)
-- `COLLECTOR_ID`: ID do coletor MP (padrão: 2448858150)
-- `POS_ID`: ID do POS MP (padrão: SUC001POS001)
-
-### Testes
-
-#### Testes Unitários
-
-- Os testes de unidade pode ser executados com o seguinte comando:
 ```bash
 ./gradlew test
 ```
 
-#### Testes de Integração
+### 🔁 Testes de Integração
 
-- Para detalhes sobre testes de integração veja: [Documentação - Teste Integração](./docs/integration-tests.md).
+Execute os testes de integração com o seguinte comando:
 
-### Swagger
+```bash
+./gradlew testIntegration
+```
 
-A documentação da API está disponível no Swagger, acessível em: http://localhost:8080/api/swagger-ui/index.html
+Mais detalhes em: [📄 Documentação de Testes de Integração](./docs/integration-tests.md)
 
-### Diagrama de Banco de Dados
+## 📚 Swagger
 
-![Diagrama de Banco de Dados](./docs/diagrama-db.png)
-[Diagrama de Banco de Dados Link](https://dbdiagram.io/d/FIAP-HEX-68101c011ca52373f5ba7756)
+A documentação da API está disponível via Swagger, acessível em:
 
-### Diagrama DDD
+```
+http://localhost:8080/api/swagger-ui/index.html
+```
 
-[Diagrama DDD](./docs/diagrama-ddd.drawio)
+## 🗃️ Diagrama do Banco de Dados
 
-[Diagrama DDD Link](https://drive.google.com/file/d/1jAH0o1r2prv5UD3AY6mZ57Uc93uPAPi9/view?usp=sharing)
+![Diagrama do Banco de Dados](./docs/diagrama-db.png)
 
-### Teste Local
+- [🔗 Acessar diagrama interativo](https://dbdiagram.io/d/FIAP-HEX-68101c011ca52373f5ba7756)
 
-Utilizar no endpoint de /auths a identificação abaixo para gerar o token de autenticação:
+## 🧭 Diagrama DDD
+
+- [🖼️ Visualizar Diagrama DDD (arquivo Draw.io)](./docs/diagrama-ddd.drawio)
+- [🔗 Acessar no Google Drive](https://drive.google.com/file/d/1jAH0o1r2prv5UD3AY6mZ57Uc93uPAPi9/view?usp=sharing)
+
+## ☁️ Arquitetura com Kubernetes
+
+![Arquitetura da Solução - Kubernetes](./docs/arquitetura-solucao.png)
+
+## 🧪 Teste Local
+
+Para gerar um token de autenticação, envie a seguinte identificação no endpoint `/auths`:
 
 ```json
 {

@@ -53,6 +53,7 @@ AUTH_TOKEN_EXPIRATION=43200
 MP_TOKEN=APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150
 COLLECTOR_ID=2448858150
 POS_ID=SUC001POS001
+BASE_URL:https://api.mercadopago.com
 ```
 
 #### Opção 2: Usando variáveis de ambiente do sistema
@@ -70,6 +71,7 @@ export AUTH_TOKEN_EXPIRATION=43200
 export MP_TOKEN=APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150
 export COLLECTOR_ID=2448858150
 export POS_ID=SUC001POS001
+export BASE_URL=https://api.mercadopago.com
 ```
 - Windows (PowerShell):
 ```PowerShell
@@ -83,6 +85,7 @@ $env:AUTH_TOKEN_EXPIRATION="43200"
 $env:MP_TOKEN="APP_USR-2512049377508546-052123-386869c4214628b0e44f44f638bc2ebe-2448858150"
 $env:COLLECTOR_ID="2448858150"
 $env:POS_ID="SUC001POS001"
+$env:BASE_URL="https://api.mercadopago.com"
 ```
 Se nenhuma das opções acima for configurada, o Docker Compose utilizará os valores padrão definidos no arquivo `docker-compose.yaml`.
 
