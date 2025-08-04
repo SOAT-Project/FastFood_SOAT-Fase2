@@ -52,6 +52,10 @@ http://localhost:8080/api/swagger-ui/index.html
 
 ![Arquitetura da Solução - Kubernetes](./docs/arquitetura-solucao.png)
 
+Essa imagem foi gerada utilizando o PlantUML. Você pode visualizar o código fonte do diagrama:
+- [📄 Arquivo PlantUML](./docs/arquitetura-solucao.puml)
+
+
 ## 🧪 Teste Local
 
 Para gerar um token de autenticação, envie a seguinte identificação no endpoint `/auths`:
